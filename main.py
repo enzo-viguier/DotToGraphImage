@@ -1,5 +1,5 @@
-import os;
-import graphviz;
+import os
+import graphviz
 import subprocess
 import sys
 
