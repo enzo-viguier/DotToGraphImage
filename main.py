@@ -1,5 +1,35 @@
 import os;
 import graphviz;
+import subprocess
+import sys
+
+def verifier_installations():
+    with open('requirement.txt', 'r') as fichier:
+        packages = fichier.read().splitlines()
+    
+    packages_manquants = []
+    
+    for package in packages:
+        try:
+            __import__(package.split('==')[0])
+        except ImportError:
+            packages_manquants.append(package)
+    
+    if packages_manquants:
+        print("Les packages suivants ne sont pas installés :")
+        for package in packages_manquants:
+            print(f"- {package}")
+        
+        reponse = input("Voulez-vous les installer maintenant ? (o/n) : ")
+        if reponse.lower() == 'o':
+            for package in packages_manquants:
+                subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+            print("Tous les packages ont été installés avec succès.")
+        else:
+            print("Veuillez installer les packages manquants manuellement.")
+    else:
+        print("Tous les packages requis sont déjà installés.")
+
 
 def convertir_dot_en_image(chemin_dot, chemin_sortie):
     try:
@@ -20,6 +50,9 @@ def traiter_dossiers(dossier_racine):
                 nom_fichier_sans_extension = os.path.splitext(fichier)[0]
                 chemin_sortie = os.path.join(dossier_sortie, nom_fichier_sans_extension)
                 convertir_dot_en_image(chemin_dot, chemin_sortie)
+
+# verifier les installations des packages
+verifier_installations()
 
 # Utilisation de la fonction
 dossier_racine = 'dotFiles'
