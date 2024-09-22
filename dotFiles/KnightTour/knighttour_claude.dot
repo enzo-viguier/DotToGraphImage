@@ -1,0 +1,63 @@
+digraph KnightsTour {
+    node [shape=rectangle];
+    
+    start [shape=ellipse, label="Start"];
+    end [shape=ellipse, label="End"];
+    
+    start -> main;
+    
+    main [label="main()"];
+    main -> initialize_grid;
+    initialize_grid -> select_start_position;
+    select_start_position -> solve;
+    
+    solve [label="solve(row, column, count)"];
+    solve -> check_count;
+    
+    check_count [shape=diamond, label="count > total?"];
+    check_count -> end [label="Yes"];
+    check_count -> get_neighbors [label="No"];
+    
+    get_neighbors [label="neighbors(row, column)"];
+    get_neighbors -> check_neighbors;
+    
+    check_neighbors [shape=diamond, label="neighbors empty\nAND count != total?"];
+    check_neighbors -> return_false [label="Yes"];
+    check_neighbors -> sort_neighbors [label="No"];
+    
+    sort_neighbors -> iterate_neighbors;
+    
+    iterate_neighbors [shape=diamond, label="For each neighbor"];
+    iterate_neighbors -> update_grid [label="Next"];
+    iterate_neighbors -> return_false [label="Done"];
+    
+    update_grid [label="Update grid"];
+    update_grid -> check_orphan;
+    
+    check_orphan [shape=diamond, label="orphanDetected()?"];
+    check_orphan -> recursive_solve [label="No"];
+    check_orphan -> reset_grid [label="Yes"];
+    
+    recursive_solve [label="solve(new_row, new_column, count + 1)"];
+    recursive_solve -> check_result;
+    
+    check_result [shape=diamond, label="Solved?"];
+    check_result -> end [label="Yes"];
+    check_result -> reset_grid [label="No"];
+    
+    reset_grid [label="Reset grid"];
+    reset_grid -> iterate_neighbors;
+    
+    return_false [label="Return false"];
+    return_false -> end;
+    
+    subgraph cluster_0 {
+        label = "Helper Methods";
+        style = dotted;
+        
+        neighbors [label="neighbors(row, column)"];
+        countNeighbors [label="countNeighbors(row, column)"];
+        orphanDetected [label="orphanDetected(count, row, column)"];
+        printResult [label="printResult()"];
+    }
+}

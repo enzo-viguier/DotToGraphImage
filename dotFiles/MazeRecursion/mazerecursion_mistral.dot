@@ -1,0 +1,74 @@
+digraph G {
+    node [shape=box];
+
+    // Entry point
+    entry [label="mazeRecursion"];
+
+    // Initialization
+    init_map [label="int[][] map = new int[8][7];\nint[][] map2 = new int[8][7];"];
+    init_walls_loop1 [label="for (int i = 0; i < 7; i++) {\n    map[0][i] = 1;\n    map[7][i] = 1;\n}"];
+    init_walls_loop2 [label="for (int i = 0; i < 8; i++) {\n    map[i][0] = 1;\n    map[i][6] = 1;\n}"];
+    set_obstacle [label="map[3][1] = 1;\nmap[3][2] = 1;"];
+    print_map [label="System.out.println(\"The condition of the map： \");\nfor (int i = 0; i < 8; i++) {\n    for (int j = 0; j < 7; j++) {\n        System.out.print(map[i][j] + \" \");\n    }\n    System.out.println();\n}"];
+    clone_map [label="for (int i = 0; i < map.length; i++) {\n    System.arraycopy(map[i], 0, map2[i], 0, map[i].length);\n}"];
+    setWay_call [label="setWay(map, 1, 1);"];
+    setWay2_call [label="setWay2(map2, 1, 1);"];
+    print_map1 [label="System.out.println(\"After the ball goes through the map1，show the current map1 condition\");\nfor (int i = 0; i < 8; i++) {\n    for (int j = 0; j < 7; j++) {\n        System.out.print(map[i][j] + \" \");\n    }\n    System.out.println();\n}"];
+    print_map2 [label="System.out.println(\"After the ball goes through the map2，show the current map2 condition\");\nfor (int i = 0; i < 8; i++) {\n    for (int j = 0; j < 7; j++) {\n        System.out.print(map2[i][j] + \" \");\n    }\n    System.out.println();\n}"];
+
+    // setWay method
+    setWay_entry [label="setWay(map, i, j)"];
+    setWay_end_condition [label="if (map[6][5] == 2) {\n    return true;\n}"];
+    setWay_check_path [label="if (map[i][j] == 0) {\n    map[i][j] = 2;\n}"];
+    setWay_down [label="if (setWay(map, i + 1, j)) {\n    return true;\n}"];
+    setWay_right [label="else if (setWay(map, i, j + 1)) {\n    return true;\n}"];
+    setWay_up [label="else if (setWay(map, i - 1, j)) {\n    return true;\n}"];
+    setWay_left [label="else if (setWay(map, i, j - 1)) {\n    return true;\n}"];
+    setWay_dead_end [label="map[i][j] = 3;\nreturn false;"];
+    setWay_return_false [label="return false;"];
+
+    // setWay2 method
+    setWay2_entry [label="setWay2(map, i, j)"];
+    setWay2_end_condition [label="if (map[6][5] == 2) {\n    return true;\n}"];
+    setWay2_check_path [label="if (map[i][j] == 0) {\n    map[i][j] = 2;\n}"];
+    setWay2_up [label="if (setWay2(map, i - 1, j)) {\n    return true;\n}"];
+    setWay2_right [label="else if (setWay2(map, i, j + 1)) {\n    return true;\n}"];
+    setWay2_down [label="else if (setWay2(map, i + 1, j)) {\n    return true;\n}"];
+    setWay2_left [label="else if (setWay2(map, i, j - 1)) {\n    return true;\n}"];
+    setWay2_dead_end [label="map[i][j] = 3;\nreturn false;"];
+    setWay2_return_false [label="return false;"];
+
+    // Control flow edges
+    entry -> init_map;
+    init_map -> init_walls_loop1;
+    init_walls_loop1 -> init_walls_loop2;
+    init_walls_loop2 -> set_obstacle;
+    set_obstacle -> print_map;
+    print_map -> clone_map;
+    clone_map -> setWay_call;
+    setWay_call -> setWay2_call;
+    setWay2_call -> print_map1;
+    print_map1 -> print_map2;
+
+    setWay_call -> setWay_entry;
+    setWay_entry -> setWay_end_condition;
+    setWay_end_condition -> setWay_check_path [style=dashed];
+    setWay_check_path -> setWay_down [style=dashed];
+    setWay_down -> setWay_right [style=dashed];
+    setWay_right -> setWay_up [style=dashed];
+    setWay_up -> setWay_left [style=dashed];
+    setWay_left -> setWay_dead_end [style=dashed];
+    setWay_dead_end -> setWay_return_false;
+    setWay_check_path -> setWay_return_false [style=dashed];
+
+    setWay2_call -> setWay2_entry;
+    setWay2_entry -> setWay2_end_condition;
+    setWay2_end_condition -> setWay2_check_path [style=dashed];
+    setWay2_check_path -> setWay2_up [style=dashed];
+    setWay2_up -> setWay2_right [style=dashed];
+    setWay2_right -> setWay2_down [style=dashed];
+    setWay2_down -> setWay2_left [style=dashed];
+    setWay2_left -> setWay2_dead_end [style=dashed];
+    setWay2_dead_end -> setWay2_return_false;
+    setWay2_check_path -> setWay2_return_false [style=dashed];
+}

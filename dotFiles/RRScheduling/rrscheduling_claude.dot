@@ -1,0 +1,75 @@
+digraph RRScheduling {
+    node [shape=rectangle];
+
+    // Main method
+    start [label="Start"];
+    constructor [label="Constructor"];
+    scheduleProcesses [label="scheduleProcesses()"];
+    evaluateTurnAroundTime [label="evaluateTurnAroundTime()"];
+    evaluateWaitingTime [label="evaluateWaitingTime()"];
+    end [label="End"];
+
+    start -> constructor;
+    constructor -> scheduleProcesses;
+    scheduleProcesses -> evaluateTurnAroundTime;
+    evaluateTurnAroundTime -> evaluateWaitingTime;
+    evaluateWaitingTime -> end;
+
+    // evaluateTurnAroundTime method
+    subgraph cluster_evaluateTurnAroundTime {
+        label = "evaluateTurnAroundTime()";
+
+        tat_start [label="Start"];
+        check_size [label="processesNumber == 0?"];
+        initialize [label="Initialize variables"];
+        main_loop [label="while (completed != processesNumber)"];
+        poll_queue [label="poll queue"];
+        check_burst [label="remainingBurstTime[index] == processes.get(index).getBurstTime()?"];
+        update_current_time [label="Update currentTime"];
+        check_quantum [label="remainingBurstTime[index] - quantumTime > 0?"];
+        reduce_burst [label="Reduce burst time"];
+        complete_process [label="Complete process"];
+        check_arrivals [label="Check for new arrivals"];
+        check_remaining [label="remainingBurstTime[index] > 0?"];
+        add_to_queue [label="Add to queue"];
+        check_empty [label="queue.isEmpty()?"];
+        find_next [label="Find next process"];
+        tat_end [label="End"];
+
+        tat_start -> check_size;
+        check_size -> initialize [label="No"];
+        check_size -> tat_end [label="Yes"];
+        initialize -> main_loop;
+        main_loop -> poll_queue;
+        poll_queue -> check_burst;
+        check_burst -> update_current_time;
+        update_current_time -> check_quantum;
+        check_quantum -> reduce_burst [label="Yes"];
+        check_quantum -> complete_process [label="No"];
+        reduce_burst -> check_arrivals;
+        complete_process -> check_arrivals;
+        check_arrivals -> check_remaining;
+        check_remaining -> add_to_queue [label="Yes"];
+        check_remaining -> check_empty [label="No"];
+        add_to_queue -> check_empty;
+        check_empty -> find_next [label="Yes"];
+        check_empty -> main_loop [label="No"];
+        find_next -> main_loop;
+        main_loop -> tat_end [label="completed == processesNumber"];
+    }
+
+    // evaluateWaitingTime method
+    subgraph cluster_evaluateWaitingTime {
+        label = "evaluateWaitingTime()";
+
+        wt_start [label="Start"];
+        wt_loop [label="for each process"];
+        calculate_wt [label="Calculate waiting time"];
+        wt_end [label="End"];
+
+        wt_start -> wt_loop;
+        wt_loop -> calculate_wt;
+        calculate_wt -> wt_loop;
+        wt_loop -> wt_end;
+    }
+}

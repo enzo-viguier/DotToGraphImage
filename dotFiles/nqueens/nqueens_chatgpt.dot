@@ -1,0 +1,58 @@
+digraph NQueens {
+    node [shape=box];
+
+    // Entry and exit points
+    entry [label="Start"];
+    exit [label="End"];
+
+    // Main functions
+    entry -> getNQueensArrangements;
+    getNQueensArrangements -> getSolution [label="call getSolution"];
+
+    // getSolution method
+    getSolution -> checkIfComplete [label="columnIndex == boardSize"];
+    checkIfComplete -> createSolution [label="true"];
+    checkIfComplete -> tryRows [label="false"];
+
+    createSolution -> addSolution [label="solutions.add(sol)"];
+    addSolution -> returnFromSolution [label="return"];
+    returnFromSolution -> tryRows;
+
+    // Loop to try placing queens in each row
+    tryRows -> loopStart [label="for rowIndex in 0..boardSize"];
+    loopStart -> setColumn [label="columns[columnIndex] = rowIndex"];
+    setColumn -> checkPlacement [label="isPlacedCorrectly"];
+    
+    // Check if queen can be placed
+    checkPlacement -> placeNextQueen [label="true"];
+    checkPlacement -> loopEnd [label="false"];
+
+    placeNextQueen -> getSolution [label="getSolution(...)"];
+    loopEnd -> loopStart [label="next rowIndex"];
+
+    // isPlacedCorrectly method
+    isPlacedCorrectly -> loopCheckColumns [label="for i in 0..columnIndex"];
+    loopCheckColumns -> checkRow [label="diff == 0 or columnIndex - i == diff"];
+    checkRow -> returnFalse [label="true"];
+    checkRow -> loopCheckColumns [label="false"];
+
+    returnFalse -> checkPlacement;
+    loopCheckColumns -> returnTrue [label="end of loop"];
+    returnTrue -> checkPlacement;
+
+    // placeQueens method
+    entry -> placeQueens;
+    placeQueens -> getSolution [label="call getSolution"];
+    placeQueens -> printResult [label="if arrangements.isEmpty()"];
+    printResult -> printNoSolution [label="true"];
+    printResult -> printArrangements [label="false"];
+
+    printArrangements -> printEachArrangement;
+    printEachArrangement -> endArrangementLoop [label="for arrangement in arrangements"];
+    endArrangementLoop -> printEachArrangement [label="next arrangement"];
+    endArrangementLoop -> exit;
+
+    // End of the CFG
+    returnFromSolution -> exit;
+    printNoSolution -> exit;
+}

@@ -1,0 +1,32 @@
+digraph CFG {
+    node [shape=box];
+
+    // Entry point
+    entry [label="Entry"];
+
+    // Constructor
+    constructor [label="RRScheduling(List<ProcessDetails> processes, int quantumTime)\nthis.processes = processes;\nthis.quantumTime = quantumTime;"];
+
+    // scheduleProcesses method
+    scheduleProcesses [label="scheduleProcesses()\nevaluateTurnAroundTime();\nevaluateWaitingTime();"];
+
+    // evaluateTurnAroundTime method
+    evaluateTurnAroundTime [label="evaluateTurnAroundTime()\nif (processesNumber == 0) return;\nQueue<Integer> queue = new LinkedList<>();\nqueue.add(0);\nint currentTime = 0;\nint completed = 0;\nint[] mark = new int[processesNumber];\nArrays.fill(mark, 0);\nmark[0] = 1;\nint[] remainingBurstTime = new int[processesNumber];\nfor (int i = 0; i < processesNumber; i++) {\n    remainingBurstTime[i] = processes.get(i).getBurstTime();\n}"];
+
+    // While loop in evaluateTurnAroundTime
+    whileLoop [label="while (completed != processesNumber) {\n    int index = queue.poll();\n    if (remainingBurstTime[index] == processes.get(index).getBurstTime()) {\n        currentTime = Math.max(currentTime, processes.get(index).getArrivalTime());\n    }\n    if (remainingBurstTime[index] - quantumTime > 0) {\n        remainingBurstTime[index] -= quantumTime;\n        currentTime += quantumTime;\n    } else {\n        currentTime += remainingBurstTime[index];\n        processes.get(index).setTurnAroundTimeTime(currentTime - processes.get(index).getArrivalTime());\n        completed++;\n        remainingBurstTime[index] = 0;\n    }\n    for (int i = 1; i < processesNumber; i++) {\n        if (remainingBurstTime[i] > 0 && processes.get(i).getArrivalTime() <= currentTime && mark[i] == 0) {\n            mark[i] = 1;\n            queue.add(i);\n        }\n    }\n    if (remainingBurstTime[index] > 0) {\n        queue.add(index);\n    }\n    if (queue.isEmpty()) {\n        for (int i = 1; i < processesNumber; i++) {\n            if (remainingBurstTime[i] > 0) {\n                mark[i] = 1;\n                queue.add(i);\n                break;\n            }\n        }\n    }\n}"];
+
+    // evaluateWaitingTime method
+    evaluateWaitingTime [label="evaluateWaitingTime()\nfor (final var process : processes) {\n    process.setWaitingTime(process.getTurnAroundTimeTime() - process.getBurstTime());\n}"];
+
+    // Exit point
+    exit [label="Exit"];
+
+    // Control flow edges
+    entry -> constructor;
+    constructor -> scheduleProcesses;
+    scheduleProcesses -> evaluateTurnAroundTime;
+    evaluateTurnAroundTime -> whileLoop;
+    whileLoop -> evaluateWaitingTime;
+    evaluateWaitingTime -> exit;
+}

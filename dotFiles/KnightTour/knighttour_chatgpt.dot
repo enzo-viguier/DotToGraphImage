@@ -1,0 +1,105 @@
+digraph CFG {
+    // Node definitions
+    node [shape=box];
+    
+    // Entry point for main
+    Main_Start [label="main() - Start"];
+    Main_Grid_Init [label="Initialize grid and total"];
+    Main_Random_Row_Col [label="Generate random row and col"];
+    Main_Set_First_Cell [label="grid[row][col] = 1"];
+    Main_Solve_Check [label="if (solve(row, col, 2))"];
+    Print_Result [label="printResult()"];
+    No_Result [label="System.out.println(\"no result\")"];
+
+    // Solve method
+    Solve_Start [label="solve(row, col, count) - Start"];
+    Solve_Termination [label="if (count > total) return true"];
+    Solve_Neighbors [label="List neighbors = neighbors(row, col)"];
+    Solve_Neighbor_Empty_Check [label="if (neighbor.isEmpty() && count != total) return false"];
+    Solve_Neighbor_Sort [label="neighbor.sort(Comparator)"];
+    Solve_Recursive_Call [label="Recursive call: solve() for each neighbor"];
+    Solve_False [label="grid[row][column] = 0"];
+    Solve_Return [label="return false"];
+
+    // Neighbors method
+    Neighbors_Start [label="neighbors(row, column) - Start"];
+    Neighbors_Loop [label="for each move in MOVES"];
+    Neighbors_Check_Grid [label="if grid is empty at (row + y, col + x)"];
+    Neighbors_Count_Call [label="countNeighbors()"];
+    Neighbors_Add_List [label="Add to neighbor list"];
+    Neighbors_Return [label="return neighbor list"];
+
+    // CountNeighbors method
+    CountNeighbors_Start [label="countNeighbors(row, col) - Start"];
+    CountNeighbors_Loop [label="for each move in MOVES"];
+    CountNeighbors_Check [label="if grid at (row + m[1], col + m[0]) == 0"];
+    CountNeighbors_Increment [label="Increment count"];
+    CountNeighbors_Return [label="return count"];
+
+    // OrphanDetected method
+    Orphan_Start [label="orphanDetected(count, row, col) - Start"];
+    Orphan_Check [label="if count < total - 1"];
+    Orphan_Neighbors_Call [label="neighbors(row, col)"];
+    Orphan_Loop [label="for each neighbor"];
+    Orphan_Count_Check [label="if countNeighbors() == 0"];
+    Orphan_Return_True [label="return true"];
+    Orphan_Return_False [label="return false"];
+
+    // PrintResult method
+    Print_Start [label="printResult() - Start"];
+    Print_Loop [label="for each row in grid"];
+    Print_Grid [label="Print grid values"];
+    Print_End [label="printResult() - End"];
+
+    // Main flow
+    Main_Start -> Main_Grid_Init;
+    Main_Grid_Init -> Main_Random_Row_Col;
+    Main_Random_Row_Col -> Main_Set_First_Cell;
+    Main_Set_First_Cell -> Main_Solve_Check;
+    Main_Solve_Check -> Print_Result [label="true"];
+    Main_Solve_Check -> No_Result [label="false"];
+    
+    // Solve flow
+    Solve_Start -> Solve_Termination;
+    Solve_Termination -> Solve_Neighbors [label="false"];
+    Solve_Termination -> Solve_Return [label="true"];
+    Solve_Neighbors -> Solve_Neighbor_Empty_Check;
+    Solve_Neighbor_Empty_Check -> Solve_Return [label="true"];
+    Solve_Neighbor_Empty_Check -> Solve_Neighbor_Sort [label="false"];
+    Solve_Neighbor_Sort -> Solve_Recursive_Call;
+    Solve_Recursive_Call -> Solve_False [label="if orphan or unsolvable"];
+    Solve_Recursive_Call -> Solve_Return [label="true"];
+
+    // Neighbors flow
+    Neighbors_Start -> Neighbors_Loop;
+    Neighbors_Loop -> Neighbors_Check_Grid;
+    Neighbors_Check_Grid -> Neighbors_Count_Call [label="true"];
+    Neighbors_Check_Grid -> Neighbors_Loop [label="false"];
+    Neighbors_Count_Call -> Neighbors_Add_List;
+    Neighbors_Add_List -> Neighbors_Loop;
+    Neighbors_Loop -> Neighbors_Return [label="end of loop"];
+
+    // CountNeighbors flow
+    CountNeighbors_Start -> CountNeighbors_Loop;
+    CountNeighbors_Loop -> CountNeighbors_Check;
+    CountNeighbors_Check -> CountNeighbors_Increment [label="true"];
+    CountNeighbors_Check -> CountNeighbors_Loop [label="false"];
+    CountNeighbors_Increment -> CountNeighbors_Loop;
+    CountNeighbors_Loop -> CountNeighbors_Return [label="end of loop"];
+
+    // OrphanDetected flow
+    Orphan_Start -> Orphan_Check;
+    Orphan_Check -> Orphan_Neighbors_Call [label="true"];
+    Orphan_Check -> Orphan_Return_False [label="false"];
+    Orphan_Neighbors_Call -> Orphan_Loop;
+    Orphan_Loop -> Orphan_Count_Check;
+    Orphan_Count_Check -> Orphan_Return_True [label="true"];
+    Orphan_Count_Check -> Orphan_Loop [label="false"];
+    Orphan_Loop -> Orphan_Return_False [label="end of loop"];
+
+    // PrintResult flow
+    Print_Start -> Print_Loop;
+    Print_Loop -> Print_Grid;
+    Print_Grid -> Print_Loop [label="next row"];
+    Print_Loop -> Print_End [label="end of grid"];
+}

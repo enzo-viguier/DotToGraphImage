@@ -1,0 +1,87 @@
+digraph MazeRecursion {
+    node [shape=box];
+
+    // Main method control flow
+    mazeRecursion_start [label="Start of mazeRecursion()"];
+    map_init [label="Initialize 2D arrays map and map2"];
+    ceiling_floor_wall [label="Set ceiling and floor to 1"];
+    left_right_wall [label="Set left and right wall to 1"];
+    obstacle [label="Set obstacle at map[3][1] and map[3][2]"];
+    print_initial_map [label="Print initial map"];
+    clone_map2 [label="Clone map into map2"];
+    recursive_setWay [label="setWay(map, 1, 1)"];
+    recursive_setWay2 [label="setWay2(map2, 1, 1)"];
+    print_map1 [label="Print map1 after traversal"];
+    print_map2 [label="Print map2 after traversal"];
+    mazeRecursion_end [label="End of mazeRecursion()"];
+
+    mazeRecursion_start -> map_init;
+    map_init -> ceiling_floor_wall;
+    ceiling_floor_wall -> left_right_wall;
+    left_right_wall -> obstacle;
+    obstacle -> print_initial_map;
+    print_initial_map -> clone_map2;
+    clone_map2 -> recursive_setWay;
+    recursive_setWay -> recursive_setWay2;
+    recursive_setWay2 -> print_map1;
+    print_map1 -> print_map2;
+    print_map2 -> mazeRecursion_end;
+
+    // setWay method control flow
+    setWay_start [label="Start of setWay()"];
+    check_exit_condition [label="Check if map[6][5] == 2"];
+    check_current_position [label="Check if map[i][j] == 0"];
+    move_down [label="Try moving down"];
+    move_right [label="Try moving right"];
+    move_up [label="Try moving up"];
+    move_left [label="Try moving left"];
+    backtrack [label="Backtrack and mark current position as 3"];
+    return_true [label="Return true"];
+    return_false [label="Return false"];
+
+    setWay_start -> check_exit_condition;
+    check_exit_condition -> return_true [label="Yes"];
+    check_exit_condition -> check_current_position [label="No"];
+    check_current_position -> return_false [label="Not 0"];
+    check_current_position -> move_down [label="0"];
+    move_down -> return_true [label="Success"];
+    move_down -> move_right [label="Fail"];
+    move_right -> return_true [label="Success"];
+    move_right -> move_up [label="Fail"];
+    move_up -> return_true [label="Success"];
+    move_up -> move_left [label="Fail"];
+    move_left -> return_true [label="Success"];
+    move_left -> backtrack [label="Fail"];
+    backtrack -> return_false;
+
+    // setWay2 method control flow (similar to setWay)
+    setWay2_start [label="Start of setWay2()"];
+    check_exit_condition2 [label="Check if map[6][5] == 2"];
+    check_current_position2 [label="Check if map[i][j] == 0"];
+    move_up2 [label="Try moving up"];
+    move_right2 [label="Try moving right"];
+    move_down2 [label="Try moving down"];
+    move_left2 [label="Try moving left"];
+    backtrack2 [label="Backtrack and mark current position as 3"];
+    return_true2 [label="Return true"];
+    return_false2 [label="Return false"];
+
+    setWay2_start -> check_exit_condition2;
+    check_exit_condition2 -> return_true2 [label="Yes"];
+    check_exit_condition2 -> check_current_position2 [label="No"];
+    check_current_position2 -> return_false2 [label="Not 0"];
+    check_current_position2 -> move_up2 [label="0"];
+    move_up2 -> return_true2 [label="Success"];
+    move_up2 -> move_right2 [label="Fail"];
+    move_right2 -> return_true2 [label="Success"];
+    move_right2 -> move_down2 [label="Fail"];
+    move_down2 -> return_true2 [label="Success"];
+    move_down2 -> move_left2 [label="Fail"];
+    move_left2 -> return_true2 [label="Success"];
+    move_left2 -> backtrack2 [label="Fail"];
+    backtrack2 -> return_false2;
+
+    // Connections between methods
+    recursive_setWay -> setWay_start;
+    recursive_setWay2 -> setWay2_start;
+}

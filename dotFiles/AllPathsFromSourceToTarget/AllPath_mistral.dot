@@ -1,0 +1,32 @@
+digraph CFG {
+    // Entry point
+    node [shape=box];
+    start [label="Start"];
+
+    // Constructor
+    constructor [label="AllPathsFromSourceToTarget(int vertices)\nthis.v = vertices;\ninitAdjList();"];
+    initAdjList [label="initAdjList()\nadjList = new ArrayList[v];\nfor (int i = 0; i < v; i++) {\n    adjList[i] = new ArrayList<>();\n}"];
+
+    // addEdge method
+    addEdge [label="addEdge(int u, int v)\nadjList[u].add(v);"];
+
+    // storeAllPaths method
+    storeAllPaths [label="storeAllPaths(int s, int d)\nboolean[] isVisited = new boolean[v];\nArrayList<Integer> pathList = new ArrayList<>();\npathList.add(s);\nstoreAllPathsUtil(s, d, isVisited, pathList);"];
+
+    // storeAllPathsUtil method
+    storeAllPathsUtil [label="storeAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList)\nif (u.equals(d)) {\n    nm.add(new ArrayList<>(localPathList));\n    return;\n}\nisVisited[u] = true;\nfor (Integer i : adjList[u]) {\n    if (!isVisited[i]) {\n        localPathList.add(i);\n        storeAllPathsUtil(i, d, isVisited, localPathList);\n        localPathList.remove(i);\n    }\n}\nisVisited[u] = false;"];
+
+    // allPathsFromSourceToTarget method
+    allPathsFromSourceToTarget [label="allPathsFromSourceToTarget(int vertices, int[][] a, int source, int destination)\nAllPathsFromSourceToTarget g = new AllPathsFromSourceToTarget(vertices);\nfor (int[] i : a) {\n    g.addEdge(i[0], i[1]);\n}\ng.storeAllPaths(source, destination);\nreturn nm;"];
+
+    // Control flow edges
+    start -> constructor;
+    constructor -> initAdjList;
+    initAdjList -> addEdge;
+    addEdge -> storeAllPaths;
+    storeAllPaths -> storeAllPathsUtil;
+    storeAllPathsUtil -> allPathsFromSourceToTarget;
+
+    // Self-loops for recursive calls
+    storeAllPathsUtil -> storeAllPathsUtil [style=dashed];
+}

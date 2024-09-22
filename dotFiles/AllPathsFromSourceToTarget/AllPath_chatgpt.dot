@@ -1,0 +1,50 @@
+digraph CFG {
+    node [shape=box];
+
+    // Nodes for method calls
+    "initAdjList()" [label="initAdjList()"];
+    "addEdge()" [label="addEdge(int u, int v)"];
+    "storeAllPaths()" [label="storeAllPaths(int s, int d)"];
+    "storeAllPathsUtil()" [label="storeAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList)"];
+    "allPathsFromSourceToTarget()" [label="allPathsFromSourceToTarget(int vertices, int[][] a, int source, int destination)"];
+
+    // Nodes for AllPathsFromSourceToTarget constructor
+    "AllPathsFromSourceToTarget(int vertices)" [label="AllPathsFromSourceToTarget(int vertices)"];
+    "initAdjList_call" [label="this.initAdjList();"];
+
+    // Nodes for storeAllPathsUtil method
+    "storeAllPathsUtil_isVisitedTrue" [label="isVisited[u] = true;"];
+    "storeAllPathsUtil_isVisitedFalse" [label="isVisited[u] = false;"];
+    "storeAllPathsUtil_if_u_equals_d" [label="if (u.equals(d))"];
+    "storeAllPathsUtil_return" [label="return;"];
+    "storeAllPathsUtil_forLoop" [label="for (Integer i : adjList[u])"];
+    "storeAllPathsUtil_if_not_visited" [label="if (!isVisited[i])"];
+    "storeAllPathsUtil_localPathAdd" [label="localPathList.add(i);"];
+    "storeAllPathsUtil_localPathRemove" [label="localPathList.remove(i);"];
+    "storeAllPathsUtil_recursive_call" [label="storeAllPathsUtil(i, d, isVisited, localPathList);"];
+
+    // Connections for AllPathsFromSourceToTarget constructor
+    "AllPathsFromSourceToTarget(int vertices)" -> "initAdjList_call";
+    "initAdjList_call" -> "initAdjList()";
+
+    // Connections for storeAllPathsUtil method
+    "storeAllPathsUtil()" -> "storeAllPathsUtil_if_u_equals_d";
+    "storeAllPathsUtil_if_u_equals_d" -> "storeAllPathsUtil_return" [label="true"];
+    "storeAllPathsUtil_if_u_equals_d" -> "storeAllPathsUtil_isVisitedTrue" [label="false"];
+    "storeAllPathsUtil_isVisitedTrue" -> "storeAllPathsUtil_forLoop";
+    "storeAllPathsUtil_forLoop" -> "storeAllPathsUtil_if_not_visited";
+    "storeAllPathsUtil_if_not_visited" -> "storeAllPathsUtil_localPathAdd" [label="true"];
+    "storeAllPathsUtil_localPathAdd" -> "storeAllPathsUtil_recursive_call";
+    "storeAllPathsUtil_recursive_call" -> "storeAllPathsUtil_localPathRemove";
+    "storeAllPathsUtil_localPathRemove" -> "storeAllPathsUtil_forLoop";
+    "storeAllPathsUtil_forLoop" -> "storeAllPathsUtil_isVisitedFalse" [label="exit"];
+    "storeAllPathsUtil_isVisitedFalse" -> "storeAllPathsUtil_return";
+
+    // Connections for storeAllPaths method
+    "storeAllPaths()" -> "storeAllPathsUtil()";
+
+    // Connections for allPathsFromSourceToTarget method
+    "allPathsFromSourceToTarget()" -> "AllPathsFromSourceToTarget(int vertices)";
+    "allPathsFromSourceToTarget()" -> "addEdge()";
+    "allPathsFromSourceToTarget()" -> "storeAllPaths()";
+}

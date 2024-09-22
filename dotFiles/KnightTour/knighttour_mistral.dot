@@ -1,0 +1,154 @@
+digraph KnightsTour {
+    node [shape=box];
+
+    // Entry point
+    start [label="Start"];
+
+    // Main method
+    main [label="main\n(String[] args)"];
+    initGrid [label="grid = new int[BASE][BASE];\ntotal = (BASE - 4) * (BASE - 4);"];
+    initLoop1 [label="for (int r = 0; r < BASE; r++) {"];
+    initLoop2 [label="for (int c = 0; c < BASE; c++) {"];
+    initCondition [label="if (r < 2 || r > BASE - 3 || c < 2 || c > BASE - 3) {"];
+    initAssign [label="grid[r][c] = -1;"];
+    initEndLoop2 [label="}"];
+    initEndLoop1 [label="}"];
+    initRowCol [label="int row = 2 + (int) (Math.random() * (BASE - 4));\nint col = 2 + (int) (Math.random() * (BASE - 4));"];
+    initFirstMove [label="grid[row][col] = 1;"];
+    solveCall [label="if (solve(row, col, 2)) {"];
+    printResult [label="printResult();"];
+    noResult [label="System.out.println(\"no result\");"];
+    mainEnd [label="End"];
+
+    // Solve method
+    solve [label="solve\n(int row, int column, int count)"];
+    solveCondition1 [label="if (count > total) {"];
+    solveReturnTrue [label="return true;"];
+    solveNeighbors [label="List<int[]> neighbor = neighbors(row, column);"];
+    solveCondition2 [label="if (neighbor.isEmpty() && count != total) {"];
+    solveReturnFalse1 [label="return false;"];
+    solveSort [label="neighbor.sort(Comparator.comparingInt(a -> a[2]));"];
+    solveLoop [label="for (int[] nb : neighbor) {"];
+    solveAssignRowCol [label="row = nb[0];\ncolumn = nb[1];"];
+    solveAssignGrid [label="grid[row][column] = count;"];
+    solveOrphanCheck [label="if (!orphanDetected(count, row, column) && solve(row, column, count + 1)) {"];
+    solveReturnTrue2 [label="return true;"];
+    solveResetGrid [label="grid[row][column] = 0;"];
+    solveEndLoop [label="}"];
+    solveReturnFalse2 [label="return false;"];
+
+    // Neighbors method
+    neighbors [label="neighbors\n(int row, int column)"];
+    neighborsInit [label="List<int[]> neighbour = new ArrayList<>();"];
+    neighborsLoop [label="for (int[] m : MOVES) {"];
+    neighborsCondition [label="if (grid[row + y][column + x] == 0) {"];
+    neighborsCount [label="int num = countNeighbors(row + y, column + x);"];
+    neighborsAdd [label="neighbour.add(new int[] {row + y, column + x, num});"];
+    neighborsEndLoop [label="}"];
+    neighborsReturn [label="return neighbour;"];
+
+    // CountNeighbors method
+    countNeighbors [label="countNeighbors\n(int row, int column)"];
+    countNeighborsInit [label="int num = 0;"];
+    countNeighborsLoop [label="for (int[] m : MOVES) {"];
+    countNeighborsCondition [label="if (grid[row + m[1]][column + m[0]] == 0) {"];
+    countNeighborsInc [label="num++;"];
+    countNeighborsEndLoop [label="}"];
+    countNeighborsReturn [label="return num;"];
+
+    // OrphanDetected method
+    orphanDetected [label="orphanDetected\n(int count, int row, int column)"];
+    orphanDetectedCondition1 [label="if (count < total - 1) {"];
+    orphanDetectedNeighbors [label="List<int[]> neighbor = neighbors(row, column);"];
+    orphanDetectedLoop [label="for (int[] nb : neighbor) {"];
+    orphanDetectedCondition2 [label="if (countNeighbors(nb[0], nb[1]) == 0) {"];
+    orphanDetectedReturnTrue [label="return true;"];
+    orphanDetectedEndLoop [label="}"];
+    orphanDetectedReturnFalse [label="return false;"];
+
+    // PrintResult method
+    printResultMethod [label="printResult()"];
+    printResultLoop1 [label="for (int[] row : grid) {"];
+    printResultLoop2 [label="for (int i : row) {"];
+    printResultCondition [label="if (i == -1) {"];
+    printResultContinue [label="continue;"];
+    printResultPrint [label="System.out.printf(\"%2d \", i);"];
+    printResultEndLoop2 [label="}"];
+    printResultPrintln [label="System.out.println();"];
+    printResultEndLoop1 [label="}"];
+
+    // Edges
+    start -> main;
+    main -> initGrid;
+    initGrid -> initLoop1;
+    initLoop1 -> initLoop2;
+    initLoop2 -> initCondition;
+    initCondition -> initAssign [label="true"];
+    initAssign -> initEndLoop2;
+    initCondition -> initEndLoop2 [label="false"];
+    initEndLoop2 -> initEndLoop1;
+    initEndLoop1 -> initRowCol;
+    initRowCol -> initFirstMove;
+    initFirstMove -> solveCall;
+    solveCall -> printResult [label="true"];
+    solveCall -> noResult [label="false"];
+    printResult -> mainEnd;
+    noResult -> mainEnd;
+
+    solve -> solveCondition1;
+    solveCondition1 -> solveReturnTrue [label="true"];
+    solveCondition1 -> solveNeighbors [label="false"];
+    solveNeighbors -> solveCondition2;
+    solveCondition2 -> solveReturnFalse1 [label="true"];
+    solveCondition2 -> solveSort [label="false"];
+    solveSort -> solveLoop;
+    solveLoop -> solveAssignRowCol;
+    solveAssignRowCol -> solveAssignGrid;
+    solveAssignGrid -> solveOrphanCheck;
+    solveOrphanCheck -> solveReturnTrue2 [label="true"];
+    solveOrphanCheck -> solveResetGrid [label="false"];
+    solveResetGrid -> solveEndLoop;
+    solveEndLoop -> solveLoop [label="true"];
+    solveEndLoop -> solveReturnFalse2 [label="false"];
+
+    neighbors -> neighborsInit;
+    neighborsInit -> neighborsLoop;
+    neighborsLoop -> neighborsCondition;
+    neighborsCondition -> neighborsCount [label="true"];
+    neighborsCount -> neighborsAdd;
+    neighborsAdd -> neighborsEndLoop;
+    neighborsCondition -> neighborsEndLoop [label="false"];
+    neighborsEndLoop -> neighborsLoop [label="true"];
+    neighborsEndLoop -> neighborsReturn [label="false"];
+
+    countNeighbors -> countNeighborsInit;
+    countNeighborsInit -> countNeighborsLoop;
+    countNeighborsLoop -> countNeighborsCondition;
+    countNeighborsCondition -> countNeighborsInc [label="true"];
+    countNeighborsInc -> countNeighborsEndLoop;
+    countNeighborsCondition -> countNeighborsEndLoop [label="false"];
+    countNeighborsEndLoop -> countNeighborsLoop [label="true"];
+    countNeighborsEndLoop -> countNeighborsReturn [label="false"];
+
+    orphanDetected -> orphanDetectedCondition1;
+    orphanDetectedCondition1 -> orphanDetectedNeighbors [label="true"];
+    orphanDetectedNeighbors -> orphanDetectedLoop;
+    orphanDetectedLoop -> orphanDetectedCondition2;
+    orphanDetectedCondition2 -> orphanDetectedReturnTrue [label="true"];
+    orphanDetectedCondition2 -> orphanDetectedEndLoop [label="false"];
+    orphanDetectedEndLoop -> orphanDetectedLoop [label="true"];
+    orphanDetectedEndLoop -> orphanDetectedReturnFalse [label="false"];
+    orphanDetectedCondition1 -> orphanDetectedReturnFalse [label="false"];
+
+    printResultMethod -> printResultLoop1;
+    printResultLoop1 -> printResultLoop2;
+    printResultLoop2 -> printResultCondition;
+    printResultCondition -> printResultContinue [label="true"];
+    printResultContinue -> printResultEndLoop2;
+    printResultCondition -> printResultPrint [label="false"];
+    printResultPrint -> printResultEndLoop2;
+    printResultEndLoop2 -> printResultPrintln;
+    printResultPrintln -> printResultEndLoop1;
+    printResultEndLoop1 -> printResultLoop1 [label="true"];
+    printResultEndLoop1 -> mainEnd [label="false"];
+}

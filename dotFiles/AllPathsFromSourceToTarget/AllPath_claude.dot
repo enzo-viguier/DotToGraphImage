@@ -1,0 +1,109 @@
+digraph AllPathsFromSourceToTarget {
+    // Main nodes
+    node [shape=rectangle];
+    start [label="Start"];
+    constructor [label="Constructor"];
+    initAdjList [label="initAdjList()"];
+    addEdge [label="addEdge(u, v)"];
+    storeAllPaths [label="storeAllPaths(s, d)"];
+    storeAllPathsUtil [label="storeAllPathsUtil(u, d, isVisited, localPathList)"];
+    allPathsFromSourceToTarget [label="allPathsFromSourceToTarget(vertices, a, source, destination)"];
+    end [label="End"];
+
+    // Control flow
+    start -> constructor;
+    constructor -> initAdjList;
+    initAdjList -> addEdge;
+    addEdge -> storeAllPaths;
+    storeAllPaths -> storeAllPathsUtil;
+    storeAllPathsUtil -> storeAllPathsUtil [label="recursive call"];
+    allPathsFromSourceToTarget -> constructor;
+    allPathsFromSourceToTarget -> addEdge [label="for loop"];
+    allPathsFromSourceToTarget -> storeAllPaths;
+    allPathsFromSourceToTarget -> end;
+
+    // Subgraph for constructor
+    subgraph cluster_constructor {
+        label = "Constructor";
+        constructor_start [label="Start Constructor"];
+        constructor_init [label="Initialize v"];
+        constructor_call_initAdjList [label="Call initAdjList()"];
+        constructor_end [label="End Constructor"];
+
+        constructor_start -> constructor_init -> constructor_call_initAdjList -> constructor_end;
+    }
+
+    // Subgraph for initAdjList
+    subgraph cluster_initAdjList {
+        label = "initAdjList()";
+        initAdjList_start [label="Start initAdjList"];
+        initAdjList_create [label="Create adjList"];
+        initAdjList_loop [label="For loop"];
+        initAdjList_end [label="End initAdjList"];
+
+        initAdjList_start -> initAdjList_create -> initAdjList_loop -> initAdjList_end;
+        initAdjList_loop -> initAdjList_loop [label="i++"];
+    }
+
+    // Subgraph for addEdge
+    subgraph cluster_addEdge {
+        label = "addEdge(u, v)";
+        addEdge_start [label="Start addEdge"];
+        addEdge_add [label="Add v to adjList[u]"];
+        addEdge_end [label="End addEdge"];
+
+        addEdge_start -> addEdge_add -> addEdge_end;
+    }
+
+    // Subgraph for storeAllPaths
+    subgraph cluster_storeAllPaths {
+        label = "storeAllPaths(s, d)";
+        storeAllPaths_start [label="Start storeAllPaths"];
+        storeAllPaths_init [label="Initialize isVisited and pathList"];
+        storeAllPaths_add [label="Add s to pathList"];
+        storeAllPaths_call [label="Call storeAllPathsUtil"];
+        storeAllPaths_end [label="End storeAllPaths"];
+
+        storeAllPaths_start -> storeAllPaths_init -> storeAllPaths_add -> storeAllPaths_call -> storeAllPaths_end;
+    }
+
+    // Subgraph for storeAllPathsUtil
+    subgraph cluster_storeAllPathsUtil {
+        label = "storeAllPathsUtil(u, d, isVisited, localPathList)";
+        storeAllPathsUtil_start [label="Start storeAllPathsUtil"];
+        storeAllPathsUtil_check [label="u == d?"];
+        storeAllPathsUtil_add [label="Add path to nm"];
+        storeAllPathsUtil_mark [label="Mark u as visited"];
+        storeAllPathsUtil_loop [label="For each i in adjList[u]"];
+        storeAllPathsUtil_recursive [label="Recursive call"];
+        storeAllPathsUtil_unmark [label="Unmark u"];
+        storeAllPathsUtil_end [label="End storeAllPathsUtil"];
+
+        storeAllPathsUtil_start -> storeAllPathsUtil_check;
+        storeAllPathsUtil_check -> storeAllPathsUtil_add [label="Yes"];
+        storeAllPathsUtil_check -> storeAllPathsUtil_mark [label="No"];
+        storeAllPathsUtil_mark -> storeAllPathsUtil_loop;
+        storeAllPathsUtil_loop -> storeAllPathsUtil_recursive [label="!isVisited[i]"];
+        storeAllPathsUtil_recursive -> storeAllPathsUtil_loop;
+        storeAllPathsUtil_loop -> storeAllPathsUtil_unmark;
+        storeAllPathsUtil_unmark -> storeAllPathsUtil_end;
+        storeAllPathsUtil_add -> storeAllPathsUtil_end;
+    }
+
+    // Subgraph for allPathsFromSourceToTarget
+    subgraph cluster_allPathsFromSourceToTarget {
+        label = "allPathsFromSourceToTarget(vertices, a, source, destination)";
+        allPaths_start [label="Start allPathsFromSourceToTarget"];
+        allPaths_create [label="Create graph g"];
+        allPaths_loop [label="For each edge in a"];
+        allPaths_addEdge [label="Call g.addEdge"];
+        allPaths_store [label="Call g.storeAllPaths"];
+        allPaths_return [label="Return nm"];
+        allPaths_end [label="End allPathsFromSourceToTarget"];
+
+        allPaths_start -> allPaths_create -> allPaths_loop;
+        allPaths_loop -> allPaths_addEdge -> allPaths_loop [label="next edge"];
+        allPaths_loop -> allPaths_store [label="done"];
+        allPaths_store -> allPaths_return -> allPaths_end;
+    }
+}

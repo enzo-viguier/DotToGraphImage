@@ -1,0 +1,74 @@
+digraph RRSchedulingCFG {
+    node [shape=box];
+
+    // Method: scheduleProcesses
+    scheduleProcesses_start [label="scheduleProcesses(): Start"];
+    scheduleProcesses_evaluateTAT [label="evaluateTurnAroundTime()"];
+    scheduleProcesses_evaluateWT [label="evaluateWaitingTime()"];
+    scheduleProcesses_end [label="scheduleProcesses(): End"];
+    
+    scheduleProcesses_start -> scheduleProcesses_evaluateTAT;
+    scheduleProcesses_evaluateTAT -> scheduleProcesses_evaluateWT;
+    scheduleProcesses_evaluateWT -> scheduleProcesses_end;
+
+    // Method: evaluateTurnAroundTime
+    evaluateTAT_start [label="evaluateTurnAroundTime(): Start"];
+    evaluateTAT_checkProcessesNumber [label="processesNumber == 0"];
+    evaluateTAT_return [label="Return"];
+    evaluateTAT_initQueue [label="Initialize queue, currentTime, completed, mark[]"];
+    evaluateTAT_initRemainingBurstTime [label="Initialize remainingBurstTime[]"];
+    evaluateTAT_whileCondition [label="completed != processesNumber"];
+    evaluateTAT_indexPoll [label="index = queue.poll()"];
+    evaluateTAT_checkBurstTime [label="remainingBurstTime[index] == processes.get(index).getBurstTime()"];
+    evaluateTAT_setCurrentTime [label="Set currentTime"];
+    evaluateTAT_remainingBurstGreaterQuantum [label="remainingBurstTime[index] - quantumTime > 0"];
+    evaluateTAT_updateRemainingBurst [label="Update remainingBurstTime[index] and currentTime"];
+    evaluateTAT_processCompleted [label="Process Completed, Update TAT and remainingBurstTime[index]"];
+    evaluateTAT_insertNewProcesses [label="Insert newly arrived processes"];
+    evaluateTAT_reinsertCurrentProcess [label="Reinsert current process into queue"];
+    evaluateTAT_queueEmpty [label="Queue is empty"];
+    evaluateTAT_pickFirstProcess [label="Pick first non-completed process"];
+    evaluateTAT_end [label="evaluateTurnAroundTime(): End"];
+
+    // Evaluate Turnaround Time Flow
+    evaluateTAT_start -> evaluateTAT_checkProcessesNumber;
+    evaluateTAT_checkProcessesNumber -> evaluateTAT_return [label="True"];
+    evaluateTAT_checkProcessesNumber -> evaluateTAT_initQueue [label="False"];
+    evaluateTAT_initQueue -> evaluateTAT_initRemainingBurstTime;
+    evaluateTAT_initRemainingBurstTime -> evaluateTAT_whileCondition;
+    evaluateTAT_whileCondition -> evaluateTAT_end [label="False"];
+    evaluateTAT_whileCondition -> evaluateTAT_indexPoll [label="True"];
+    evaluateTAT_indexPoll -> evaluateTAT_checkBurstTime;
+    evaluateTAT_checkBurstTime -> evaluateTAT_setCurrentTime [label="True"];
+    evaluateTAT_checkBurstTime -> evaluateTAT_remainingBurstGreaterQuantum [label="False"];
+    evaluateTAT_setCurrentTime -> evaluateTAT_remainingBurstGreaterQuantum;
+    evaluateTAT_remainingBurstGreaterQuantum -> evaluateTAT_updateRemainingBurst [label="True"];
+    evaluateTAT_remainingBurstGreaterQuantum -> evaluateTAT_processCompleted [label="False"];
+    evaluateTAT_updateRemainingBurst -> evaluateTAT_insertNewProcesses;
+    evaluateTAT_processCompleted -> evaluateTAT_insertNewProcesses;
+    evaluateTAT_insertNewProcesses -> evaluateTAT_reinsertCurrentProcess;
+    evaluateTAT_reinsertCurrentProcess -> evaluateTAT_whileCondition;
+    evaluateTAT_reinsertCurrentProcess -> evaluateTAT_queueEmpty;
+    evaluateTAT_queueEmpty -> evaluateTAT_pickFirstProcess [label="True"];
+    evaluateTAT_queueEmpty -> evaluateTAT_whileCondition [label="False"];
+    evaluateTAT_pickFirstProcess -> evaluateTAT_whileCondition;
+
+    // Method: evaluateWaitingTime
+    evaluateWT_start [label="evaluateWaitingTime(): Start"];
+    evaluateWT_loop [label="For each process in processes"];
+    evaluateWT_setWT [label="Set waitingTime"];
+    evaluateWT_end [label="evaluateWaitingTime(): End"];
+
+    evaluateWT_start -> evaluateWT_loop;
+    evaluateWT_loop -> evaluateWT_setWT;
+    evaluateWT_setWT -> evaluateWT_loop;
+    evaluateWT_loop -> evaluateWT_end;
+
+    // Connect evaluateTurnAroundTime to scheduleProcesses
+    scheduleProcesses_evaluateTAT -> evaluateTAT_start;
+    evaluateTAT_end -> scheduleProcesses_evaluateWT;
+
+    // Connect evaluateWaitingTime to scheduleProcesses
+    scheduleProcesses_evaluateWT -> evaluateWT_start;
+    evaluateWT_end -> scheduleProcesses_end;
+}

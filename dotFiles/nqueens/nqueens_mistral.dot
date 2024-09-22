@@ -1,0 +1,76 @@
+digraph CFG {
+    node [shape=box];
+
+    // Entry point
+    start [label="Start"];
+
+    // Methods
+    getNQueensArrangements [label="getNQueensArrangements(int queens)"];
+    placeQueens [label="placeQueens(final int queens)"];
+    getSolution [label="getSolution(int boardSize, List<List<String>> solutions, int[] columns, int columnIndex)"];
+    isPlacedCorrectly [label="isPlacedCorrectly(int[] columns, int rowIndex, int columnIndex)"];
+
+    // Control flow for getNQueensArrangements
+    getNQueensArrangements_init [label="List<List<String>> arrangements = new ArrayList<>();"];
+    getNQueensArrangements_call_getSolution [label="getSolution(queens, arrangements, new int[queens], 0);"];
+    getNQueensArrangements_return [label="return arrangements;"];
+
+    // Control flow for placeQueens
+    placeQueens_init [label="List<List<String>> arrangements = new ArrayList<List<String>>();"];
+    placeQueens_call_getSolution [label="getSolution(queens, arrangements, new int[queens], 0);"];
+    placeQueens_check_arrangements [label="if (arrangements.isEmpty())"];
+    placeQueens_print_no_way [label="System.out.println(\"There is no way to place \" + queens + \" queens on board of size \" + queens + \"x\" + queens);"];
+    placeQueens_print_arrangement [label="System.out.println(\"Arrangement for placing \" + queens + \" queens\");"];
+    placeQueens_print_arrangements [label="for (List<String> arrangement : arrangements) { arrangement.forEach(System.out::println); System.out.println(); }"];
+
+    // Control flow for getSolution
+    getSolution_check_columnIndex [label="if (columnIndex == boardSize)"];
+    getSolution_all_queens_placed [label="List<String> sol = new ArrayList<String>();"];
+    getSolution_build_solution [label="for (int i = 0; i < boardSize; i++) { StringBuilder sb = new StringBuilder(); for (int j = 0; j < boardSize; j++) { sb.append(j == columns[i] ? \"Q\" : \".\"); } sol.add(sb.toString()); }"];
+    getSolution_add_solution [label="solutions.add(sol);"];
+    getSolution_return [label="return;"];
+    getSolution_loop_rowIndex [label="for (int rowIndex = 0; rowIndex < boardSize; rowIndex++)"];
+    getSolution_set_columns [label="columns[columnIndex] = rowIndex;"];
+    getSolution_check_isPlacedCorrectly [label="if (isPlacedCorrectly(columns, rowIndex, columnIndex))"];
+    getSolution_recursive_call [label="getSolution(boardSize, solutions, columns, columnIndex + 1);"];
+
+    // Control flow for isPlacedCorrectly
+    isPlacedCorrectly_loop_i [label="for (int i = 0; i < columnIndex; i++)"];
+    isPlacedCorrectly_check_diff [label="int diff = Math.abs(columns[i] - rowIndex);"];
+    isPlacedCorrectly_check_conditions [label="if (diff == 0 || columnIndex - i == diff)"];
+    isPlacedCorrectly_return_false [label="return false;"];
+    isPlacedCorrectly_return_true [label="return true;"];
+
+    // Edges
+    start -> getNQueensArrangements;
+    start -> placeQueens;
+
+    getNQueensArrangements -> getNQueensArrangements_init;
+    getNQueensArrangements_init -> getNQueensArrangements_call_getSolution;
+    getNQueensArrangements_call_getSolution -> getNQueensArrangements_return;
+
+    placeQueens -> placeQueens_init;
+    placeQueens_init -> placeQueens_call_getSolution;
+    placeQueens_call_getSolution -> placeQueens_check_arrangements;
+    placeQueens_check_arrangements -> placeQueens_print_no_way [style=dashed];
+    placeQueens_check_arrangements -> placeQueens_print_arrangement [style=dashed];
+    placeQueens_print_no_way -> placeQueens_print_arrangements;
+    placeQueens_print_arrangement -> placeQueens_print_arrangements;
+
+    getSolution -> getSolution_check_columnIndex;
+    getSolution_check_columnIndex -> getSolution_all_queens_placed [style=dashed];
+    getSolution_check_columnIndex -> getSolution_loop_rowIndex [style=dashed];
+    getSolution_all_queens_placed -> getSolution_build_solution;
+    getSolution_build_solution -> getSolution_add_solution;
+    getSolution_add_solution -> getSolution_return;
+    getSolution_loop_rowIndex -> getSolution_set_columns;
+    getSolution_set_columns -> getSolution_check_isPlacedCorrectly;
+    getSolution_check_isPlacedCorrectly -> getSolution_recursive_call [style=dashed];
+    getSolution_recursive_call -> getSolution_loop_rowIndex;
+
+    isPlacedCorrectly -> isPlacedCorrectly_loop_i;
+    isPlacedCorrectly_loop_i -> isPlacedCorrectly_check_diff;
+    isPlacedCorrectly_check_diff -> isPlacedCorrectly_check_conditions;
+    isPlacedCorrectly_check_conditions -> isPlacedCorrectly_return_false [style=dashed];
+    isPlacedCorrectly_check_conditions -> isPlacedCorrectly_return_true [style=dashed];
+}

@@ -1,0 +1,76 @@
+digraph CFG {
+    node [shape=box];
+
+    // Entry point
+    start [label="start"];
+
+    // exist method
+    exist_entry [label="exist(char[][] board, String word)"];
+    exist_init [label="this.board = board;\nthis.word = word;"];
+    exist_loop1_start [label="for (int i = 0; i < board.length; ++i)"];
+    exist_loop1_cond [label="i < board.length"];
+    exist_loop1_body [label="for (int j = 0; j < board[0].length; ++j)"];
+    exist_loop2_cond [label="j < board[0].length"];
+    exist_if_cond [label="if (board[i][j] == word.charAt(0))"];
+    exist_visited_init [label="visited = new boolean[board.length][board[0].length];"];
+    exist_dfs_call [label="boolean exists = doDFS(i, j, 1);"];
+    exist_if_exists [label="if (exists)"];
+    exist_return_true [label="return true;"];
+    exist_return_false [label="return false;"];
+
+    // doDFS method
+    doDFS_entry [label="doDFS(int x, int y, int nextIdx)"];
+    doDFS_visited [label="visited[x][y] = true;"];
+    doDFS_if_nextIdx [label="if (nextIdx == word.length())"];
+    doDFS_return_true [label="return true;"];
+    doDFS_loop_start [label="for (int i = 0; i < 4; ++i)"];
+    doDFS_loop_cond [label="i < 4"];
+    doDFS_xi_yi [label="int xi = x + dx[i];\nint yi = y + dy[i];"];
+    doDFS_if_valid [label="if (isValid(xi, yi) && board[xi][yi] == word.charAt(nextIdx) && !visited[xi][yi])"];
+    doDFS_recursive_call [label="boolean exists = doDFS(xi, yi, nextIdx + 1);"];
+    doDFS_if_exists [label="if (exists)"];
+    doDFS_return_exists [label="return true;"];
+    doDFS_visited_false [label="visited[x][y] = false;"];
+    doDFS_return_false [label="return false;"];
+
+    // isValid method
+    isValid_entry [label="isValid(int x, int y)"];
+    isValid_return [label="return x >= 0 && x < board.length && y >= 0 && y < board[0].length;"];
+
+    // Control flow
+    start -> exist_entry;
+    exist_entry -> exist_init;
+    exist_init -> exist_loop1_start;
+    exist_loop1_start -> exist_loop1_cond;
+    exist_loop1_cond -> exist_loop1_body [label="true"];
+    exist_loop1_cond -> exist_return_false [label="false"];
+    exist_loop1_body -> exist_loop2_cond;
+    exist_loop2_cond -> exist_if_cond [label="true"];
+    exist_loop2_cond -> exist_loop1_start [label="false"];
+    exist_if_cond -> exist_visited_init [label="true"];
+    exist_if_cond -> exist_loop1_body [label="false"];
+    exist_visited_init -> exist_dfs_call;
+    exist_dfs_call -> exist_if_exists;
+    exist_if_exists -> exist_return_true [label="true"];
+    exist_if_exists -> exist_loop1_body [label="false"];
+
+    exist_dfs_call -> doDFS_entry;
+    doDFS_entry -> doDFS_visited;
+    doDFS_visited -> doDFS_if_nextIdx;
+    doDFS_if_nextIdx -> doDFS_return_true [label="true"];
+    doDFS_if_nextIdx -> doDFS_loop_start [label="false"];
+    doDFS_loop_start -> doDFS_loop_cond;
+    doDFS_loop_cond -> doDFS_xi_yi [label="true"];
+    doDFS_loop_cond -> doDFS_visited_false [label="false"];
+    doDFS_xi_yi -> doDFS_if_valid;
+    doDFS_if_valid -> doDFS_recursive_call [label="true"];
+    doDFS_if_valid -> doDFS_loop_start [label="false"];
+    doDFS_recursive_call -> doDFS_if_exists;
+    doDFS_if_exists -> doDFS_return_exists [label="true"];
+    doDFS_if_exists -> doDFS_loop_start [label="false"];
+    doDFS_visited_false -> doDFS_return_false;
+
+    doDFS_if_valid -> isValid_entry;
+    isValid_entry -> isValid_return;
+    isValid_return -> doDFS_if_valid;
+}

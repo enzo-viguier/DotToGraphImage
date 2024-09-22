@@ -1,0 +1,63 @@
+digraph MazeRecursion {
+    // Main method
+    start [shape=ellipse, label="Start mazeRecursion()"];
+    init_maps [shape=box, label="Initialize map and map2"];
+    set_walls [shape=box, label="Set walls in map"];
+    set_obstacles [shape=box, label="Set obstacles in map"];
+    print_initial_map [shape=box, label="Print initial map"];
+    clone_map [shape=box, label="Clone map to map2"];
+    call_setWay [shape=box, label="Call setWay(map, 1, 1)"];
+    call_setWay2 [shape=box, label="Call setWay2(map2, 1, 1)"];
+    print_final_map1 [shape=box, label="Print final map1"];
+    print_final_map2 [shape=box, label="Print final map2"];
+    end [shape=ellipse, label="End mazeRecursion()"];
+
+    start -> init_maps -> set_walls -> set_obstacles -> print_initial_map -> clone_map ->
+    call_setWay -> call_setWay2 -> print_final_map1 -> print_final_map2 -> end;
+
+    // setWay method
+    setWay_start [shape=ellipse, label="Start setWay(map, i, j)"];
+    check_end [shape=diamond, label="map[6][5] == 2?"];
+    check_unvisited [shape=diamond, label="map[i][j] == 0?"];
+    mark_visited [shape=box, label="Mark as visited (map[i][j] = 2)"];
+    go_down [shape=box, label="Recurse: setWay(map, i+1, j)"];
+    go_right [shape=box, label="Recurse: setWay(map, i, j+1)"];
+    go_up [shape=box, label="Recurse: setWay(map, i-1, j)"];
+    go_left [shape=box, label="Recurse: setWay(map, i, j-1)"];
+    mark_dead_end [shape=box, label="Mark as dead end (map[i][j] = 3)"];
+    setWay_return_true [shape=ellipse, label="Return true"];
+    setWay_return_false [shape=ellipse, label="Return false"];
+
+    setWay_start -> check_end;
+    check_end -> setWay_return_true [label="Yes"];
+    check_end -> check_unvisited [label="No"];
+    check_unvisited -> mark_visited [label="Yes"];
+    mark_visited -> go_down -> go_right -> go_up -> go_left;
+    go_left -> mark_dead_end [label="All failed"];
+    mark_dead_end -> setWay_return_false;
+    check_unvisited -> setWay_return_false [label="No"];
+    {go_down, go_right, go_up, go_left} -> setWay_return_true [label="Success"];
+
+    // setWay2 method (similar structure to setWay, but different order)
+    setWay2_start [shape=ellipse, label="Start setWay2(map, i, j)"];
+    check_end2 [shape=diamond, label="map[6][5] == 2?"];
+    check_unvisited2 [shape=diamond, label="map[i][j] == 0?"];
+    mark_visited2 [shape=box, label="Mark as visited (map[i][j] = 2)"];
+    go_up2 [shape=box, label="Recurse: setWay2(map, i-1, j)"];
+    go_right2 [shape=box, label="Recurse: setWay2(map, i, j+1)"];
+    go_down2 [shape=box, label="Recurse: setWay2(map, i+1, j)"];
+    go_left2 [shape=box, label="Recurse: setWay2(map, i, j-1)"];
+    mark_dead_end2 [shape=box, label="Mark as dead end (map[i][j] = 3)"];
+    setWay2_return_true [shape=ellipse, label="Return true"];
+    setWay2_return_false [shape=ellipse, label="Return false"];
+
+    setWay2_start -> check_end2;
+    check_end2 -> setWay2_return_true [label="Yes"];
+    check_end2 -> check_unvisited2 [label="No"];
+    check_unvisited2 -> mark_visited2 [label="Yes"];
+    mark_visited2 -> go_up2 -> go_right2 -> go_down2 -> go_left2;
+    go_left2 -> mark_dead_end2 [label="All failed"];
+    mark_dead_end2 -> setWay2_return_false;
+    check_unvisited2 -> setWay2_return_false [label="No"];
+    {go_up2, go_right2, go_down2, go_left2} -> setWay2_return_true [label="Success"];
+}

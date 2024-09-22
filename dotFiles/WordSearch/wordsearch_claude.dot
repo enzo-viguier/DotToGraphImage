@@ -1,0 +1,67 @@
+digraph WordSearchCFG {
+    node [shape=rectangle];
+    
+    start [label="Start"];
+    init [label="Initialize variables"];
+    outer_loop [label="Outer loop: i = 0 to board.length"];
+    inner_loop [label="Inner loop: j = 0 to board[0].length"];
+    check_first_char [label="board[i][j] == word.charAt(0)?"];
+    init_visited [label="Initialize visited array"];
+    call_dfs [label="Call doDFS(i, j, 1)"];
+    check_exists [label="exists == true?"];
+    return_true [label="Return true"];
+    next_inner [label="Next j"];
+    next_outer [label="Next i"];
+    return_false [label="Return false"];
+    
+    subgraph cluster_doDFS {
+        label = "doDFS function";
+        dfs_start [label="doDFS start"];
+        set_visited [label="Set visited[x][y] = true"];
+        check_word_length [label="nextIdx == word.length()?"];
+        dfs_loop [label="Loop: i = 0 to 3"];
+        calculate_new_coords [label="Calculate xi, yi"];
+        check_valid [label="isValid(xi, yi)?"];
+        check_char_match [label="board[xi][yi] == word.charAt(nextIdx)?"];
+        check_not_visited [label="!visited[xi][yi]?"];
+        recursive_call [label="Call doDFS(xi, yi, nextIdx + 1)"];
+        check_recursive_result [label="exists == true?"];
+        reset_visited [label="Set visited[x][y] = false"];
+        dfs_return_false [label="Return false"];
+        dfs_return_true [label="Return true"];
+    }
+    
+    start -> init;
+    init -> outer_loop;
+    outer_loop -> inner_loop;
+    inner_loop -> check_first_char;
+    check_first_char -> init_visited [label="Yes"];
+    check_first_char -> next_inner [label="No"];
+    init_visited -> call_dfs;
+    call_dfs -> check_exists;
+    check_exists -> return_true [label="Yes"];
+    check_exists -> next_inner [label="No"];
+    next_inner -> inner_loop;
+    inner_loop -> next_outer [label="j >= board[0].length"];
+    next_outer -> outer_loop;
+    outer_loop -> return_false [label="i >= board.length"];
+    
+    call_dfs -> dfs_start;
+    dfs_start -> set_visited;
+    set_visited -> check_word_length;
+    check_word_length -> dfs_return_true [label="Yes"];
+    check_word_length -> dfs_loop [label="No"];
+    dfs_loop -> calculate_new_coords;
+    calculate_new_coords -> check_valid;
+    check_valid -> check_char_match [label="Yes"];
+    check_valid -> dfs_loop [label="No"];
+    check_char_match -> check_not_visited [label="Yes"];
+    check_char_match -> dfs_loop [label="No"];
+    check_not_visited -> recursive_call [label="Yes"];
+    check_not_visited -> dfs_loop [label="No"];
+    recursive_call -> check_recursive_result;
+    check_recursive_result -> dfs_return_true [label="Yes"];
+    check_recursive_result -> dfs_loop [label="No"];
+    dfs_loop -> reset_visited [label="i >= 4"];
+    reset_visited -> dfs_return_false;
+}

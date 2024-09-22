@@ -1,0 +1,66 @@
+digraph NQueensControlFlow {
+    node [shape=rectangle];
+    
+    start [label="Start", shape=ellipse];
+    end [label="End", shape=ellipse];
+    
+    // getNQueensArrangements method
+    getNQueensArrangements [label="getNQueensArrangements(queens)"];
+    initArrangements [label="Initialize arrangements"];
+    callGetSolution1 [label="Call getSolution(queens, arrangements, new int[queens], 0)"];
+    returnArrangements [label="Return arrangements"];
+    
+    // placeQueens method
+    placeQueens [label="placeQueens(queens)"];
+    initArrangements2 [label="Initialize arrangements"];
+    callGetSolution2 [label="Call getSolution(queens, arrangements, new int[queens], 0)"];
+    checkArrangements [label="Check if arrangements is empty"];
+    printNoSolution [label="Print: No way to place queens"];
+    printArrangements [label="Print: Arrangements"];
+    
+    // getSolution method
+    getSolution [label="getSolution(boardSize, solutions, columns, columnIndex)"];
+    checkColumnIndex [label="columnIndex == boardSize?"];
+    createSolution [label="Create solution string"];
+    addSolution [label="Add solution to solutions"];
+    loopRows [label="Loop through rows"];
+    setColumn [label="Set columns[columnIndex] = rowIndex"];
+    checkPlacement [label="Call isPlacedCorrectly(columns, rowIndex, columnIndex)"];
+    recursiveCall [label="Recursive call: getSolution(boardSize, solutions, columns, columnIndex + 1)"];
+    
+    // isPlacedCorrectly method
+    isPlacedCorrectly [label="isPlacedCorrectly(columns, rowIndex, columnIndex)"];
+    loopPrevColumns [label="Loop through previous columns"];
+    checkAttack [label="Check if queens attack"];
+    returnTrue [label="Return true"];
+    returnFalse [label="Return false"];
+    
+    // Control flow
+    start -> getNQueensArrangements;
+    getNQueensArrangements -> initArrangements -> callGetSolution1 -> returnArrangements -> end;
+    
+    start -> placeQueens;
+    placeQueens -> initArrangements2 -> callGetSolution2 -> checkArrangements;
+    checkArrangements -> printNoSolution [label="Yes"];
+    checkArrangements -> printArrangements [label="No"];
+    printNoSolution -> end;
+    printArrangements -> end;
+    
+    callGetSolution1 -> getSolution;
+    callGetSolution2 -> getSolution;
+    getSolution -> checkColumnIndex;
+    checkColumnIndex -> createSolution [label="Yes"];
+    createSolution -> addSolution -> returnArrangements;
+    checkColumnIndex -> loopRows [label="No"];
+    loopRows -> setColumn -> checkPlacement;
+    checkPlacement -> recursiveCall [label="Yes"];
+    recursiveCall -> getSolution;
+    checkPlacement -> loopRows [label="No"];
+    loopRows -> returnArrangements [label="End of loop"];
+    
+    checkPlacement -> isPlacedCorrectly;
+    isPlacedCorrectly -> loopPrevColumns -> checkAttack;
+    checkAttack -> returnFalse [label="Attack found"];
+    checkAttack -> loopPrevColumns [label="No attack, continue"];
+    loopPrevColumns -> returnTrue [label="End of loop"];
+}
