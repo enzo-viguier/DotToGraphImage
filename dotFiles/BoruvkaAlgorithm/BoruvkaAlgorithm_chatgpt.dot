@@ -1,0 +1,67 @@
+digraph G {
+    // Nodes
+    node [shape=box];
+    
+    // Main entry point of the algorithm
+    entry [label="BoruvkaAlgorithm.boruvkaMST(Graph)"];
+    
+    // State initialization
+    init_boruvka [label="BoruvkaState boruvkaState = new BoruvkaState(graph)"];
+    
+    // While loop
+    while_check [label="boruvkaState.hasMoreEdgesToAdd()"];
+    compute_cheapest [label="cheapest = boruvkaState.computeCheapestEdges()"];
+    merge [label="boruvkaState.merge(cheapest)"];
+    return_result [label="return boruvkaState.result"];
+
+    // BoruvkaState.merge
+    merge_for_loop [label="for each vertex i"];
+    check_cheapest [label="cheapest[i] != null"];
+    find_components [label="component1 = find(components, cheapest[i].src)\ncomponent2 = find(components, cheapest[i].dest)"];
+    check_components [label="component1 != component2"];
+    add_edge [label="result.add(cheapest[i])"];
+    union_components [label="union(components, component1, component2)"];
+    
+    // BoruvkaState.computeCheapestEdges
+    compute_for_loop [label="for each edge in graph.edges"];
+    find_sets [label="set1 = find(components, edge.src)\nset2 = find(components, edge.dest)"];
+    check_sets [label="set1 != set2"];
+    update_cheapest_set1 [label="cheapest[set1] = edge"];
+    update_cheapest_set2 [label="cheapest[set2] = edge"];
+    
+    // Union-Find operations
+    find [label="find(components, i)"];
+    union [label="union(components, x, y)"];
+    
+    // Control edges
+    entry -> init_boruvka;
+    init_boruvka -> while_check;
+    while_check -> compute_cheapest [label="true"];
+    while_check -> return_result [label="false"];
+    compute_cheapest -> merge;
+    merge -> while_check;
+    
+    // Inside merge
+    merge -> merge_for_loop;
+    merge_for_loop -> check_cheapest;
+    check_cheapest -> find_components [label="true"];
+    check_cheapest -> merge_for_loop [label="false"];
+    find_components -> check_components;
+    check_components -> add_edge [label="true"];
+    check_components -> merge_for_loop [label="false"];
+    add_edge -> union_components;
+    union_components -> merge_for_loop;
+
+    // Inside computeCheapestEdges
+    compute_cheapest -> compute_for_loop;
+    compute_for_loop -> find_sets;
+    find_sets -> check_sets;
+    check_sets -> update_cheapest_set1 [label="true"];
+    check_sets -> compute_for_loop [label="false"];
+    update_cheapest_set1 -> update_cheapest_set2;
+    update_cheapest_set2 -> compute_for_loop;
+
+    // Union-Find operations
+    union_components -> union;
+    union -> find;
+}

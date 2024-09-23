@@ -1,0 +1,50 @@
+digraph BankersAlgorithm {
+    node [shape=box];
+    
+    start [label="Start"];
+    input [label="Input number of processes and resources"];
+    init_arrays [label="Initialize processes, available, max, and allocation arrays"];
+    call_check_safe [label="Call checkSafeSystem()"];
+    end [label="End"];
+
+    subgraph cluster_checkSafeSystem {
+        label = "checkSafeSystem method";
+        
+        init_need [label="Calculate need matrix"];
+        init_work [label="Initialize work and finish arrays"];
+        init_count [label="count = 0"];
+        
+        check_count [label="count < totalProcess", shape=diamond];
+        find_process [label="Find unfinished process m\nwhere Need <= Work", shape=diamond];
+        update_work [label="Update Work\nMark process as finished\nAdd to safe sequence\ncount++"];
+        not_safe [label="System not safe"];
+        
+        print_safe [label="Print safe sequence"];
+        return_true [label="Return true"];
+        return_false [label="Return false"];
+    }
+
+    start -> input;
+    input -> init_arrays;
+    init_arrays -> call_check_safe;
+    call_check_safe -> end;
+
+    call_check_safe -> init_need;
+    init_need -> init_work;
+    init_work -> init_count;
+    init_count -> check_count;
+    
+    check_count -> find_process [label="Yes"];
+    check_count -> print_safe [label="No"];
+    
+    find_process -> update_work [label="Found"];
+    find_process -> not_safe [label="Not found"];
+    
+    update_work -> check_count;
+    
+    not_safe -> return_false;
+    print_safe -> return_true;
+    
+    return_true -> end;
+    return_false -> end;
+}

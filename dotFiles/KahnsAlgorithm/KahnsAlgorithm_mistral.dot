@@ -1,0 +1,40 @@
+digraph CFG {
+    // AdjacencyList class
+    node [shape=box];
+    start -> AdjacencyList_constructor;
+    AdjacencyList_constructor -> AdjacencyList_addEdge;
+    AdjacencyList_addEdge -> AdjacencyList_getAdjacents;
+    AdjacencyList_getAdjacents -> AdjacencyList_getVertices;
+
+    // AdjacencyList constructor
+    AdjacencyList_constructor [label="AdjacencyList()\nadj = new LinkedHashMap<E, ArrayList<E>>()"];
+
+    // addEdge method
+    AdjacencyList_addEdge [label="addEdge(E from, E to)\ntry {\n    adj.get(from).add(to);\n} catch (Exception E) {\n    adj.put(from, new ArrayList<E>());\n    adj.get(from).add(to);\n}\nif (!adj.containsKey(to)) {\n    adj.put(to, new ArrayList<E>());\n}"];
+
+    // getAdjacents method
+    AdjacencyList_getAdjacents [label="getAdjacents(E v)\nreturn adj.get(v);"];
+
+    // getVertices method
+    AdjacencyList_getVertices [label="getVertices()\nreturn adj.keySet();"];
+
+    // TopologicalSort class
+    AdjacencyList_getVertices -> TopologicalSort_constructor;
+    TopologicalSort_constructor -> TopologicalSort_calculateInDegree;
+    TopologicalSort_calculateInDegree -> TopologicalSort_topSortOrder;
+
+    // TopologicalSort constructor
+    TopologicalSort_constructor [label="TopologicalSort(AdjacencyList<E> graph)\nthis.graph = graph;"];
+
+    // calculateInDegree method
+    TopologicalSort_calculateInDegree [label="calculateInDegree()\ninDegree = new HashMap<>();\nfor (E vertex : graph.getVertices()) {\n    if (!inDegree.containsKey(vertex)) {\n        inDegree.put(vertex, 0);\n    }\n    for (E adjacent : graph.getAdjacents(vertex)) {\n        try {\n            inDegree.put(adjacent, inDegree.get(adjacent) + 1);\n        } catch (Exception e) {\n            inDegree.put(adjacent, 1);\n        }\n    }\n}"];
+
+    // topSortOrder method
+    TopologicalSort_topSortOrder [label="topSortOrder()\ncalculateInDegree();\nQueue<E> q = new LinkedList<E>();\nfor (final var entry : inDegree.entrySet()) {\n    if (entry.getValue() == 0) {\n        q.add(entry.getKey());\n    }\n}\nArrayList<E> answer = new ArrayList<>();\nwhile (!q.isEmpty()) {\n    E current = q.poll();\n    answer.add(current);\n    for (E adjacent : graph.getAdjacents(current)) {\n        inDegree.put(adjacent, inDegree.get(adjacent) - 1);\n        if (inDegree.get(adjacent) == 0) {\n            q.add(adjacent);\n        }\n    }\n}\nreturn answer;"];
+
+    // KahnsAlgorithm class
+    TopologicalSort_topSortOrder -> KahnsAlgorithm_main;
+
+    // KahnsAlgorithm main method
+    KahnsAlgorithm_main [label="main(String[] args)\nAdjacencyList<String> graph = new AdjacencyList<>();\ngraph.addEdge(\"a\", \"b\");\ngraph.addEdge(\"c\", \"a\");\ngraph.addEdge(\"a\", \"d\");\ngraph.addEdge(\"b\", \"d\");\ngraph.addEdge(\"c\", \"u\");\ngraph.addEdge(\"u\", \"b\");\nTopologicalSort<String> topSort = new TopologicalSort<>(graph);\nfor (String s : topSort.topSortOrder()) {\n    System.out.print(s + \" \");\n}"];
+}

@@ -1,0 +1,87 @@
+digraph CFG {
+    node [shape=box];
+
+    // Entry point
+    start [label="Start"];
+    stronglyConnectedComponents [label="public List<List<Integer>> stronglyConnectedComponents(int v, List<List<Integer>> graph)"];
+    stronglyConnCompsUtil [label="private void stronglyConnCompsUtil(int u, int[] lowTime, int[] insertionTime, boolean[] isInStack, Stack<Integer> st, List<List<Integer>> graph)"];
+
+    // Entry into the SCC computation
+    start -> stronglyConnectedComponents;
+
+    // Variables initialization
+    initLowInsertionTimes [label="Initialize lowTime[] and insertionTime[] with -1"];
+    initIsInStack [label="Initialize isInStack[] with false"];
+    initStack [label="Initialize empty Stack<Integer>"];
+    
+    stronglyConnectedComponents -> initLowInsertionTimes;
+    initLowInsertionTimes -> initIsInStack;
+    initIsInStack -> initStack;
+
+    forLoop [label="for (int i = 0; i < v; i++)"];
+    initStack -> forLoop;
+
+    ifUnvisited [label="if (insertionTime[i] == -1)"];
+    forLoop -> ifUnvisited;
+
+    // Recursion into stronglyConnCompsUtil
+    callStronglyConnCompsUtil [label="stronglyConnCompsUtil(i, lowTime, insertionTime, isInStack, st, graph)"];
+    ifUnvisited -> callStronglyConnCompsUtil [label="True"];
+    ifUnvisited -> end [label="False"];
+
+    // Return SCC list
+    end [label="Return sccList"];
+    callStronglyConnCompsUtil -> end;
+    
+    // Inside stronglyConnCompsUtil method
+    stronglyConnCompsUtil -> initInsertionLowTime [label="Set insertionTime[u] = lowTime[u] = time"];
+    initInsertionLowTime -> incrementTime [label="time += 1"];
+
+    pushToStack [label="Push u to stack"];
+    incrementTime -> pushToStack;
+
+    forEachAdjNode [label="for (Integer vertex : graph.get(u))"];
+    pushToStack -> forEachAdjNode;
+
+    ifAdjNodeUnvisited [label="if (insertionTime[vertex] == -1)"];
+    forEachAdjNode -> ifAdjNodeUnvisited;
+
+    // Recursive call for unvisited vertex
+    recurse [label="stronglyConnCompsUtil(vertex, lowTime, insertionTime, isInStack, st, graph)"];
+    ifAdjNodeUnvisited -> recurse [label="True"];
+
+    // Update lowTime for the current node
+    updateLowTimeRecurse [label="lowTime[u] = min(lowTime[u], lowTime[vertex])"];
+    recurse -> updateLowTimeRecurse;
+    
+    // If adjacent node is in stack
+    ifAdjNodeInStack [label="else if (isInStack[vertex])"];
+    ifAdjNodeUnvisited -> ifAdjNodeInStack [label="False"];
+
+    updateLowTimeStack [label="lowTime[u] = min(lowTime[u], insertionTime[vertex])"];
+    ifAdjNodeInStack -> updateLowTimeStack;
+
+    // SCC head identification
+    ifSCCHead [label="if (lowTime[u] == insertionTime[u])"];
+    updateLowTimeRecurse -> ifSCCHead;
+    updateLowTimeStack -> ifSCCHead;
+
+    // Process the SCC
+    sccProcess [label="while (w != u)"];
+    ifSCCHead -> sccProcess [label="True"];
+    addNodeToSCC [label="Pop w, add to SCC"];
+    sccProcess -> addNodeToSCC;
+    sccProcess -> endSCC [label="False"];
+
+    addSCCToList [label="sccList.add(scc)"];
+    addNodeToSCC -> sccProcess [label="Repeat"];
+    endSCC -> addSCCToList;
+    addSCCToList -> returnUtil;
+
+    // Back to stronglyConnectedComponents after recursion
+    returnUtil [label="Return to stronglyConnectedComponents"];
+    returnUtil -> forLoop;
+
+    // Exit point
+    end -> exit [label="End"];
+}

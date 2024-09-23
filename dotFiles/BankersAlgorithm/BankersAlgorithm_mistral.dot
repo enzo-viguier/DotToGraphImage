@@ -1,0 +1,60 @@
+digraph G {
+    node [shape=box];
+
+    // Main method
+    main [label="main\n(String[] args)"];
+    main -> n1 [label="Enter total number of processes"];
+    n1 [label="numberOfProcesses = sc.nextInt()"];
+    n1 -> n2 [label="Enter total number of resources"];
+    n2 [label="numberOfResources = sc.nextInt()"];
+    n2 -> n3 [label="Initialize processes array"];
+    n3 [label="for (int i = 0; i < numberOfProcesses; i++) {\n    processes[i] = i;\n}"];
+    n3 -> n4 [label="Enter the availability of resources"];
+    n4 [label="for (int i = 0; i < numberOfResources; i++) {\n    availableArray[i] = sc.nextInt();\n}"];
+    n4 -> n5 [label="Enter the maximum matrix"];
+    n5 [label="for (int i = 0; i < numberOfProcesses; i++) {\n    for (int j = 0; j < numberOfResources; j++) {\n        maxArray[i][j] = sc.nextInt();\n    }\n}"];
+    n5 -> n6 [label="Enter the allocation matrix"];
+    n6 [label="for (int i = 0; i < numberOfProcesses; i++) {\n    for (int j = 0; j < numberOfResources; j++) {\n        allocationArray[i][j] = sc.nextInt();\n    }\n}"];
+    n6 -> n7 [label="checkSafeSystem"];
+    n7 [label="checkSafeSystem\n(processes, availableArray, maxArray, allocationArray, numberOfProcesses, numberOfResources)"];
+    n7 -> n8 [label="sc.close()"];
+    n8 [label="End"];
+
+    // checkSafeSystem method
+    checkSafeSystem [label="checkSafeSystem\n(int[] processes, int[] availableArray, int[][] maxArray, int[][] allocationArray, int totalProcess, int totalResources)"];
+    checkSafeSystem -> cs1 [label="Initialize needArray"];
+    cs1 [label="int[][] needArray = new int[totalProcess][totalResources];"];
+    cs1 -> cs2 [label="calculateNeed"];
+    cs2 [label="calculateNeed\n(needArray, maxArray, allocationArray, totalProcess, totalResources)"];
+    cs2 -> cs3 [label="Initialize finishProcesses"];
+    cs3 [label="boolean[] finishProcesses = new boolean[totalProcess];"];
+    cs3 -> cs4 [label="Initialize safeSequenceArray"];
+    cs4 [label="int[] safeSequenceArray = new int[totalProcess];"];
+    cs4 -> cs5 [label="Initialize workArray"];
+    cs5 [label="int[] workArray = new int[totalResources];"];
+    cs5 -> cs6 [label="System.arraycopy(availableArray, 0, workArray, 0, totalResources);"];
+    cs6 -> cs7 [label="Initialize count"];
+    cs7 [label="int count = 0;"];
+    cs7 -> cs8 [label="while (count < totalProcess)"];
+    cs8 [label="while (count < totalProcess) {\n    boolean foundSafeSystem = false;\n}"];
+    cs8 -> cs9 [label="for (int m = 0; m < totalProcess; m++)"];
+    cs9 [label="for (int m = 0; m < totalProcess; m++) {\n    if (!finishProcesses[m]) {\n        int j;\n        for (j = 0; j < totalResources; j++) {\n            if (needArray[m][j] > workArray[j]) {\n                break;\n            }\n        }\n        if (j == totalResources) {\n            for (int k = 0; k < totalResources; k++) {\n                workArray[k] += allocationArray[m][k];\n            }\n            safeSequenceArray[count++] = m;\n            finishProcesses[m] = true;\n            foundSafeSystem = true;\n        }\n    }\n}"];
+    cs9 -> cs10 [label="if (!foundSafeSystem)"];
+    cs10 [label="if (!foundSafeSystem) {\n    System.out.print(\"The system is not in the safe state because lack of resources\");\n    return false;\n}"];
+    cs10 -> cs11 [label="System.out.print(\"The system is in safe sequence and the sequence is as follows:\");"];
+    cs11 -> cs12 [label="for (int i = 0; i < totalProcess; i++)"];
+    cs12 [label="for (int i = 0; i < totalProcess; i++) {\n    System.out.print(\"P\" + safeSequenceArray[i] + \" \");\n}"];
+    cs12 -> cs13 [label="return true;"];
+    cs13 [label="End"];
+
+    // calculateNeed method
+    calculateNeed [label="calculateNeed\n(int[][] needArray, int[][] maxArray, int[][] allocationArray, int totalProcess, int totalResources)"];
+    calculateNeed -> cn1 [label="for (int i = 0; i < totalProcess; i++)"];
+    cn1 [label="for (int i = 0; i < totalProcess; i++) {\n    for (int j = 0; j < totalResources; j++) {\n        needArray[i][j] = maxArray[i][j] - allocationArray[i][j];\n    }\n}"];
+    cn1 -> cn2 [label="End"];
+    cn2 [label="End"];
+
+    // Linking methods
+    main -> checkSafeSystem;
+    checkSafeSystem -> calculateNeed;
+}

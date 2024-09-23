@@ -1,0 +1,29 @@
+digraph CFG {
+    node [shape=box];
+
+    // Entry point
+    start [label="start"];
+
+    // Method: stronglyConnectedComponents
+    scc_init [label="int[] lowTime = new int[v];\nint[] insertionTime = new int[v];\nfor (int i = 0; i < v; i++) {\n    insertionTime[i] = -1;\n    lowTime[i] = -1;\n}"];
+    scc_stack [label="boolean[] isInStack = new boolean[v];\nStack<Integer> st = new Stack<Integer>();"];
+    scc_loop [label="for (int i = 0; i < v; i++) {\n    if (insertionTime[i] == -1) {\n        stronglyConnCompsUtil(i, lowTime, insertionTime, isInStack, st, graph);\n    }\n}"];
+    scc_return [label="return sccList;"];
+
+    // Method: stronglyConnCompsUtil
+    util_init [label="insertionTime[u] = time;\nlowTime[u] = time;\ntime += 1;"];
+    util_push [label="isInStack[u] = true;\nst.push(u);"];
+    util_loop [label="for (Integer vertex : graph.get(u)) {\n    if (insertionTime[vertex] == -1) {\n        stronglyConnCompsUtil(vertex, lowTime, insertionTime, isInStack, st, graph);\n        lowTime[u] = Math.min(lowTime[u], lowTime[vertex]);\n    } else if (isInStack[vertex]) {\n        lowTime[u] = Math.min(lowTime[u], insertionTime[vertex]);\n    }\n}"];
+    util_scc [label="if (lowTime[u] == insertionTime[u]) {\n    int w = -1;\n    var scc = new ArrayList<Integer>();\n    while (w != u) {\n        w = st.pop();\n        scc.add(w);\n        isInStack[w] = false;\n    }\n    sccList.add(scc);\n}"];
+
+    // Control flow
+    start -> scc_init;
+    scc_init -> scc_stack;
+    scc_stack -> scc_loop;
+    scc_loop -> scc_return;
+    scc_loop -> util_init [label="stronglyConnCompsUtil"];
+    util_init -> util_push;
+    util_push -> util_loop;
+    util_loop -> util_scc;
+    util_scc -> util_init [style=dashed]; // Recursive call
+}

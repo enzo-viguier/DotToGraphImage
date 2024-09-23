@@ -1,0 +1,59 @@
+digraph CFG {
+    // Start Node
+    start [label="start", shape="ellipse"];
+
+    // Method Nodes
+    main [label="main(args)", shape="box"];
+    calculateNeed [label="calculateNeed(needArray, maxArray, allocationArray, totalProcess, totalResources)", shape="box"];
+    checkSafeSystem [label="checkSafeSystem(processes, availableArray, maxArray, allocationArray, totalProcess, totalResources)", shape="box"];
+
+    // Initializations in main
+    scInit [label="Scanner sc = new Scanner(System.in)", shape="box"];
+    numberOfProcessesInit [label="numberOfProcesses = sc.nextInt()", shape="box"];
+    numberOfResourcesInit [label="numberOfResources = sc.nextInt()", shape="box"];
+    processesInit [label="processes[] initialization", shape="box"];
+    availableArrayInit [label="availableArray[] initialization", shape="box"];
+    maxArrayInit [label="maxArray[][] initialization", shape="box"];
+    allocationArrayInit [label="allocationArray[][] initialization", shape="box"];
+
+    // Call checkSafeSystem
+    checkSafeSystemCall [label="checkSafeSystem(processes, availableArray, maxArray, allocationArray, numberOfProcesses, numberOfResources)", shape="box"];
+    
+    // End Node
+    end [label="end", shape="ellipse"];
+
+    // Main flow
+    start -> main;
+    main -> scInit;
+    scInit -> numberOfProcessesInit;
+    numberOfProcessesInit -> numberOfResourcesInit;
+    numberOfResourcesInit -> processesInit;
+    processesInit -> availableArrayInit;
+    availableArrayInit -> maxArrayInit;
+    maxArrayInit -> allocationArrayInit;
+    allocationArrayInit -> checkSafeSystemCall;
+    checkSafeSystemCall -> end;
+
+    // Inside checkSafeSystem
+    checkSafeSystemCall -> calculateNeed;
+    calculateNeed -> finishProcessesInit [label="boolean[] finishProcesses = new boolean[totalProcess]", shape="box"];
+    finishProcessesInit -> workArrayInit [label="int[] workArray = new int[totalResources]", shape="box"];
+    workArrayInit -> whileLoopStart [label="while (count < totalProcess)", shape="diamond"];
+
+    whileLoopStart -> forLoopStart [label="for (int m = 0; m < totalProcess; m++)", shape="diamond"];
+    forLoopStart -> finishCheck [label="if (!finishProcesses[m])", shape="diamond"];
+    finishCheck -> needCheck [label="if (needArray[m][j] <= workArray[j])", shape="diamond"];
+    needCheck -> resourcesUpdate [label="workArray[k] += allocationArray[m][k]", shape="box"];
+    resourcesUpdate -> markFinish [label="finishProcesses[m] = true", shape="box"];
+    markFinish -> countIncrement [label="count++", shape="box"];
+    countIncrement -> whileLoopStart;
+
+    finishCheck -> whileLoopStart [label="else"];
+
+    whileLoopStart -> notSafeState [label="System not safe", shape="box", style="dashed"];
+    whileLoopStart -> safeState [label="System safe", shape="box", style="dashed"];
+    
+    // End of checkSafeSystem
+    safeState -> end;
+    notSafeState -> end;
+}

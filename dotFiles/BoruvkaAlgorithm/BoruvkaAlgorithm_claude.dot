@@ -1,0 +1,63 @@
+digraph BoruvkaAlgorithm {
+    node [shape=box];
+    
+    start [label="Start"];
+    init [label="Initialize BoruvkaState"];
+    while_condition [label="hasMoreEdgesToAdd()?", shape=diamond];
+    compute_cheapest [label="computeCheapestEdges()"];
+    merge [label="merge(cheapest)"];
+    end [label="End: Return result"];
+
+    subgraph cluster_find {
+        label = "find()";
+        find_start [label="find() start"];
+        find_condition [label="components[i].parent != i?", shape=diamond];
+        find_recursive [label="Recursive call"];
+        find_return [label="Return parent"];
+    }
+
+    subgraph cluster_union {
+        label = "union()";
+        union_start [label="union() start"];
+        union_condition1 [label="xroot.rank < yroot.rank?", shape=diamond];
+        union_condition2 [label="xroot.rank > yroot.rank?", shape=diamond];
+        union_set_parent1 [label="Set xroot.parent"];
+        union_set_parent2 [label="Set yroot.parent"];
+        union_set_parent3 [label="Set yroot.parent"];
+        union_increment_rank [label="Increment xroot.rank"];
+    }
+
+    subgraph cluster_compute_cheapest {
+        label = "computeCheapestEdges()";
+        compute_start [label="computeCheapestEdges() start"];
+        compute_loop [label="For each edge"];
+        compute_condition [label="set1 != set2?", shape=diamond];
+        compute_update_cheapest [label="Update cheapest edges"];
+        compute_return [label="Return cheapest"];
+    }
+
+    start -> init;
+    init -> while_condition;
+    while_condition -> compute_cheapest [label="Yes"];
+    while_condition -> end [label="No"];
+    compute_cheapest -> merge;
+    merge -> while_condition;
+
+    compute_start -> compute_loop;
+    compute_loop -> compute_condition;
+    compute_condition -> compute_update_cheapest [label="Yes"];
+    compute_condition -> compute_loop [label="No"];
+    compute_loop -> compute_return [label="Done"];
+
+    find_start -> find_condition;
+    find_condition -> find_recursive [label="Yes"];
+    find_condition -> find_return [label="No"];
+    find_recursive -> find_return;
+
+    union_start -> union_condition1;
+    union_condition1 -> union_set_parent1 [label="Yes"];
+    union_condition1 -> union_condition2 [label="No"];
+    union_condition2 -> union_set_parent2 [label="Yes"];
+    union_condition2 -> union_set_parent3 [label="No"];
+    union_set_parent3 -> union_increment_rank;
+}

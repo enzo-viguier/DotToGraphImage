@@ -1,0 +1,161 @@
+digraph CFG {
+    node [shape=box];
+    // Nodes for regexRecursion (Method 1)
+    start1 [label="Start Method 1"];
+    cond1_1 [label="src.length() == 0 && pat.length() == 0"];
+    ret_true1 [label="return true"];
+    cond1_2 [label="src.length() != 0 && pat.length() == 0"];
+    ret_false1 [label="return false"];
+    cond1_3 [label="src.length() == 0 && pat.length() != 0"];
+    loop1 [label="for (int i = 0; i < pat.length(); i++)"];
+    cond_pat_char1 [label="pat.charAt(i) != '*'"];
+    ret_false2 [label="return false"];
+    ret_true2 [label="return true"];
+    match_condition1 [label="chs == chp || chp == '?'"];
+    recurse1_1 [label="ans = regexRecursion(ros, rop)"];
+    cond_star1 [label="chp == '*'"];
+    recurse1_blank [label="blank = regexRecursion(src, rop)"];
+    recurse1_multiple [label="multiple = regexRecursion(ros, pat)"];
+    ans_true1 [label="ans = blank || multiple"];
+    ret_ans1 [label="return ans"];
+    ret_false3 [label="return false"];
+
+    // Edges for regexRecursion (Method 1)
+    start1 -> cond1_1;
+    cond1_1 -> ret_true1 [label="true"];
+    cond1_1 -> cond1_2 [label="false"];
+    cond1_2 -> ret_false1 [label="true"];
+    cond1_2 -> cond1_3 [label="false"];
+    cond1_3 -> loop1 [label="true"];
+    loop1 -> cond_pat_char1;
+    cond_pat_char1 -> ret_false2 [label="true"];
+    cond_pat_char1 -> loop1 [label="false", style=dotted];
+    loop1 -> ret_true2 [label="exit"];
+    cond1_3 -> match_condition1 [label="false"];
+    match_condition1 -> recurse1_1 [label="true"];
+    match_condition1 -> cond_star1 [label="false"];
+    cond_star1 -> recurse1_blank [label="true"];
+    recurse1_blank -> recurse1_multiple;
+    recurse1_multiple -> ans_true1;
+    ans_true1 -> ret_ans1;
+    cond_star1 -> ret_false3 [label="false"];
+    recurse1_1 -> ret_ans1;
+
+    // Nodes for regexRecursion (Method 2)
+    start2 [label="Start Method 2"];
+    cond2_1 [label="src.length() == svidx && pat.length() == pvidx"];
+    ret_true3 [label="return true"];
+    cond2_2 [label="src.length() != svidx && pat.length() == pvidx"];
+    ret_false4 [label="return false"];
+    cond2_3 [label="src.length() == svidx && pat.length() != pvidx"];
+    loop2 [label="for (int i = pvidx; i < pat.length(); i++)"];
+    cond_pat_char2 [label="pat.charAt(i) != '*'"];
+    ret_false5 [label="return false"];
+    ret_true4 [label="return true"];
+    match_condition2 [label="chs == chp || chp == '?'"];
+    recurse2_1 [label="ans = regexRecursion(src, pat, svidx + 1, pvidx + 1)"];
+    cond_star2 [label="chp == '*'"];
+    recurse2_blank [label="blank = regexRecursion(src, pat, svidx, pvidx + 1)"];
+    recurse2_multiple [label="multiple = regexRecursion(src, pat, svidx + 1, pvidx)"];
+    ans_true2 [label="ans = blank || multiple"];
+    ret_ans2 [label="return ans"];
+    ret_false6 [label="return false"];
+
+    // Edges for regexRecursion (Method 2)
+    start2 -> cond2_1;
+    cond2_1 -> ret_true3 [label="true"];
+    cond2_1 -> cond2_2 [label="false"];
+    cond2_2 -> ret_false4 [label="true"];
+    cond2_2 -> cond2_3 [label="false"];
+    cond2_3 -> loop2 [label="true"];
+    loop2 -> cond_pat_char2;
+    cond_pat_char2 -> ret_false5 [label="true"];
+    cond_pat_char2 -> loop2 [label="false", style=dotted];
+    loop2 -> ret_true4 [label="exit"];
+    cond2_3 -> match_condition2 [label="false"];
+    match_condition2 -> recurse2_1 [label="true"];
+    match_condition2 -> cond_star2 [label="false"];
+    cond_star2 -> recurse2_blank [label="true"];
+    recurse2_blank -> recurse2_multiple;
+    recurse2_multiple -> ans_true2;
+    ans_true2 -> ret_ans2;
+    cond_star2 -> ret_false6 [label="false"];
+    recurse2_1 -> ret_ans2;
+
+    // Nodes for regexRecursion with memoization (Method 3)
+    start3 [label="Start Method 3"];
+    cond3_1 [label="src.length() == svidx && pat.length() == pvidx"];
+    ret_true5 [label="return true"];
+    cond3_2 [label="src.length() != svidx && pat.length() == pvidx"];
+    ret_false7 [label="return false"];
+    cond3_3 [label="src.length() == svidx && pat.length() != pvidx"];
+    loop3 [label="for (int i = pvidx; i < pat.length(); i++)"];
+    cond_pat_char3 [label="pat.charAt(i) != '*'"];
+    ret_false8 [label="return false"];
+    ret_true6 [label="return true"];
+    memo_check [label="strg[svidx][pvidx] != 0"];
+    memo_return [label="return strg[svidx][pvidx] != 1"];
+    match_condition3 [label="chs == chp || chp == '?'"];
+    recurse3_1 [label="ans = regexRecursion(src, pat, svidx + 1, pvidx + 1, strg)"];
+    cond_star3 [label="chp == '*'"];
+    recurse3_blank [label="blank = regexRecursion(src, pat, svidx, pvidx + 1, strg)"];
+    recurse3_multiple [label="multiple = regexRecursion(src, pat, svidx + 1, pvidx, strg)"];
+    ans_true3 [label="ans = blank || multiple"];
+    memo_save [label="strg[svidx][pvidx] = ans ? 2 : 1"];
+    ret_ans3 [label="return ans"];
+    ret_false9 [label="return false"];
+
+    // Edges for regexRecursion with memoization (Method 3)
+    start3 -> cond3_1;
+    cond3_1 -> ret_true5 [label="true"];
+    cond3_1 -> cond3_2 [label="false"];
+    cond3_2 -> ret_false7 [label="true"];
+    cond3_2 -> cond3_3 [label="false"];
+    cond3_3 -> loop3 [label="true"];
+    loop3 -> cond_pat_char3;
+    cond_pat_char3 -> ret_false8 [label="true"];
+    cond_pat_char3 -> loop3 [label="false", style=dotted];
+    loop3 -> ret_true6 [label="exit"];
+    cond3_3 -> memo_check [label="false"];
+    memo_check -> memo_return [label="true"];
+    memo_check -> match_condition3 [label="false"];
+    match_condition3 -> recurse3_1 [label="true"];
+    match_condition3 -> cond_star3 [label="false"];
+    cond_star3 -> recurse3_blank [label="true"];
+    recurse3_blank -> recurse3_multiple;
+    recurse3_multiple -> ans_true3;
+    ans_true3 -> memo_save;
+    memo_save -> ret_ans3;
+    cond_star3 -> ret_false9 [label="false"];
+    recurse3_1 -> ret_ans3;
+
+    // Nodes for regexBU (Method 4)
+    start4 [label="Start Method 4"];
+    init_table [label="Initialize boolean[][] strg"];
+    loop4_row [label="for (int row = src.length(); row >= 0; row--)"];
+    loop4_col [label="for (int col = pat.length() - 1; col >= 0; col--)"];
+    cond4_end_of_src [label="row == src.length()"];
+    cond_star4 [label="pat.charAt(col) == '*'"];
+    set_strg_blank [label="strg[row][col] = strg[row][col + 1]"];
+    set_strg_false [label="strg[row][col] = false"];
+    match_condition4 [label="chs == chp || chp == '?'"];
+    set_strg_match [label="strg[row][col] = strg[row + 1][col + 1]"];
+    set_strg_star [label="strg[row][col] = strg[row][col + 1] || strg[row + 1][col]"];
+    return_result [label="return strg[0][0]"];
+
+    // Edges for regexBU (Method 4)
+    start4 -> init_table;
+    init_table -> loop4_row;
+    loop4_row -> loop4_col;
+    loop4_col -> cond4_end_of_src;
+    cond4_end_of_src -> cond_star4 [label="true"];
+    cond4_end_of_src -> match_condition4 [label="false"];
+    cond_star4 -> set_strg_blank [label="true"];
+    cond_star4 -> set_strg_false [label="false"];
+    set_strg_blank -> loop4_col;
+    match_condition4 -> set_strg_match [label="true"];
+    match_condition4 -> set_strg_star [label="false"];
+    set_strg_match -> loop4_col;
+    set_strg_star -> loop4_col;
+    loop4_row -> return_result [label="exit"];
+}

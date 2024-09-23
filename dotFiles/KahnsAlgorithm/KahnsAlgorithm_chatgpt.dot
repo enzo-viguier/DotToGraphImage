@@ -1,0 +1,92 @@
+digraph ControlFlowGraph {
+    node [shape=box];
+
+    // Main entry point
+    MainStart [label="Start of main"];
+    MainEnd [label="End of main"];
+
+    // Graph initialization
+    InitGraph [label="AdjacencyList<String> graph = new AdjacencyList<>()"];
+    AddEdge1 [label="graph.addEdge(\"a\", \"b\")"];
+    AddEdge2 [label="graph.addEdge(\"c\", \"a\")"];
+    AddEdge3 [label="graph.addEdge(\"a\", \"d\")"];
+    AddEdge4 [label="graph.addEdge(\"b\", \"d\")"];
+    AddEdge5 [label="graph.addEdge(\"c\", \"u\")"];
+    AddEdge6 [label="graph.addEdge(\"u\", \"b\")"];
+    InitTopSort [label="TopologicalSort<String> topSort = new TopologicalSort<>(graph)"];
+
+    // Topological sort loop
+    TopSortLoopStart [label="For each s in topSort.topSortOrder()"];
+    PrintOrder [label="System.out.print(s + \" \")"];
+    TopSortLoopEnd [label="End loop"];
+
+    // In-degree calculation
+    CalculateInDegreeStart [label="calculateInDegree()"];
+    InDegreeLoopStart [label="For each vertex in graph.getVertices()"];
+    CheckInDegree [label="if (!inDegree.containsKey(vertex))"];
+    SetInDegreeZero [label="inDegree.put(vertex, 0)"];
+    InnerLoopStart [label="For each adjacent in graph.getAdjacents(vertex)"];
+    UpdateInDegree [label="inDegree.put(adjacent, inDegree.get(adjacent) + 1)"];
+    CatchException [label="catch(Exception e)"];
+    SetInDegreeOne [label="inDegree.put(adjacent, 1)"];
+    InnerLoopEnd [label="End inner loop"];
+    InDegreeLoopEnd [label="End outer loop"];
+    CalculateInDegreeEnd [label="End calculateInDegree()"];
+
+    // Topological sort logic
+    TopSortQueueInit [label="Queue<E> q = new LinkedList<>()"];
+    InitQueue [label="If inDegree == 0, add to queue"];
+    TopSortWhileStart [label="While q is not empty"];
+    PollQueue [label="E current = q.poll()"];
+    AddToAnswer [label="answer.add(current)"];
+    UpdateAdjacentInDegree [label="inDegree.put(adjacent, inDegree.get(adjacent) - 1)"];
+    CheckInDegreeZero [label="If inDegree == 0, add to queue"];
+    TopSortWhileEnd [label="End while loop"];
+    ReturnAnswer [label="Return answer"];
+
+    // Graph structure
+    MainStart -> InitGraph;
+    InitGraph -> AddEdge1;
+    AddEdge1 -> AddEdge2;
+    AddEdge2 -> AddEdge3;
+    AddEdge3 -> AddEdge4;
+    AddEdge4 -> AddEdge5;
+    AddEdge5 -> AddEdge6;
+    AddEdge6 -> InitTopSort;
+    InitTopSort -> CalculateInDegreeStart;
+
+    // In-degree calculation flow
+    CalculateInDegreeStart -> InDegreeLoopStart;
+    InDegreeLoopStart -> CheckInDegree;
+    CheckInDegree -> SetInDegreeZero [label="true"];
+    SetInDegreeZero -> InnerLoopStart;
+    CheckInDegree -> InnerLoopStart [label="false"];
+    InnerLoopStart -> UpdateInDegree;
+    UpdateInDegree -> InnerLoopEnd;
+    UpdateInDegree -> CatchException [label="exception"];
+    CatchException -> SetInDegreeOne;
+    SetInDegreeOne -> InnerLoopEnd;
+    InnerLoopEnd -> InDegreeLoopEnd;
+    InDegreeLoopEnd -> CalculateInDegreeEnd;
+    CalculateInDegreeEnd -> TopSortQueueInit;
+
+    // Topological sort flow
+    TopSortQueueInit -> InitQueue;
+    InitQueue -> TopSortWhileStart;
+    TopSortWhileStart -> PollQueue;
+    PollQueue -> AddToAnswer;
+    AddToAnswer -> UpdateAdjacentInDegree;
+    UpdateAdjacentInDegree -> CheckInDegreeZero;
+    CheckInDegreeZero -> TopSortWhileEnd [label="false"];
+    CheckInDegreeZero -> InitQueue [label="true"];
+    TopSortWhileEnd -> ReturnAnswer;
+
+    // Loop through topSort order
+    InitTopSort -> TopSortLoopStart;
+    TopSortLoopStart -> PrintOrder;
+    PrintOrder -> TopSortLoopEnd;
+    TopSortLoopEnd -> MainEnd;
+
+    // End program
+    MainEnd -> "Exit";
+}

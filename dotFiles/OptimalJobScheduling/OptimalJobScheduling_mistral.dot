@@ -1,0 +1,81 @@
+digraph OptimalJobScheduling {
+    node [shape=box];
+
+    // Nodes for methods
+    OptimalJobScheduling [label="OptimalJobScheduling\n(Constructor)"];
+    execute [label="execute()"];
+    calculateCost [label="calculateCost()"];
+    runningCost [label="runningCost(int, int)"];
+    findMin [label="findMin(int[])"];
+    showResults [label="showResults()"];
+    getCost [label="getCost(int, int)"];
+
+    // Nodes for statements within methods
+    execute_calculateCost [label="this.calculateCost()"];
+    execute_showResults [label="this.showResults()"];
+
+    calculateCost_for1 [label="for (int i = 0; i < numberProcesses; i++)"];
+    calculateCost_for2 [label="for (int j = 0; j < numberMachines; j++)"];
+    calculateCost_cost [label="cost[i][j] = runningCost(i, j)"];
+
+    runningCost_if [label="if (process == 0)"];
+    runningCost_return1 [label="return run[process][machine]"];
+    runningCost_else [label="else"];
+    runningCost_runningCosts [label="int[] runningCosts = new int[numberMachines]"];
+    runningCost_for [label="for (int k = 0; k < numberMachines; k++)"];
+    runningCost_cost [label="runningCosts[k] = cost[process - 1][k] + transfer[k][machine] + run[process][machine]"];
+    runningCost_return2 [label="return findMin(runningCosts)"];
+
+    findMin_min [label="int min = 0"];
+    findMin_for [label="for (int i = 1; i < costArr.length; i++)"];
+    findMin_if [label="if (costArr[i] < costArr[min])"];
+    findMin_min_update [label="min = i"];
+    findMin_return [label="return costArr[min]"];
+
+    showResults_for1 [label="for (int i = 0; i < numberProcesses; i++)"];
+    showResults_for2 [label="for (int j = 0; j < numberMachines; j++)"];
+    showResults_print1 [label="System.out.print(cost[i][j])"];
+    showResults_print2 [label="System.out.print(\" \")"];
+    showResults_println1 [label="System.out.println()"];
+    showResults_println2 [label="System.out.println()"];
+
+    getCost_return [label="return cost[process][machine]"];
+
+    // Edges for method calls
+    execute -> execute_calculateCost;
+    execute -> execute_showResults;
+
+    execute_calculateCost -> calculateCost;
+    execute_showResults -> showResults;
+
+    calculateCost -> calculateCost_for1;
+    calculateCost_for1 -> calculateCost_for2;
+    calculateCost_for2 -> calculateCost_cost;
+    calculateCost_cost -> runningCost;
+
+    runningCost -> runningCost_if;
+    runningCost_if -> runningCost_return1 [style=dashed];
+    runningCost_if -> runningCost_else [style=dashed];
+    runningCost_else -> runningCost_runningCosts;
+    runningCost_runningCosts -> runningCost_for;
+    runningCost_for -> runningCost_cost;
+    runningCost_cost -> runningCost_return2;
+    runningCost_return2 -> findMin;
+
+    findMin -> findMin_min;
+    findMin_min -> findMin_for;
+    findMin_for -> findMin_if;
+    findMin_if -> findMin_min_update [style=dashed];
+    findMin_min_update -> findMin_return;
+
+    showResults -> showResults_for1;
+    showResults_for1 -> showResults_for2;
+    showResults_for2 -> showResults_print1;
+    showResults_print1 -> showResults_print2;
+    showResults_print2 -> showResults_println1;
+    showResults_println1 -> showResults_for2 [style=dashed];
+    showResults_for2 -> showResults_for1 [style=dashed];
+    showResults_for1 -> showResults_println2;
+
+    getCost -> getCost_return;
+}

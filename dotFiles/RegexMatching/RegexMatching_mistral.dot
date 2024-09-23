@@ -1,0 +1,203 @@
+digraph RegexMatching {
+    node [shape=box];
+
+    // Entry point for the class
+    entry [label="RegexMatching"];
+
+    // Method: regexRecursion(String src, String pat)
+    regexRecursion_start [label="regexRecursion(String src, String pat)\nStart"];
+    regexRecursion_end [label="regexRecursion(String src, String pat)\nEnd"];
+
+    regexRecursion_start -> regexRecursion_check1 [label="src.length() == 0 && pat.length() == 0"];
+    regexRecursion_check1 -> regexRecursion_return_true [label="true"];
+    regexRecursion_check1 -> regexRecursion_check2 [label="false"];
+
+    regexRecursion_check2 [label="src.length() != 0 && pat.length() == 0"];
+    regexRecursion_check2 -> regexRecursion_return_false [label="true"];
+    regexRecursion_check2 -> regexRecursion_check3 [label="false"];
+
+    regexRecursion_check3 [label="src.length() == 0 && pat.length() != 0"];
+    regexRecursion_check3 -> regexRecursion_loop [label="true"];
+    regexRecursion_check3 -> regexRecursion_chars [label="false"];
+
+    regexRecursion_loop [label="for (int i = 0; i < pat.length(); i++)"];
+    regexRecursion_loop -> regexRecursion_check_star [label="pat.charAt(i) != '*'"];
+    regexRecursion_check_star -> regexRecursion_return_false [label="true"];
+    regexRecursion_check_star -> regexRecursion_return_true [label="false"];
+
+    regexRecursion_chars [label="chs = src.charAt(0);\nchp = pat.charAt(0);\nros = src.substring(1);\nrop = pat.substring(1);"];
+    regexRecursion_chars -> regexRecursion_check_chars [label="chs == chp || chp == '?'"];
+    regexRecursion_check_chars -> regexRecursion_recursive_call1 [label="true"];
+    regexRecursion_check_chars -> regexRecursion_check_star2 [label="false"];
+
+    regexRecursion_recursive_call1 [label="ans = regexRecursion(ros, rop);"];
+    regexRecursion_recursive_call1 -> regexRecursion_return_ans [label="ans"];
+
+    regexRecursion_check_star2 [label="chp == '*'"];
+    regexRecursion_check_star2 -> regexRecursion_recursive_call2 [label="true"];
+    regexRecursion_check_star2 -> regexRecursion_return_false [label="false"];
+
+    regexRecursion_recursive_call2 [label="blank = regexRecursion(src, rop);\nmultiple = regexRecursion(ros, pat);\nans = blank || multiple;"];
+    regexRecursion_recursive_call2 -> regexRecursion_return_ans [label="ans"];
+
+    regexRecursion_return_true [label="return true;"];
+    regexRecursion_return_false [label="return false;"];
+    regexRecursion_return_ans [label="return ans;"];
+
+    regexRecursion_return_true -> regexRecursion_end;
+    regexRecursion_return_false -> regexRecursion_end;
+    regexRecursion_return_ans -> regexRecursion_end;
+
+    // Method: regexRecursion(String src, String pat, int svidx, int pvidx)
+    regexRecursion_svidx_start [label="regexRecursion(String src, String pat, int svidx, int pvidx)\nStart"];
+    regexRecursion_svidx_end [label="regexRecursion(String src, String pat, int svidx, int pvidx)\nEnd"];
+
+    regexRecursion_svidx_start -> regexRecursion_svidx_check1 [label="src.length() == svidx && pat.length() == pvidx"];
+    regexRecursion_svidx_check1 -> regexRecursion_svidx_return_true [label="true"];
+    regexRecursion_svidx_check1 -> regexRecursion_svidx_check2 [label="false"];
+
+    regexRecursion_svidx_check2 [label="src.length() != svidx && pat.length() == pvidx"];
+    regexRecursion_svidx_check2 -> regexRecursion_svidx_return_false [label="true"];
+    regexRecursion_svidx_check2 -> regexRecursion_svidx_check3 [label="false"];
+
+    regexRecursion_svidx_check3 [label="src.length() == svidx && pat.length() != pvidx"];
+    regexRecursion_svidx_check3 -> regexRecursion_svidx_loop [label="true"];
+    regexRecursion_svidx_check3 -> regexRecursion_svidx_chars [label="false"];
+
+    regexRecursion_svidx_loop [label="for (int i = pvidx; i < pat.length(); i++)"];
+    regexRecursion_svidx_loop -> regexRecursion_svidx_check_star [label="pat.charAt(i) != '*'"];
+    regexRecursion_svidx_check_star -> regexRecursion_svidx_return_false [label="true"];
+    regexRecursion_svidx_check_star -> regexRecursion_svidx_return_true [label="false"];
+
+    regexRecursion_svidx_chars [label="chs = src.charAt(svidx);\nchp = pat.charAt(pvidx);"];
+    regexRecursion_svidx_chars -> regexRecursion_svidx_check_chars [label="chs == chp || chp == '?'"];
+    regexRecursion_svidx_check_chars -> regexRecursion_svidx_recursive_call1 [label="true"];
+    regexRecursion_svidx_check_chars -> regexRecursion_svidx_check_star2 [label="false"];
+
+    regexRecursion_svidx_recursive_call1 [label="ans = regexRecursion(src, pat, svidx + 1, pvidx + 1);"];
+    regexRecursion_svidx_recursive_call1 -> regexRecursion_svidx_return_ans [label="ans"];
+
+    regexRecursion_svidx_check_star2 [label="chp == '*'"];
+    regexRecursion_svidx_check_star2 -> regexRecursion_svidx_recursive_call2 [label="true"];
+    regexRecursion_svidx_check_star2 -> regexRecursion_svidx_return_false [label="false"];
+
+    regexRecursion_svidx_recursive_call2 [label="blank = regexRecursion(src, pat, svidx, pvidx + 1);\nmultiple = regexRecursion(src, pat, svidx + 1, pvidx);\nans = blank || multiple;"];
+    regexRecursion_svidx_recursive_call2 -> regexRecursion_svidx_return_ans [label="ans"];
+
+    regexRecursion_svidx_return_true [label="return true;"];
+    regexRecursion_svidx_return_false [label="return false;"];
+    regexRecursion_svidx_return_ans [label="return ans;"];
+
+    regexRecursion_svidx_return_true -> regexRecursion_svidx_end;
+    regexRecursion_svidx_return_false -> regexRecursion_svidx_end;
+    regexRecursion_svidx_return_ans -> regexRecursion_svidx_end;
+
+    // Method: regexRecursion(String src, String pat, int svidx, int pvidx, int[][] strg)
+    regexRecursion_memo_start [label="regexRecursion(String src, String pat, int svidx, int pvidx, int[][] strg)\nStart"];
+    regexRecursion_memo_end [label="regexRecursion(String src, String pat, int svidx, int pvidx, int[][] strg)\nEnd"];
+
+    regexRecursion_memo_start -> regexRecursion_memo_check1 [label="src.length() == svidx && pat.length() == pvidx"];
+    regexRecursion_memo_check1 -> regexRecursion_memo_return_true [label="true"];
+    regexRecursion_memo_check1 -> regexRecursion_memo_check2 [label="false"];
+
+    regexRecursion_memo_check2 [label="src.length() != svidx && pat.length() == pvidx"];
+    regexRecursion_memo_check2 -> regexRecursion_memo_return_false [label="true"];
+    regexRecursion_memo_check2 -> regexRecursion_memo_check3 [label="false"];
+
+    regexRecursion_memo_check3 [label="src.length() == svidx && pat.length() != pvidx"];
+    regexRecursion_memo_check3 -> regexRecursion_memo_loop [label="true"];
+    regexRecursion_memo_check3 -> regexRecursion_memo_check_strg [label="false"];
+
+    regexRecursion_memo_loop [label="for (int i = pvidx; i < pat.length(); i++)"];
+    regexRecursion_memo_loop -> regexRecursion_memo_check_star [label="pat.charAt(i) != '*'"];
+    regexRecursion_memo_check_star -> regexRecursion_memo_return_false [label="true"];
+    regexRecursion_memo_check_star -> regexRecursion_memo_return_true [label="false"];
+
+    regexRecursion_memo_check_strg [label="strg[svidx][pvidx] != 0"];
+    regexRecursion_memo_check_strg -> regexRecursion_memo_return_strg [label="true"];
+    regexRecursion_memo_check_strg -> regexRecursion_memo_chars [label="false"];
+
+    regexRecursion_memo_chars [label="chs = src.charAt(svidx);\nchp = pat.charAt(pvidx);"];
+    regexRecursion_memo_chars -> regexRecursion_memo_check_chars [label="chs == chp || chp == '?'"];
+    regexRecursion_memo_check_chars -> regexRecursion_memo_recursive_call1 [label="true"];
+    regexRecursion_memo_check_chars -> regexRecursion_memo_check_star2 [label="false"];
+
+    regexRecursion_memo_recursive_call1 [label="ans = regexRecursion(src, pat, svidx + 1, pvidx + 1, strg);"];
+    regexRecursion_memo_recursive_call1 -> regexRecursion_memo_store_ans [label="ans"];
+
+    regexRecursion_memo_check_star2 [label="chp == '*'"];
+    regexRecursion_memo_check_star2 -> regexRecursion_memo_recursive_call2 [label="true"];
+    regexRecursion_memo_check_star2 -> regexRecursion_memo_return_false [label="false"];
+
+    regexRecursion_memo_recursive_call2 [label="blank = regexRecursion(src, pat, svidx, pvidx + 1, strg);\nmultiple = regexRecursion(src, pat, svidx + 1, pvidx, strg);\nans = blank || multiple;"];
+    regexRecursion_memo_recursive_call2 -> regexRecursion_memo_store_ans [label="ans"];
+
+    regexRecursion_memo_store_ans [label="strg[svidx][pvidx] = ans ? 2 : 1;"];
+    regexRecursion_memo_store_ans -> regexRecursion_memo_return_ans [label="ans"];
+
+    regexRecursion_memo_return_true [label="return true;"];
+    regexRecursion_memo_return_false [label="return false;"];
+    regexRecursion_memo_return_strg [label="return strg[svidx][pvidx] != 1;"];
+    regexRecursion_memo_return_ans [label="return ans;"];
+
+    regexRecursion_memo_return_true -> regexRecursion_memo_end;
+    regexRecursion_memo_return_false -> regexRecursion_memo_end;
+    regexRecursion_memo_return_strg -> regexRecursion_memo_end;
+    regexRecursion_memo_return_ans -> regexRecursion_memo_end;
+
+    // Method: regexBU(String src, String pat)
+    regexBU_start [label="regexBU(String src, String pat)\nStart"];
+    regexBU_end [label="regexBU(String src, String pat)\nEnd"];
+
+    regexBU_start -> regexBU_init [label="strg[src.length()][pat.length()] = true;"];
+    regexBU_init -> regexBU_loop_row [label="for (int row = src.length(); row >= 0; row--)"];
+
+    regexBU_loop_row -> regexBU_loop_col [label="for (int col = pat.length() - 1; col >= 0; col--)"];
+    regexBU_loop_col -> regexBU_check_row [label="row == src.length()"];
+
+    regexBU_check_row -> regexBU_check_star [label="true"];
+    regexBU_check_row -> regexBU_chars [label="false"];
+
+    regexBU_check_star [label="pat.charAt(col) == '*'"];
+    regexBU_check_star -> regexBU_set_true [label="true"];
+    regexBU_check_star -> regexBU_set_false [label="false"];
+
+    regexBU_set_true [label="strg[row][col] = strg[row][col + 1];"];
+    regexBU_set_false [label="strg[row][col] = false;"];
+
+    regexBU_set_true -> regexBU_loop_col;
+    regexBU_set_false -> regexBU_loop_col;
+
+    regexBU_chars [label="chs = src.charAt(row);\nchp = pat.charAt(col);"];
+    regexBU_chars -> regexBU_check_chars [label="chs == chp || chp == '?'"];
+    regexBU_check_chars -> regexBU_set_ans1 [label="true"];
+    regexBU_check_chars -> regexBU_check_star2 [label="false"];
+
+    regexBU_set_ans1 [label="ans = strg[row + 1][col + 1];"];
+    regexBU_set_ans1 -> regexBU_store_ans [label="ans"];
+
+    regexBU_check_star2 [label="chp == '*'"];
+    regexBU_check_star2 -> regexBU_set_ans2 [label="true"];
+    regexBU_check_star2 -> regexBU_set_false2 [label="false"];
+
+    regexBU_set_ans2 [label="blank = strg[row][col + 1];\nmultiple = strg[row + 1][col];\nans = blank || multiple;"];
+    regexBU_set_ans2 -> regexBU_store_ans [label="ans"];
+
+    regexBU_set_false2 [label="ans = false;"];
+    regexBU_set_false2 -> regexBU_store_ans [label="ans"];
+
+    regexBU_store_ans [label="strg[row][col] = ans;"];
+    regexBU_store_ans -> regexBU_loop_col;
+
+    regexBU_loop_col -> regexBU_loop_row;
+    regexBU_loop_row -> regexBU_return [label="return strg[0][0];"];
+
+    regexBU_return [label="return strg[0][0];"];
+    regexBU_return -> regexBU_end;
+
+    // Connecting entry point to method starts
+    entry -> regexRecursion_start;
+    entry -> regexRecursion_svidx_start;
+    entry -> regexRecursion_memo_start;
+    entry -> regexBU_start;
+}

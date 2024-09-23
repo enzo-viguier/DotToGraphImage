@@ -1,0 +1,52 @@
+digraph RegexBUControlFlow {
+    node [shape=rectangle];
+    
+    start [label="Start"];
+    init [label="Initialize strg[src.length()+1][pat.length()+1]"];
+    set_base [label="Set strg[src.length()][pat.length()] = true"];
+    loop_row [label="for row = src.length() to 0"];
+    loop_col [label="for col = pat.length()-1 to 0"];
+    check_row [label="row == src.length()?"];
+    check_pat_star [label="pat.charAt(col) == '*'?"];
+    set_true [label="strg[row][col] = strg[row][col+1]"];
+    set_false [label="strg[row][col] = false"];
+    get_chars [label="Get chs and chp"];
+    check_char_match [label="chs == chp || chp == '?'?"];
+    set_match [label="ans = strg[row+1][col+1]"];
+    check_star [label="chp == '*'?"];
+    calc_star [label="Calculate blank and multiple"];
+    set_star [label="ans = blank || multiple"];
+    set_no_match [label="ans = false"];
+    set_result [label="strg[row][col] = ans"];
+    end_col [label="End col loop"];
+    end_row [label="End row loop"];
+    return [label="Return strg[0][0]"];
+    end [label="End"];
+
+    start -> init;
+    init -> set_base;
+    set_base -> loop_row;
+    loop_row -> loop_col;
+    loop_col -> check_row;
+    check_row -> check_pat_star [label="Yes"];
+    check_row -> get_chars [label="No"];
+    check_pat_star -> set_true [label="Yes"];
+    check_pat_star -> set_false [label="No"];
+    set_true -> end_col;
+    set_false -> end_col;
+    get_chars -> check_char_match;
+    check_char_match -> set_match [label="Yes"];
+    check_char_match -> check_star [label="No"];
+    check_star -> calc_star [label="Yes"];
+    check_star -> set_no_match [label="No"];
+    calc_star -> set_star;
+    set_match -> set_result;
+    set_star -> set_result;
+    set_no_match -> set_result;
+    set_result -> end_col;
+    end_col -> loop_col [label="Continue"];
+    end_col -> end_row [label="Break"];
+    end_row -> loop_row [label="Continue"];
+    end_row -> return [label="Break"];
+    return -> end;
+}

@@ -1,0 +1,40 @@
+digraph OptimalJobScheduling {
+    node [shape=box];
+    
+    start [label="Start"];
+    constructor [label="Constructor\nOptimalJobScheduling"];
+    execute [label="execute()"];
+    calculateCost [label="calculateCost()"];
+    showResults [label="showResults()"];
+    calculateCost_loop1 [label="for i = 0 to numberProcesses - 1"];
+    calculateCost_loop2 [label="for j = 0 to numberMachines - 1"];
+    runningCost [label="runningCost(i, j)"];
+    runningCost_if [label="if (process == 0)"];
+    runningCost_else [label="else"];
+    runningCost_loop [label="for k = 0 to numberMachines - 1"];
+    findMin [label="findMin(runningCosts)"];
+    showResults_loop1 [label="for i = 0 to numberProcesses - 1"];
+    showResults_loop2 [label="for j = 0 to numberMachines - 1"];
+    getCost [label="getCost(process, machine)"];
+    end [label="End"];
+
+    start -> constructor;
+    constructor -> execute;
+    execute -> calculateCost;
+    execute -> showResults;
+    calculateCost -> calculateCost_loop1;
+    calculateCost_loop1 -> calculateCost_loop2;
+    calculateCost_loop2 -> runningCost;
+    runningCost -> runningCost_if;
+    runningCost_if -> runningCost_else [label="False"];
+    runningCost_else -> runningCost_loop;
+    runningCost_loop -> findMin;
+    findMin -> calculateCost_loop2 [label="Continue loop"];
+    calculateCost_loop2 -> calculateCost_loop1 [label="Continue outer loop"];
+    calculateCost_loop1 -> showResults [label="End of loops"];
+    showResults -> showResults_loop1;
+    showResults_loop1 -> showResults_loop2;
+    showResults_loop2 -> showResults_loop1 [label="Continue outer loop"];
+    showResults_loop1 -> end [label="End of loops"];
+    getCost -> end;
+}

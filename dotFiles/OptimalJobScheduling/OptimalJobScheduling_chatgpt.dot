@@ -1,0 +1,96 @@
+digraph G {
+    // Start node
+    start [label="Start", shape=ellipse];
+
+    // Constructor Node
+    constructor [label="OptimalJobScheduling Constructor\n(int numberProcesses, int numberMachines, int[][] run, int[][] transfer)"];
+    
+    // execute method node
+    execute [label="execute()"];
+    calculateCost [label="calculateCost()"];
+    showResults [label="showResults()"];
+
+    // calculateCost method nodes
+    calcStart [label="calculateCost(): Start"];
+    calcOuterLoop [label="for (int i = 0; i < numberProcesses; i++)"];
+    calcInnerLoop [label="for (int j = 0; j < numberMachines; j++)"];
+    runningCost [label="runningCost(i, j)"];
+    calcEnd [label="calculateCost(): End"];
+
+    // runningCost method nodes
+    runStart [label="runningCost(int process, int machine): Start"];
+    firstProcessCheck [label="if (process == 0)"];
+    returnRun [label="return run[process][machine]"];
+    runningCostsArray [label="int[] runningCosts = new int[numberMachines]"];
+    runInnerLoop [label="for (int k = 0; k < numberMachines; k++)"];
+    runCostCalc [label="runningCosts[k] = cost[process-1][k] + transfer[k][machine] + run[process][machine]"];
+    findMinCall [label="findMin(runningCosts)"];
+    runEnd [label="runningCost(): End"];
+
+    // findMin method nodes
+    findMinStart [label="findMin(int[] costArr): Start"];
+    minInit [label="int min = 0"];
+    minLoop [label="for (int i = 1; i < costArr.length; i++)"];
+    minCheck [label="if (costArr[i] < costArr[min])"];
+    updateMin [label="min = i"];
+    returnMin [label="return costArr[min]"];
+    findMinEnd [label="findMin(): End"];
+
+    // showResults method nodes
+    showResultsStart [label="showResults(): Start"];
+    showOuterLoop [label="for (int i = 0; i < numberProcesses; i++)"];
+    showInnerLoop [label="for (int j = 0; j < numberMachines; j++)"];
+    printCost [label="System.out.print(cost[i][j])"];
+    printSpace [label="System.out.print(\" \")"];
+    printNewLine [label="System.out.println()"];
+    showResultsEnd [label="showResults(): End"];
+
+    // End node
+    end [label="End", shape=ellipse];
+
+    // Edges
+    start -> constructor;
+    constructor -> execute;
+    execute -> calculateCost;
+    calculateCost -> calcStart;
+    calcStart -> calcOuterLoop;
+    calcOuterLoop -> calcInnerLoop [label="True"];
+    calcInnerLoop -> runningCost;
+    runningCost -> calcInnerLoop [label="Next j"];
+    calcInnerLoop -> calcOuterLoop [label="Next i"];
+    calcOuterLoop -> calcEnd [label="False"];
+    calcEnd -> showResults;
+    showResults -> showResultsStart;
+    showResultsStart -> showOuterLoop;
+    showOuterLoop -> showInnerLoop [label="True"];
+    showInnerLoop -> printCost;
+    printCost -> printSpace;
+    printSpace -> showInnerLoop [label="Next j"];
+    showInnerLoop -> showOuterLoop [label="Next i"];
+    showOuterLoop -> printNewLine;
+    showOuterLoop -> showResultsEnd [label="False"];
+    showResultsEnd -> end;
+
+    // runningCost method flow
+    runningCost -> runStart;
+    runStart -> firstProcessCheck;
+    firstProcessCheck -> returnRun [label="True"];
+    firstProcessCheck -> runningCostsArray [label="False"];
+    runningCostsArray -> runInnerLoop;
+    runInnerLoop -> runCostCalc;
+    runCostCalc -> runInnerLoop [label="Next k"];
+    runInnerLoop -> findMinCall [label="Done"];
+    findMinCall -> runEnd;
+    runEnd -> calcInnerLoop;
+
+    // findMin method flow
+    findMinCall -> findMinStart;
+    findMinStart -> minInit;
+    minInit -> minLoop;
+    minLoop -> minCheck;
+    minCheck -> updateMin [label="True"];
+    minCheck -> minLoop [label="False"];
+    updateMin -> minLoop;
+    minLoop -> returnMin;
+    returnMin -> findMinEnd;
+}

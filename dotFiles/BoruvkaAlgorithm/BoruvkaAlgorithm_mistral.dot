@@ -1,0 +1,66 @@
+digraph CFG {
+    // Entry point
+    entry -> BoruvkaAlgorithm_ctor;
+    entry -> Edge_ctor;
+    entry -> Graph_ctor;
+    entry -> Component_ctor;
+    entry -> BoruvkaState_ctor;
+    entry -> boruvkaMST;
+    entry -> find;
+    entry -> union;
+    entry -> checkEdgeVertices;
+
+    // BoruvkaAlgorithm constructor
+    BoruvkaAlgorithm_ctor [label="BoruvkaAlgorithm()"];
+
+    // Edge constructor
+    Edge_ctor [label="Edge(int src, int dest, int weight)"];
+
+    // Graph constructor
+    Graph_ctor [label="Graph(int vertex, List<Edge> edges)"];
+    Graph_ctor -> checkVertex;
+    Graph_ctor -> checkEdges;
+    Graph_ctor -> checkEdgeVertices_loop;
+    checkVertex [label="if (vertex < 0) { throw new IllegalArgumentException(\"Number of vertices must be positive\"); }"];
+    checkEdges [label="if (edges == null || edges.isEmpty()) { throw new IllegalArgumentException(\"Edges list must not be null or empty\"); }"];
+    checkEdgeVertices_loop [label="for (final var edge : edges) { checkEdgeVertices(edge.src, vertex); checkEdgeVertices(edge.dest, vertex); }"];
+
+    // Component constructor
+    Component_ctor [label="Component(int parent, int rank)"];
+
+    // BoruvkaState constructor
+    BoruvkaState_ctor [label="BoruvkaState(Graph graph)"];
+    BoruvkaState_ctor -> initializeComponents;
+    initializeComponents [label="initializeComponents(Graph graph)"];
+
+    // boruvkaMST method
+    boruvkaMST [label="boruvkaMST(Graph graph)"];
+    boruvkaMST -> BoruvkaState_ctor;
+    boruvkaMST -> while_loop;
+    while_loop [label="while (boruvkaState.hasMoreEdgesToAdd()) { final var cheapest = boruvkaState.computeCheapestEdges(); boruvkaState.merge(cheapest); }"];
+    while_loop -> hasMoreEdgesToAdd;
+    while_loop -> computeCheapestEdges;
+    while_loop -> merge;
+    hasMoreEdgesToAdd [label="hasMoreEdgesToAdd()"];
+    computeCheapestEdges [label="computeCheapestEdges()"];
+    merge [label="merge(Edge[] cheapest)"];
+
+    // find method
+    find [label="find(Component[] components, int i)"];
+    find -> find_recursive;
+    find_recursive [label="if (components[i].parent != i) { components[i].parent = find(components, components[i].parent); }"];
+
+    // union method
+    union [label="union(Component[] components, int x, int y)"];
+    union -> find_xroot;
+    union -> find_yroot;
+    union -> union_operation;
+    find_xroot [label="final int xroot = find(components, x);"];
+    find_yroot [label="final int yroot = find(components, y);"];
+    union_operation [label="if (components[xroot].rank < components[yroot].rank) { components[xroot].parent = yroot; } else if (components[xroot].rank > components[yroot].rank) { components[yroot].parent = xroot; } else { components[yroot].parent = xroot; components[xroot].rank++; }"];
+
+    // checkEdgeVertices method
+    checkEdgeVertices [label="checkEdgeVertices(int vertex, int upperBound)"];
+    checkEdgeVertices -> checkVertexRange;
+    checkVertexRange [label="if (vertex < 0 || vertex >= upperBound) { throw new IllegalArgumentException(\"Edge vertex out of range\"); }"];
+}

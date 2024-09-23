@@ -1,0 +1,56 @@
+digraph TarjansAlgorithmCFG {
+  node [shape=rectangle];
+  
+  start [label="Start"];
+  init [label="Initialize variables"];
+  outer_loop [label="Outer loop\nfor i = 0 to v-1"];
+  check_unvisited [label="if insertionTime[i] == -1"];
+  call_util [label="Call stronglyConnCompsUtil()"];
+  end_outer_loop [label="End outer loop"];
+  return_sccList [label="Return sccList"];
+  end [label="End"];
+
+  subgraph cluster_util {
+    label = "stronglyConnCompsUtil()";
+    util_start [label="Start stronglyConnCompsUtil()"];
+    init_times [label="Initialize insertion and low times"];
+    push_stack [label="Push node to stack"];
+    inner_loop [label="For each adjacent vertex"];
+    check_unvisited_adj [label="if insertionTime[vertex] == -1"];
+    recursive_call [label="Recursive call to stronglyConnCompsUtil()"];
+    update_lowtime [label="Update lowTime"];
+    check_in_stack [label="if isInStack[vertex]"];
+    update_lowtime_stack [label="Update lowTime based on stack"];
+    check_scc_head [label="if lowTime[u] == insertionTime[u]"];
+    pop_scc [label="Pop SCC from stack"];
+    add_to_sccList [label="Add SCC to sccList"];
+    util_end [label="End stronglyConnCompsUtil()"];
+  }
+
+  start -> init;
+  init -> outer_loop;
+  outer_loop -> check_unvisited;
+  check_unvisited -> call_util [label="Yes"];
+  check_unvisited -> end_outer_loop [label="No"];
+  call_util -> end_outer_loop;
+  end_outer_loop -> outer_loop [label="Continue"];
+  end_outer_loop -> return_sccList [label="Done"];
+  return_sccList -> end;
+
+  util_start -> init_times;
+  init_times -> push_stack;
+  push_stack -> inner_loop;
+  inner_loop -> check_unvisited_adj;
+  check_unvisited_adj -> recursive_call [label="Yes"];
+  recursive_call -> update_lowtime;
+  check_unvisited_adj -> check_in_stack [label="No"];
+  check_in_stack -> update_lowtime_stack [label="Yes"];
+  update_lowtime_stack -> inner_loop;
+  update_lowtime -> inner_loop;
+  check_in_stack -> inner_loop [label="No"];
+  inner_loop -> check_scc_head [label="Done"];
+  check_scc_head -> pop_scc [label="Yes"];
+  pop_scc -> add_to_sccList;
+  add_to_sccList -> util_end;
+  check_scc_head -> util_end [label="No"];
+}

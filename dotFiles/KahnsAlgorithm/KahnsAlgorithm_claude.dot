@@ -1,0 +1,46 @@
+digraph ControlFlowGraph {
+  // Main graph attributes
+  rankdir=TB;
+  node [shape=rectangle, style=filled, fillcolor=lightblue];
+  
+  // AdjacencyList class
+  subgraph cluster_AdjacencyList {
+    label = "AdjacencyList";
+    AdjacencyList_constructor [label="Constructor"];
+    AdjacencyList_addEdge [label="addEdge"];
+    AdjacencyList_getAdjacents [label="getAdjacents"];
+    AdjacencyList_getVertices [label="getVertices"];
+  }
+  
+  // TopologicalSort class
+  subgraph cluster_TopologicalSort {
+    label = "TopologicalSort";
+    TopologicalSort_constructor [label="Constructor"];
+    TopologicalSort_calculateInDegree [label="calculateInDegree"];
+    TopologicalSort_topSortOrder [label="topSortOrder"];
+  }
+  
+  // KahnsAlgorithm class
+  subgraph cluster_KahnsAlgorithm {
+    label = "KahnsAlgorithm";
+    KahnsAlgorithm_main [label="main"];
+  }
+  
+  // Main method flow
+  KahnsAlgorithm_main -> AdjacencyList_constructor;
+  AdjacencyList_constructor -> AdjacencyList_addEdge [label="multiple calls"];
+  AdjacencyList_addEdge -> TopologicalSort_constructor;
+  TopologicalSort_constructor -> TopologicalSort_topSortOrder;
+  
+  // topSortOrder method flow
+  TopologicalSort_topSortOrder -> TopologicalSort_calculateInDegree;
+  TopologicalSort_calculateInDegree -> AdjacencyList_getVertices;
+  TopologicalSort_calculateInDegree -> AdjacencyList_getAdjacents;
+  TopologicalSort_topSortOrder -> AdjacencyList_getAdjacents [label="in loop"];
+  
+  // addEdge method flow
+  AdjacencyList_addEdge -> AdjacencyList_addEdge [label="recursive call"];
+  
+  // Edge styles
+  edge [color=black, arrowhead=normal];
+}
