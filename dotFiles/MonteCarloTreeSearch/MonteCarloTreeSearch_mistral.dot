@@ -1,0 +1,136 @@
+digraph MonteCarloTreeSearch {
+    node [shape=box];
+
+    // Main method
+    main_start [label="main\nstart"];
+    main_mcts [label="MonteCarloTreeSearch\nmcts = new MonteCarloTreeSearch()"];
+    main_mcts_call [label="mcts.monteCarloTreeSearch\n(mcts.new Node(null, true))"];
+    main_end [label="main\nend"];
+
+    // MonteCarloTreeSearch method
+    mcts_start [label="monteCarloTreeSearch\nstart"];
+    mcts_addChildNodes [label="addChildNodes\n(rootNode, 10)"];
+    mcts_timeLimit [label="timeLimit = System.currentTimeMillis() + TIME_LIMIT"];
+    mcts_while [label="while (System.currentTimeMillis() < timeLimit)"];
+    mcts_getPromisingNode [label="promisingNode = getPromisingNode(rootNode)"];
+    mcts_if [label="if (promisingNode.childNodes.size() == 0)"];
+    mcts_addChildNodes_promising [label="addChildNodes\n(promisingNode, 10)"];
+    mcts_simulateRandomPlay [label="simulateRandomPlay\n(promisingNode)"];
+    mcts_getWinnerNode [label="winnerNode = getWinnerNode(rootNode)"];
+    mcts_printScores [label="printScores\n(rootNode)"];
+    mcts_printOptimalNode [label="System.out.format\n(\"%nThe optimal node is: %02d%n\", rootNode.childNodes.indexOf(winnerNode) + 1)"];
+    mcts_return [label="return winnerNode"];
+    mcts_end [label="monteCarloTreeSearch\nend"];
+
+    // addChildNodes method
+    addChildNodes_start [label="addChildNodes\nstart"];
+    addChildNodes_for [label="for (int i = 0; i < childCount; i++)"];
+    addChildNodes_add [label="node.childNodes.add\n(new Node(node, !node.isPlayersTurn))"];
+    addChildNodes_end [label="addChildNodes\nend"];
+
+    // getPromisingNode method
+    getPromisingNode_start [label="getPromisingNode\nstart"];
+    getPromisingNode_promisingNode [label="promisingNode = rootNode"];
+    getPromisingNode_while [label="while (promisingNode.childNodes.size() != 0)"];
+    getPromisingNode_uctIndex [label="uctIndex = Double.MIN_VALUE"];
+    getPromisingNode_nodeIndex [label="nodeIndex = 0"];
+    getPromisingNode_for [label="for (int i = 0; i < promisingNode.childNodes.size(); i++)"];
+    getPromisingNode_childNode [label="childNode = promisingNode.childNodes.get(i)"];
+    getPromisingNode_if [label="if (childNode.visitCount == 0)"];
+    getPromisingNode_nodeIndex_set [label="nodeIndex = i"];
+    getPromisingNode_uctTemp [label="uctTemp = ((double) childNode.score / childNode.visitCount) + 1.41 * Math.sqrt(Math.log(promisingNode.visitCount) / (double) childNode.visitCount)"];
+    getPromisingNode_if_uctTemp [label="if (uctTemp > uctIndex)"];
+    getPromisingNode_uctIndex_set [label="uctIndex = uctTemp"];
+    getPromisingNode_promisingNode_set [label="promisingNode = promisingNode.childNodes.get(nodeIndex)"];
+    getPromisingNode_return [label="return promisingNode"];
+    getPromisingNode_end [label="getPromisingNode\nend"];
+
+    // simulateRandomPlay method
+    simulateRandomPlay_start [label="simulateRandomPlay\nstart"];
+    simulateRandomPlay_rand [label="Random rand = new Random()"];
+    simulateRandomPlay_tempNode [label="tempNode = promisingNode"];
+    simulateRandomPlay_playerWon [label="promisingNode.playerWon = (rand.nextInt(6) == 0)"];
+    simulateRandomPlay_isPlayerWinner [label="isPlayerWinner = promisingNode.playerWon"];
+    simulateRandomPlay_while [label="while (tempNode != null)"];
+    simulateRandomPlay_visitCount [label="tempNode.visitCount++"];
+    simulateRandomPlay_if_score [label="if ((tempNode.isPlayersTurn && isPlayerWinner) || (!tempNode.isPlayersTurn && !isPlayerWinner))"];
+    simulateRandomPlay_score [label="tempNode.score += WIN_SCORE"];
+    simulateRandomPlay_tempNode_set [label="tempNode = tempNode.parent"];
+    simulateRandomPlay_end [label="simulateRandomPlay\nend"];
+
+    // getWinnerNode method
+    getWinnerNode_start [label="getWinnerNode\nstart"];
+    getWinnerNode_return [label="return Collections.max\n(rootNode.childNodes, Comparator.comparing(c -> c.score))"];
+    getWinnerNode_end [label="getWinnerNode\nend"];
+
+    // printScores method
+    printScores_start [label="printScores\nstart"];
+    printScores_println [label="System.out.println\n(\"N.\\tScore\\t\\tVisits\")"];
+    printScores_for [label="for (int i = 0; i < rootNode.childNodes.size(); i++)"];
+    printScores_printf [label="System.out.printf\n(\"%02d\\t%d\\t\\t%d%n\", i + 1, rootNode.childNodes.get(i).score, rootNode.childNodes.get(i).visitCount)"];
+    printScores_end [label="printScores\nend"];
+
+    // Control flow edges
+    main_start -> main_mcts;
+    main_mcts -> main_mcts_call;
+    main_mcts_call -> main_end;
+
+    mcts_start -> mcts_addChildNodes;
+    mcts_addChildNodes -> mcts_timeLimit;
+    mcts_timeLimit -> mcts_while;
+    mcts_while -> mcts_getPromisingNode [style=dashed];
+    mcts_getPromisingNode -> mcts_if;
+    mcts_if -> mcts_addChildNodes_promising [label="true"];
+    mcts_if -> mcts_simulateRandomPlay [label="false"];
+    mcts_addChildNodes_promising -> mcts_simulateRandomPlay;
+    mcts_simulateRandomPlay -> mcts_while [style=dashed];
+    mcts_while -> mcts_getWinnerNode [style=dashed, label="false"];
+    mcts_getWinnerNode -> mcts_printScores;
+    mcts_printScores -> mcts_printOptimalNode;
+    mcts_printOptimalNode -> mcts_return;
+    mcts_return -> mcts_end;
+
+    addChildNodes_start -> addChildNodes_for;
+    addChildNodes_for -> addChildNodes_add [style=dashed];
+    addChildNodes_add -> addChildNodes_for [style=dashed];
+    addChildNodes_for -> addChildNodes_end [style=dashed, label="false"];
+
+    getPromisingNode_start -> getPromisingNode_promisingNode;
+    getPromisingNode_promisingNode -> getPromisingNode_while;
+    getPromisingNode_while -> getPromisingNode_uctIndex [style=dashed];
+    getPromisingNode_uctIndex -> getPromisingNode_nodeIndex;
+    getPromisingNode_nodeIndex -> getPromisingNode_for;
+    getPromisingNode_for -> getPromisingNode_childNode [style=dashed];
+    getPromisingNode_childNode -> getPromisingNode_if;
+    getPromisingNode_if -> getPromisingNode_nodeIndex_set [label="true"];
+    getPromisingNode_if -> getPromisingNode_uctTemp [label="false"];
+    getPromisingNode_uctTemp -> getPromisingNode_if_uctTemp;
+    getPromisingNode_if_uctTemp -> getPromisingNode_uctIndex_set [label="true"];
+    getPromisingNode_if_uctTemp -> getPromisingNode_for [label="false", style=dashed];
+    getPromisingNode_for -> getPromisingNode_promisingNode_set [style=dashed, label="false"];
+    getPromisingNode_promisingNode_set -> getPromisingNode_while [style=dashed];
+    getPromisingNode_while -> getPromisingNode_return [style=dashed, label="false"];
+    getPromisingNode_return -> getPromisingNode_end;
+
+    simulateRandomPlay_start -> simulateRandomPlay_rand;
+    simulateRandomPlay_rand -> simulateRandomPlay_tempNode;
+    simulateRandomPlay_tempNode -> simulateRandomPlay_playerWon;
+    simulateRandomPlay_playerWon -> simulateRandomPlay_isPlayerWinner;
+    simulateRandomPlay_isPlayerWinner -> simulateRandomPlay_while;
+    simulateRandomPlay_while -> simulateRandomPlay_visitCount [style=dashed];
+    simulateRandomPlay_visitCount -> simulateRandomPlay_if_score;
+    simulateRandomPlay_if_score -> simulateRandomPlay_score [label="true"];
+    simulateRandomPlay_if_score -> simulateRandomPlay_tempNode_set [label="false"];
+    simulateRandomPlay_score -> simulateRandomPlay_tempNode_set;
+    simulateRandomPlay_tempNode_set -> simulateRandomPlay_while [style=dashed];
+    simulateRandomPlay_while -> simulateRandomPlay_end [style=dashed, label="false"];
+
+    getWinnerNode_start -> getWinnerNode_return;
+    getWinnerNode_return -> getWinnerNode_end;
+
+    printScores_start -> printScores_println;
+    printScores_println -> printScores_for;
+    printScores_for -> printScores_printf [style=dashed];
+    printScores_printf -> printScores_for [style=dashed];
+    printScores_for -> printScores_end [style=dashed, label="false"];
+}

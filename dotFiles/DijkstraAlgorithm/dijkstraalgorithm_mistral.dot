@@ -1,0 +1,57 @@
+digraph DijkstraAlgorithm {
+    node [shape=box];
+
+    // Constructor
+    start_constructor -> constructor_init [label="DijkstraAlgorithm(int vertexCount)"];
+    constructor_init -> constructor_end [label="this.vertexCount = vertexCount"];
+    constructor_end -> end_constructor;
+
+    // run method
+    start_run -> run_init [label="run(int[][] graph, int source)"];
+    run_init -> check_source [label="if (source < 0 || source >= vertexCount)"];
+    check_source -> throw_exception [label="throw new IllegalArgumentException(\"Incorrect source\")"];
+    check_source -> init_arrays [label="else"];
+    init_arrays -> fill_distances [label="Arrays.fill(distances, Integer.MAX_VALUE)"];
+    fill_distances -> fill_processed [label="Arrays.fill(processed, false)"];
+    fill_processed -> set_source_distance [label="distances[source] = 0"];
+    set_source_distance -> for_loop_start [label="for (int count = 0; count < vertexCount - 1; count++)"];
+    for_loop_start -> get_min_distance [label="int u = getMinDistanceVertex(distances, processed)"];
+    get_min_distance -> mark_processed [label="processed[u] = true"];
+    mark_processed -> inner_for_loop_start [label="for (int v = 0; v < vertexCount; v++)"];
+    inner_for_loop_start -> update_distances [label="if (!processed[v] && graph[u][v] != 0 && distances[u] != Integer.MAX_VALUE && distances[u] + graph[u][v] < distances[v])"];
+    update_distances -> update_distance [label="distances[v] = distances[u] + graph[u][v]"];
+    update_distances -> inner_for_loop_end [label="else"];
+    inner_for_loop_end -> inner_for_loop_start [label="v++"];
+    inner_for_loop_start -> for_loop_end [label="count++"];
+    for_loop_end -> print_distances_call [label="printDistances(distances)"];
+    print_distances_call -> return_distances [label="return distances"];
+    return_distances -> end_run;
+
+    // getMinDistanceVertex method
+    start_getMinDistance -> getMinDistance_init [label="getMinDistanceVertex(int[] distances, boolean[] processed)"];
+    getMinDistance_init -> init_min [label="int min = Integer.MAX_VALUE; int minIndex = -1"];
+    init_min -> for_loop_min_start [label="for (int v = 0; v < vertexCount; v++)"];
+    for_loop_min_start -> check_min_distance [label="if (!processed[v] && distances[v] <= min)"];
+    check_min_distance -> update_min [label="min = distances[v]; minIndex = v"];
+    check_min_distance -> for_loop_min_end [label="else"];
+    for_loop_min_end -> for_loop_min_start [label="v++"];
+    for_loop_min_start -> return_min_index [label="return minIndex"];
+    return_min_index -> end_getMinDistance;
+
+    // printDistances method
+    start_printDistances -> printDistances_init [label="printDistances(int[] distances)"];
+    printDistances_init -> print_header [label="System.out.println(\"Vertex \\t Distance\")"];
+    print_header -> for_loop_print_start [label="for (int i = 0; i < vertexCount; i++)"];
+    for_loop_print_start -> print_distance [label="System.out.println(i + \" \\t \" + distances[i])"];
+    for_loop_print_start -> for_loop_print_end [label="i++"];
+    for_loop_print_end -> end_printDistances;
+
+    // Method calls
+    get_min_distance -> start_getMinDistance;
+    start_getMinDistance -> getMinDistance_init;
+    return_min_index -> mark_processed;
+
+    print_distances_call -> start_printDistances;
+    start_printDistances -> printDistances_init;
+    end_printDistances -> return_distances;
+}

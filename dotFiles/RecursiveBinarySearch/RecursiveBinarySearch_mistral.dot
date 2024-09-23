@@ -1,0 +1,66 @@
+digraph RecursiveBinarySearch {
+    node [shape=box];
+
+    // Main method
+    main_start [label="main start"];
+    main_scanner [label="Scanner sc = new Scanner(System.in)"];
+    main_input_n [label="int n = sc.nextInt()"];
+    main_array_init [label="Integer[] a = new Integer[n]"];
+    main_input_loop [label="for (int i = 0; i < n; i++) {\n    a[i] = sc.nextInt();\n}"];
+    main_input_t [label="int t = sc.nextInt()"];
+    main_searcher_init [label="RecursiveBinarySearch<Integer> searcher = new RecursiveBinarySearch<>()"];
+    main_find_call [label="int res = searcher.find(a, t)"];
+    main_check_res [label="if (res == -1)"];
+    main_not_found [label="System.out.println(\"Element not found in the array.\")"];
+    main_found [label="System.out.println(\"Element found at index \" + res)"];
+    main_end [label="main end"];
+
+    // Find method
+    find_start [label="find start"];
+    find_binsear_call [label="return binsear(arr, 0, arr.length - 1, target)"];
+    find_end [label="find end"];
+
+    // Binsear method
+    binsear_start [label="binsear start"];
+    binsear_check_right [label="if (right >= left)"];
+    binsear_mid_calc [label="int mid = left + (right - left) / 2"];
+    binsear_compare [label="int comparison = arr[mid].compareTo(target)"];
+    binsear_check_equal [label="if (comparison == 0)"];
+    binsear_return_mid [label="return mid"];
+    binsear_check_greater [label="if (comparison > 0)"];
+    binsear_binsear_left [label="return binsear(arr, left, mid - 1, target)"];
+    binsear_binsear_right [label="return binsear(arr, mid + 1, right, target)"];
+    binsear_return_neg1 [label="return -1"];
+    binsear_end [label="binsear end"];
+
+    // Control flow edges
+    main_start -> main_scanner;
+    main_scanner -> main_input_n;
+    main_input_n -> main_array_init;
+    main_array_init -> main_input_loop;
+    main_input_loop -> main_input_t;
+    main_input_t -> main_searcher_init;
+    main_searcher_init -> main_find_call;
+    main_find_call -> main_check_res;
+    main_check_res -> main_not_found [label="true"];
+    main_check_res -> main_found [label="false"];
+    main_not_found -> main_end;
+    main_found -> main_end;
+
+    find_start -> find_binsear_call;
+    find_binsear_call -> find_end;
+
+    binsear_start -> binsear_check_right;
+    binsear_check_right -> binsear_mid_calc [label="true"];
+    binsear_check_right -> binsear_return_neg1 [label="false"];
+    binsear_mid_calc -> binsear_compare;
+    binsear_compare -> binsear_check_equal;
+    binsear_check_equal -> binsear_return_mid [label="true"];
+    binsear_check_equal -> binsear_check_greater [label="false"];
+    binsear_check_greater -> binsear_binsear_left [label="true"];
+    binsear_check_greater -> binsear_binsear_right [label="false"];
+    binsear_binsear_left -> binsear_end;
+    binsear_binsear_right -> binsear_end;
+    binsear_return_neg1 -> binsear_end;
+    binsear_return_mid -> binsear_end;
+}

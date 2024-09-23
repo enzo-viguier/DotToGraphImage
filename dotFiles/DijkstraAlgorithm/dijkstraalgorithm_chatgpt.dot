@@ -1,0 +1,68 @@
+digraph DijkstraAlgorithm {
+    // Method: run
+    "run_start" [label="run(): start"];
+    "run_if_source_check" [label="if (source < 0 || source >= vertexCount)"];
+    "run_throw_exception" [label="throw new IllegalArgumentException('Incorrect source')"];
+    "run_initialize_distances" [label="Arrays.fill(distances, Integer.MAX_VALUE)"];
+    "run_initialize_processed" [label="Arrays.fill(processed, false)"];
+    "run_set_source_distance" [label="distances[source] = 0"];
+    "run_for_loop_1" [label="for (count = 0; count < vertexCount - 1; count++)"];
+    "run_get_min_vertex" [label="getMinDistanceVertex()"];
+    "run_set_processed" [label="processed[u] = true"];
+    "run_inner_for_loop" [label="for (v = 0; v < vertexCount; v++)"];
+    "run_if_update_distance" [label="if (!processed[v] && graph[u][v] != 0 && distances[u] != Integer.MAX_VALUE && distances[u] + graph[u][v] < distances[v])"];
+    "run_update_distance" [label="distances[v] = distances[u] + graph[u][v]"];
+    "run_print_distances" [label="printDistances(distances)"];
+    "run_return" [label="return distances"];
+    "run_end" [label="run(): end"];
+
+    // CFG for method 'run'
+    "run_start" -> "run_if_source_check";
+    "run_if_source_check" -> "run_throw_exception" [label="true"];
+    "run_if_source_check" -> "run_initialize_distances" [label="false"];
+    "run_initialize_distances" -> "run_initialize_processed";
+    "run_initialize_processed" -> "run_set_source_distance";
+    "run_set_source_distance" -> "run_for_loop_1";
+    "run_for_loop_1" -> "run_get_min_vertex" [label="loop"];
+    "run_get_min_vertex" -> "run_set_processed";
+    "run_set_processed" -> "run_inner_for_loop";
+    "run_inner_for_loop" -> "run_if_update_distance" [label="loop"];
+    "run_if_update_distance" -> "run_update_distance" [label="true"];
+    "run_if_update_distance" -> "run_inner_for_loop" [label="false"];
+    "run_update_distance" -> "run_inner_for_loop";
+    "run_inner_for_loop" -> "run_for_loop_1" [label="next iteration"];
+    "run_for_loop_1" -> "run_print_distances" [label="exit"];
+    "run_print_distances" -> "run_return";
+    "run_return" -> "run_end";
+
+    // Method: getMinDistanceVertex
+    "getMin_start" [label="getMinDistanceVertex(): start"];
+    "getMin_for_loop" [label="for (v = 0; v < vertexCount; v++)"];
+    "getMin_if_min_update" [label="if (!processed[v] && distances[v] <= min)"];
+    "getMin_update_min" [label="min = distances[v]; minIndex = v"];
+    "getMin_return" [label="return minIndex"];
+    "getMin_end" [label="getMinDistanceVertex(): end"];
+
+    // CFG for method 'getMinDistanceVertex'
+    "getMin_start" -> "getMin_for_loop";
+    "getMin_for_loop" -> "getMin_if_min_update" [label="loop"];
+    "getMin_if_min_update" -> "getMin_update_min" [label="true"];
+    "getMin_if_min_update" -> "getMin_for_loop" [label="false"];
+    "getMin_update_min" -> "getMin_for_loop";
+    "getMin_for_loop" -> "getMin_return" [label="exit"];
+    "getMin_return" -> "getMin_end";
+
+    // Method: printDistances
+    "print_start" [label="printDistances(): start"];
+    "print_print_header" [label="System.out.println('Vertex \t Distance')"];
+    "print_for_loop" [label="for (i = 0; i < vertexCount; i++)"];
+    "print_print_each" [label="System.out.println(i + ' \t ' + distances[i])"];
+    "print_end" [label="printDistances(): end"];
+
+    // CFG for method 'printDistances'
+    "print_start" -> "print_print_header";
+    "print_print_header" -> "print_for_loop";
+    "print_for_loop" -> "print_print_each" [label="loop"];
+    "print_print_each" -> "print_for_loop";
+    "print_for_loop" -> "print_end" [label="exit"];
+}

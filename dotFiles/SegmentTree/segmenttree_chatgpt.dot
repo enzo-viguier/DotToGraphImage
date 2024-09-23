@@ -1,0 +1,109 @@
+digraph CFG {
+    node [shape=box];
+
+    // Constructor: SegmentTree
+    SegmentTree_start [label="SegmentTree(int n, int[] arr)"];
+    log_calculation [label="x = (int) (Math.ceil(Math.log(n) / Math.log(2)))"];
+    segSize_calculation [label="segSize = 2 * (int) Math.pow(2, x) - 1"];
+    segTree_init [label="segTree = new int[segSize]"];
+    arr_init [label="this.arr = arr"];
+    n_init [label="this.n = n"];
+    constructTree_call [label="constructTree(arr, 0, n - 1, 0)"];
+    SegmentTree_end [label="End of Constructor"];
+
+    SegmentTree_start -> log_calculation;
+    log_calculation -> segSize_calculation;
+    segSize_calculation -> segTree_init;
+    segTree_init -> arr_init;
+    arr_init -> n_init;
+    n_init -> constructTree_call;
+    constructTree_call -> SegmentTree_end;
+
+    // Method: constructTree
+    constructTree_start [label="constructTree(arr, start, end, index)"];
+    base_case_check [label="start == end"];
+    base_case_true [label="segTree[index] = arr[start]"];
+    base_case_return [label="return arr[start]"];
+    mid_calculation [label="mid = start + (end - start) / 2"];
+    constructTree_left [label="constructTree(arr, start, mid, index * 2 + 1)"];
+    constructTree_right [label="constructTree(arr, mid + 1, end, index * 2 + 2)"];
+    segTree_update [label="segTree[index] = left + right"];
+    constructTree_return [label="return segTree[index]"];
+
+    constructTree_start -> base_case_check;
+    base_case_check -> base_case_true [label="true"];
+    base_case_true -> base_case_return;
+    base_case_check -> mid_calculation [label="false"];
+    mid_calculation -> constructTree_left;
+    constructTree_left -> constructTree_right;
+    constructTree_right -> segTree_update;
+    segTree_update -> constructTree_return;
+
+    // Method: update
+    update_start [label="update(int index, int value)"];
+    update_invalid_check [label="index < 0 || index > n"];
+    update_invalid_return [label="return"];
+    diff_calculation [label="diff = value - arr[index]"];
+    arr_update [label="arr[index] = value"];
+    updateTree_call [label="updateTree(0, n - 1, index, diff, 0)"];
+    update_end [label="End of update()"];
+
+    update_start -> update_invalid_check;
+    update_invalid_check -> update_invalid_return [label="true"];
+    update_invalid_check -> diff_calculation [label="false"];
+    diff_calculation -> arr_update;
+    arr_update -> updateTree_call;
+    updateTree_call -> update_end;
+
+    // Method: updateTree
+    updateTree_start [label="updateTree(start, end, index, diff, segIndex)"];
+    updateTree_out_of_bounds_check [label="index < start || index > end"];
+    updateTree_out_of_bounds_return [label="return"];
+    segTree_update_diff [label="segTree[segIndex] += diff"];
+    updateTree_base_check [label="start != end"];
+    mid_calculation_updateTree [label="mid = start + (end - start) / 2"];
+    updateTree_left [label="updateTree(start, mid, index, diff, segIndex * 2 + 1)"];
+    updateTree_right [label="updateTree(mid + 1, end, index, diff, segIndex * 2 + 2)"];
+    updateTree_end [label="End of updateTree()"];
+
+    updateTree_start -> updateTree_out_of_bounds_check;
+    updateTree_out_of_bounds_check -> updateTree_out_of_bounds_return [label="true"];
+    updateTree_out_of_bounds_check -> segTree_update_diff [label="false"];
+    segTree_update_diff -> updateTree_base_check;
+    updateTree_base_check -> mid_calculation_updateTree [label="true"];
+    mid_calculation_updateTree -> updateTree_left;
+    updateTree_left -> updateTree_right;
+    updateTree_right -> updateTree_end;
+
+    // Method: getSum
+    getSum_start [label="getSum(int start, int end)"];
+    getSum_invalid_check [label="start < 0 || end > n || start > end"];
+    getSum_invalid_return [label="return 0"];
+    getSumTree_call [label="getSumTree(0, n - 1, start, end, 0)"];
+    getSum_end [label="End of getSum()"];
+
+    getSum_start -> getSum_invalid_check;
+    getSum_invalid_check -> getSum_invalid_return [label="true"];
+    getSum_invalid_check -> getSumTree_call [label="false"];
+    getSumTree_call -> getSum_end;
+
+    // Method: getSumTree
+    getSumTree_start [label="getSumTree(start, end, qStart, qEnd, segIndex)"];
+    query_within_range [label="qStart <= start && qEnd >= end"];
+    query_out_of_range [label="qStart > end || qEnd < start"];
+    query_return_segTree [label="return segTree[segIndex]"];
+    query_return_zero [label="return 0"];
+    mid_calculation_getSumTree [label="mid = start + (end - start) / 2"];
+    getSumTree_left [label="getSumTree(start, mid, qStart, qEnd, segIndex * 2 + 1)"];
+    getSumTree_right [label="getSumTree(mid + 1, end, qStart, qEnd, segIndex * 2 + 2)"];
+    getSumTree_return_sum [label="return left + right"];
+
+    getSumTree_start -> query_within_range;
+    query_within_range -> query_return_segTree [label="true"];
+    query_within_range -> mid_calculation_getSumTree [label="false"];
+    query_out_of_range -> query_return_zero [label="true"];
+    query_out_of_range -> mid_calculation_getSumTree [label="false"];
+    mid_calculation_getSumTree -> getSumTree_left;
+    getSumTree_left -> getSumTree_right;
+    getSumTree_right -> getSumTree_return_sum;
+}

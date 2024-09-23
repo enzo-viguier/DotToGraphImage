@@ -1,0 +1,178 @@
+digraph MatrixGraphs {
+    node [shape=box];
+
+    // Main method
+    main_start [label="main_start"];
+    main_1 [label="AdjacencyMatrixGraph graph = new AdjacencyMatrixGraph(10);"];
+    main_2 [label="graph.addEdge(1, 2);"];
+    main_3 [label="graph.addEdge(1, 5);"];
+    main_4 [label="graph.addEdge(2, 5);"];
+    main_5 [label="graph.addEdge(1, 2);"];
+    main_6 [label="graph.addEdge(2, 3);"];
+    main_7 [label="graph.addEdge(3, 4);"];
+    main_8 [label="graph.addEdge(4, 1);"];
+    main_9 [label="graph.addEdge(2, 3);"];
+    main_10 [label="graph.addEdge(3, 9);"];
+    main_11 [label="graph.addEdge(9, 1);"];
+    main_12 [label="graph.addEdge(9, 8);"];
+    main_13 [label="graph.addEdge(1, 8);"];
+    main_14 [label="graph.addEdge(5, 6);"];
+    main_15 [label="System.out.println(\"The graph matrix:\");"];
+    main_16 [label="System.out.println(graph);"];
+    main_17 [label="System.out.println(\"Depth first order beginning at node '1':\");"];
+    main_18 [label="System.out.println(graph.depthFirstOrder(1));"];
+    main_19 [label="System.out.println(\"Breadth first order beginning at node '1':\");"];
+    main_20 [label="System.out.println(graph.breadthFirstOrder(1));"];
+    main_end [label="main_end"];
+
+    main_start -> main_1;
+    main_1 -> main_2;
+    main_2 -> main_3;
+    main_3 -> main_4;
+    main_4 -> main_5;
+    main_5 -> main_6;
+    main_6 -> main_7;
+    main_7 -> main_8;
+    main_8 -> main_9;
+    main_9 -> main_10;
+    main_10 -> main_11;
+    main_11 -> main_12;
+    main_12 -> main_13;
+    main_13 -> main_14;
+    main_14 -> main_15;
+    main_15 -> main_16;
+    main_16 -> main_17;
+    main_17 -> main_18;
+    main_18 -> main_19;
+    main_19 -> main_20;
+    main_20 -> main_end;
+
+    // AdjacencyMatrixGraph Constructor
+    constructor_start [label="AdjacencyMatrixGraph(int givenNumberOfVertices) start"];
+    constructor_1 [label="this.setNumberOfVertices(givenNumberOfVertices);"];
+    constructor_2 [label="this.setNumberOfEdges(0);"];
+    constructor_3 [label="this.setAdjacency(new int[givenNumberOfVertices][givenNumberOfVertices]);"];
+    constructor_4 [label="for (int i = 0; i < givenNumberOfVertices; i++) {"];
+    constructor_5 [label="for (int j = 0; j < givenNumberOfVertices; j++) {"];
+    constructor_6 [label="this.adjacency()[i][j] = AdjacencyMatrixGraph.EDGE_NONE;"];
+    constructor_end [label="AdjacencyMatrixGraph(int givenNumberOfVertices) end"];
+
+    constructor_start -> constructor_1;
+    constructor_1 -> constructor_2;
+    constructor_2 -> constructor_3;
+    constructor_3 -> constructor_4;
+    constructor_4 -> constructor_5;
+    constructor_5 -> constructor_6;
+    constructor_6 -> constructor_5 [label="j++"];
+    constructor_5 -> constructor_4 [label="i++"];
+    constructor_4 -> constructor_end;
+
+    // addEdge method
+    addEdge_start [label="addEdge(int from, int to) start"];
+    addEdge_1 [label="if (this.vertexDoesExist(from) && this.vertexDoesExist(to)) {"];
+    addEdge_2 [label="if (!this.adjacencyOfEdgeDoesExist(from, to)) {"];
+    addEdge_3 [label="this.adjacency()[from][to] = AdjacencyMatrixGraph.EDGE_EXIST;"];
+    addEdge_4 [label="this.adjacency()[to][from] = AdjacencyMatrixGraph.EDGE_EXIST;"];
+    addEdge_5 [label="this.setNumberOfEdges(this.numberOfEdges() + 1);"];
+    addEdge_6 [label="return true;"];
+    addEdge_7 [label="return false;"];
+    addEdge_end [label="addEdge(int from, int to) end"];
+
+    addEdge_start -> addEdge_1;
+    addEdge_1 -> addEdge_2 [label="true"];
+    addEdge_2 -> addEdge_3 [label="true"];
+    addEdge_3 -> addEdge_4;
+    addEdge_4 -> addEdge_5;
+    addEdge_5 -> addEdge_6;
+    addEdge_6 -> addEdge_end;
+    addEdge_2 -> addEdge_7 [label="false"];
+    addEdge_7 -> addEdge_end;
+    addEdge_1 -> addEdge_7 [label="false"];
+
+    // depthFirstOrder method
+    depthFirstOrder_start [label="depthFirstOrder(int startVertex) start"];
+    depthFirstOrder_1 [label="if (startVertex >= vertexCount || startVertex < 0) {"];
+    depthFirstOrder_2 [label="return new ArrayList<Integer>();"];
+    depthFirstOrder_3 [label="boolean[] visited = new boolean[vertexCount];"];
+    depthFirstOrder_4 [label="ArrayList<Integer> orderList = new ArrayList<Integer>();"];
+    depthFirstOrder_5 [label="depthFirstOrder(startVertex, visited, orderList);"];
+    depthFirstOrder_6 [label="return orderList;"];
+    depthFirstOrder_end [label="depthFirstOrder(int startVertex) end"];
+
+    depthFirstOrder_start -> depthFirstOrder_1;
+    depthFirstOrder_1 -> depthFirstOrder_2 [label="true"];
+    depthFirstOrder_2 -> depthFirstOrder_end;
+    depthFirstOrder_1 -> depthFirstOrder_3 [label="false"];
+    depthFirstOrder_3 -> depthFirstOrder_4;
+    depthFirstOrder_4 -> depthFirstOrder_5;
+    depthFirstOrder_5 -> depthFirstOrder_6;
+    depthFirstOrder_6 -> depthFirstOrder_end;
+
+    // depthFirstOrder helper method
+    depthFirstOrderHelper_start [label="depthFirstOrder(int currentVertex, boolean[] visited, List<Integer> orderList) start"];
+    depthFirstOrderHelper_1 [label="if (visited[currentVertex]) {"];
+    depthFirstOrderHelper_2 [label="return;"];
+    depthFirstOrderHelper_3 [label="visited[currentVertex] = true;"];
+    depthFirstOrderHelper_4 [label="orderList.add(currentVertex);"];
+    depthFirstOrderHelper_5 [label="int[] adjacent = adjMatrix[currentVertex];"];
+    depthFirstOrderHelper_6 [label="for (int i = 0; i < adjacent.length; i++) {"];
+    depthFirstOrderHelper_7 [label="if (adjacent[i] == AdjacencyMatrixGraph.EDGE_EXIST) {"];
+    depthFirstOrderHelper_8 [label="depthFirstOrder(i, visited, orderList);"];
+    depthFirstOrderHelper_end [label="depthFirstOrder(int currentVertex, boolean[] visited, List<Integer> orderList) end"];
+
+    depthFirstOrderHelper_start -> depthFirstOrderHelper_1;
+    depthFirstOrderHelper_1 -> depthFirstOrderHelper_2 [label="true"];
+    depthFirstOrderHelper_2 -> depthFirstOrderHelper_end;
+    depthFirstOrderHelper_1 -> depthFirstOrderHelper_3 [label="false"];
+    depthFirstOrderHelper_3 -> depthFirstOrderHelper_4;
+    depthFirstOrderHelper_4 -> depthFirstOrderHelper_5;
+    depthFirstOrderHelper_5 -> depthFirstOrderHelper_6;
+    depthFirstOrderHelper_6 -> depthFirstOrderHelper_7;
+    depthFirstOrderHelper_7 -> depthFirstOrderHelper_8 [label="true"];
+    depthFirstOrderHelper_8 -> depthFirstOrderHelper_6 [label="i++"];
+    depthFirstOrderHelper_6 -> depthFirstOrderHelper_end [label="false"];
+
+    // breadthFirstOrder method
+    breadthFirstOrder_start [label="breadthFirstOrder(int startVertex) start"];
+    breadthFirstOrder_1 [label="if (startVertex >= vertexCount || startVertex < 0) {"];
+    breadthFirstOrder_2 [label="return new ArrayList<Integer>();"];
+    breadthFirstOrder_3 [label="boolean[] visited = new boolean[vertexCount];"];
+    breadthFirstOrder_4 [label="ArrayList<Integer> orderList = new ArrayList<Integer>();"];
+    breadthFirstOrder_5 [label="Queue<Integer> queue = new LinkedList<Integer>();"];
+    breadthFirstOrder_6 [label="queue.add(startVertex);"];
+    breadthFirstOrder_7 [label="while (!queue.isEmpty()) {"];
+    breadthFirstOrder_8 [label="int currentVertex = queue.poll();"];
+    breadthFirstOrder_9 [label="if (visited[currentVertex]) {"];
+    breadthFirstOrder_10 [label="continue;"];
+    breadthFirstOrder_11 [label="orderList.add(currentVertex);"];
+    breadthFirstOrder_12 [label="visited[currentVertex] = true;"];
+    breadthFirstOrder_13 [label="int[] adjacent = adjMatrix[currentVertex];"];
+    breadthFirstOrder_14 [label="for (int vertex = 0; vertex < adjacent.length; vertex++) {"];
+    breadthFirstOrder_15 [label="if (adjacent[vertex] == AdjacencyMatrixGraph.EDGE_EXIST) {"];
+    breadthFirstOrder_16 [label="queue.add(vertex);"];
+    breadthFirstOrder_17 [label="return orderList;"];
+    breadthFirstOrder_end [label="breadthFirstOrder(int startVertex) end"];
+
+    breadthFirstOrder_start -> breadthFirstOrder_1;
+    breadthFirstOrder_1 -> breadthFirstOrder_2 [label="true"];
+    breadthFirstOrder_2 -> breadthFirstOrder_end;
+    breadthFirstOrder_1 -> breadthFirstOrder_3 [label="false"];
+    breadthFirstOrder_3 -> breadthFirstOrder_4;
+    breadthFirstOrder_4 -> breadthFirstOrder_5;
+    breadthFirstOrder_5 -> breadthFirstOrder_6;
+    breadthFirstOrder_6 -> breadthFirstOrder_7;
+    breadthFirstOrder_7 -> breadthFirstOrder_8;
+    breadthFirstOrder_8 -> breadthFirstOrder_9;
+    breadthFirstOrder_9 -> breadthFirstOrder_10 [label="true"];
+    breadthFirstOrder_10 -> breadthFirstOrder_7 [label="continue"];
+    breadthFirstOrder_9 -> breadthFirstOrder_11 [label="false"];
+    breadthFirstOrder_11 -> breadthFirstOrder_12;
+    breadthFirstOrder_12 -> breadthFirstOrder_13;
+    breadthFirstOrder_13 -> breadthFirstOrder_14;
+    breadthFirstOrder_14 -> breadthFirstOrder_15;
+    breadthFirstOrder_15 -> breadthFirstOrder_16 [label="true"];
+    breadthFirstOrder_16 -> breadthFirstOrder_14 [label="vertex++"];
+    breadthFirstOrder_14 -> breadthFirstOrder_7 [label="false"];
+    breadthFirstOrder_7 -> breadthFirstOrder_17 [label="false"];
+    breadthFirstOrder_17 -> breadthFirstOrder_end;
+}

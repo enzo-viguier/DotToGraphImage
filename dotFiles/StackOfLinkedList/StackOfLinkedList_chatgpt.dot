@@ -1,0 +1,70 @@
+digraph G {
+    node [shape=box];
+
+    // Entry point - main method
+    main_start [label="main()"];
+    stack_init [label="LinkedListStack stack = new LinkedListStack()"];
+    push_1 [label="stack.push(1)"];
+    push_2 [label="stack.push(2)"];
+    push_3 [label="stack.push(3)"];
+    push_4 [label="stack.push(4)"];
+    push_5 [label="stack.push(5)"];
+    print_stack [label="System.out.println(stack)"];
+    print_size [label="System.out.println(\"Size of stack currently is: \" + stack.getSize())"];
+    pop_5 [label="assert stack.pop() == 5"];
+    pop_4 [label="assert stack.pop() == 4"];
+    print_peek [label="System.out.println(\"Top element of stack currently is: \" + stack.peek())"];
+    main_end [label="End of main()"];
+
+    // Push flow
+    main_start -> stack_init -> push_1 -> push_2 -> push_3 -> push_4 -> push_5 -> print_stack -> print_size -> pop_5 -> pop_4 -> print_peek -> main_end;
+
+    // Push function calls
+    push_1_func [label="push(1)"];
+    push_2_func [label="push(2)"];
+    push_3_func [label="push(3)"];
+    push_4_func [label="push(4)"];
+    push_5_func [label="push(5)"];
+
+    push_1 -> push_1_func;
+    push_2 -> push_2_func;
+    push_3 -> push_3_func;
+    push_4 -> push_4_func;
+    push_5 -> push_5_func;
+
+    // pop flow
+    pop_5_func [label="pop()"];
+    pop_4_func [label="pop()"];
+
+    pop_5 -> pop_5_func;
+    pop_4 -> pop_4_func;
+
+    // peek flow
+    peek_func [label="peek()"];
+    print_peek -> peek_func;
+
+    // Internal methods
+    push_flow [label="Push Method Flow"];
+    pop_flow [label="Pop Method Flow"];
+    peek_flow [label="Peek Method Flow"];
+    
+    push_1_func -> push_flow;
+    pop_5_func -> pop_flow;
+    peek_func -> peek_flow;
+
+    // Method internals
+    push_flow -> push_check_empty [label="Check if stack is empty"];
+    push_check_empty -> push_add_node [label="Add new node to stack"];
+    push_add_node -> push_return [label="Return true"];
+
+    pop_flow -> pop_check_empty [label="Check if stack is empty"];
+    pop_check_empty -> pop_throw_exception [label="Throw NoSuchElementException"];
+    pop_check_empty -> pop_get_head [label="Get head element"];
+    pop_get_head -> pop_update_head [label="Update head to next node"];
+    pop_update_head -> pop_decrement_size [label="Decrement size"];
+    pop_decrement_size -> pop_return_value [label="Return popped value"];
+
+    peek_flow -> peek_check_empty [label="Check if stack is empty"];
+    peek_check_empty -> peek_throw_exception [label="Throw NoSuchElementException"];
+    peek_check_empty -> peek_return_head [label="Return head data"];
+}

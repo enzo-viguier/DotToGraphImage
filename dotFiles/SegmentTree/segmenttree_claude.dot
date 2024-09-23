@@ -1,0 +1,92 @@
+digraph SegmentTree {
+    node [shape=rectangle];
+    
+    // Constructor
+    start_constructor [label="Start Constructor"];
+    init_variables [label="Initialize variables"];
+    calc_segSize [label="Calculate segSize"];
+    create_segTree [label="Create segTree array"];
+    call_constructTree [label="Call constructTree()"];
+    end_constructor [label="End Constructor"];
+    
+    start_constructor -> init_variables -> calc_segSize -> create_segTree -> call_constructTree -> end_constructor;
+    
+    // constructTree method
+    start_constructTree [label="Start constructTree()"];
+    check_base_case [label="start == end?"];
+    set_base_case [label="Set segTree[index] = arr[start]"];
+    calculate_mid [label="Calculate mid"];
+    recursive_call_left [label="Recursive call (left)"];
+    recursive_call_right [label="Recursive call (right)"];
+    set_segTree_value [label="Set segTree[index]"];
+    return_segTree_value [label="Return segTree[index]"];
+    end_constructTree [label="End constructTree()"];
+    
+    start_constructTree -> check_base_case;
+    check_base_case -> set_base_case [label="Yes"];
+    check_base_case -> calculate_mid [label="No"];
+    set_base_case -> return_segTree_value;
+    calculate_mid -> recursive_call_left -> recursive_call_right -> set_segTree_value -> return_segTree_value;
+    return_segTree_value -> end_constructTree;
+    
+    // updateTree method
+    start_updateTree [label="Start updateTree()"];
+    check_index_range [label="index in range?"];
+    update_segTree [label="Update segTree[segIndex]"];
+    check_not_leaf [label="start != end?"];
+    calculate_mid_update [label="Calculate mid"];
+    recursive_update_left [label="Recursive update (left)"];
+    recursive_update_right [label="Recursive update (right)"];
+    end_updateTree [label="End updateTree()"];
+    
+    start_updateTree -> check_index_range;
+    check_index_range -> update_segTree [label="Yes"];
+    check_index_range -> end_updateTree [label="No"];
+    update_segTree -> check_not_leaf;
+    check_not_leaf -> calculate_mid_update [label="Yes"];
+    check_not_leaf -> end_updateTree [label="No"];
+    calculate_mid_update -> recursive_update_left -> recursive_update_right -> end_updateTree;
+    
+    // update method
+    start_update [label="Start update()"];
+    check_index_valid [label="index valid?"];
+    calculate_diff [label="Calculate diff"];
+    update_arr [label="Update arr[index]"];
+    call_updateTree [label="Call updateTree()"];
+    end_update [label="End update()"];
+    
+    start_update -> check_index_valid;
+    check_index_valid -> calculate_diff [label="Yes"];
+    check_index_valid -> end_update [label="No"];
+    calculate_diff -> update_arr -> call_updateTree -> end_update;
+    
+    // getSumTree method
+    start_getSumTree [label="Start getSumTree()"];
+    check_total_overlap [label="Total overlap?"];
+    check_no_overlap [label="No overlap?"];
+    calculate_mid_sum [label="Calculate mid"];
+    recursive_sum_left [label="Recursive sum (left)"];
+    recursive_sum_right [label="Recursive sum (right)"];
+    return_sum [label="Return sum"];
+    end_getSumTree [label="End getSumTree()"];
+    
+    start_getSumTree -> check_total_overlap;
+    check_total_overlap -> return_sum [label="Yes"];
+    check_total_overlap -> check_no_overlap [label="No"];
+    check_no_overlap -> return_sum [label="Yes"];
+    check_no_overlap -> calculate_mid_sum [label="No"];
+    calculate_mid_sum -> recursive_sum_left -> recursive_sum_right -> return_sum;
+    return_sum -> end_getSumTree;
+    
+    // getSum method
+    start_getSum [label="Start getSum()"];
+    check_range_valid [label="Range valid?"];
+    call_getSumTree [label="Call getSumTree()"];
+    return_result [label="Return result"];
+    end_getSum [label="End getSum()"];
+    
+    start_getSum -> check_range_valid;
+    check_range_valid -> call_getSumTree [label="Yes"];
+    check_range_valid -> return_result [label="No"];
+    call_getSumTree -> return_result -> end_getSum;
+}

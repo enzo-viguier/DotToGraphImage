@@ -1,0 +1,45 @@
+digraph MonteCarloTreeSearch {
+    // Main nodes
+    node [shape=rectangle];
+    main [label="main()"];
+    monteCarloTreeSearch [label="monteCarloTreeSearch(Node)"];
+    addChildNodes [label="addChildNodes(Node, int)"];
+    getPromisingNode [label="getPromisingNode(Node)"];
+    simulateRandomPlay [label="simulateRandomPlay(Node)"];
+    getWinnerNode [label="getWinnerNode(Node)"];
+    printScores [label="printScores(Node)"];
+
+    // Control flow
+    main -> monteCarloTreeSearch;
+    monteCarloTreeSearch -> addChildNodes;
+    monteCarloTreeSearch -> getPromisingNode;
+    monteCarloTreeSearch -> addChildNodes [label="if childNodes.size() == 0"];
+    monteCarloTreeSearch -> simulateRandomPlay;
+    monteCarloTreeSearch -> getWinnerNode;
+    monteCarloTreeSearch -> printScores;
+
+    // Subgraph for getPromisingNode
+    subgraph cluster_getPromisingNode {
+        label = "getPromisingNode details";
+        node [shape=rectangle];
+        checkChildNodes [label="Check child nodes"];
+        calculateUCT [label="Calculate UCT"];
+        selectNode [label="Select promising node"];
+
+        getPromisingNode -> checkChildNodes;
+        checkChildNodes -> calculateUCT [label="if visitCount > 0"];
+        calculateUCT -> selectNode;
+        checkChildNodes -> selectNode [label="if visitCount == 0"];
+    }
+
+    // Subgraph for simulateRandomPlay
+    subgraph cluster_simulateRandomPlay {
+        label = "simulateRandomPlay details";
+        node [shape=rectangle];
+        randomPlay [label="Simulate random play"];
+        backPropagate [label="Back propagate results"];
+
+        simulateRandomPlay -> randomPlay;
+        randomPlay -> backPropagate;
+    }
+}

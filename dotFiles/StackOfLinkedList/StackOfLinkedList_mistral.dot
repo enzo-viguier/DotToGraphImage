@@ -1,0 +1,127 @@
+digraph CFG {
+    rankdir=TB;
+    node [shape=box];
+
+    // Main method
+    main_start [label="main_start"];
+    main_stack_init [label="LinkedListStack stack = new LinkedListStack();"];
+    main_push1 [label="stack.push(1);"];
+    main_push2 [label="stack.push(2);"];
+    main_push3 [label="stack.push(3);"];
+    main_push4 [label="stack.push(4);"];
+    main_push5 [label="stack.push(5);"];
+    main_print_stack [label="System.out.println(stack);"];
+    main_print_size [label="System.out.println(\"Size of stack currently is: \" + stack.getSize());"];
+    main_assert1 [label="assert stack.pop() == 5;"];
+    main_assert2 [label="assert stack.pop() == 4;"];
+    main_print_peek [label="System.out.println(\"Top element of stack currently is: \" + stack.peek());"];
+    main_end [label="main_end"];
+
+    main_start -> main_stack_init;
+    main_stack_init -> main_push1;
+    main_push1 -> main_push2;
+    main_push2 -> main_push3;
+    main_push3 -> main_push4;
+    main_push4 -> main_push5;
+    main_push5 -> main_print_stack;
+    main_print_stack -> main_print_size;
+    main_print_size -> main_assert1;
+    main_assert1 -> main_assert2;
+    main_assert2 -> main_print_peek;
+    main_print_peek -> main_end;
+
+    // LinkedListStack constructor
+    constructor_start [label="LinkedListStack()"];
+    constructor_init [label="head = null; size = 0;"];
+    constructor_end [label="constructor_end"];
+
+    constructor_start -> constructor_init;
+    constructor_init -> constructor_end;
+
+    // push method
+    push_start [label="push_start"];
+    push_new_node [label="Node newNode = new Node(x);"];
+    push_set_next [label="newNode.next = head;"];
+    push_set_head [label="head = newNode;"];
+    push_inc_size [label="size++;"];
+    push_return [label="return true;"];
+    push_end [label="push_end"];
+
+    push_start -> push_new_node;
+    push_new_node -> push_set_next;
+    push_set_next -> push_set_head;
+    push_set_head -> push_inc_size;
+    push_inc_size -> push_return;
+    push_return -> push_end;
+
+    // pop method
+    pop_start [label="pop_start"];
+    pop_check_empty [label="if (size == 0)"];
+    pop_throw_exception [label="throw new NoSuchElementException(\"Empty stack. Nothing to pop\");"];
+    pop_destroy [label="Node destroy = head;"];
+    pop_set_head [label="head = head.next;"];
+    pop_ret_value [label="int retValue = destroy.data;"];
+    pop_clear_destroy [label="destroy = null;"];
+    pop_dec_size [label="size--;"];
+    pop_return [label="return retValue;"];
+    pop_end [label="pop_end"];
+
+    pop_start -> pop_check_empty;
+    pop_check_empty -> pop_throw_exception [label="true"];
+    pop_check_empty -> pop_destroy [label="false"];
+    pop_throw_exception -> pop_end;
+    pop_destroy -> pop_set_head;
+    pop_set_head -> pop_ret_value;
+    pop_ret_value -> pop_clear_destroy;
+    pop_clear_destroy -> pop_dec_size;
+    pop_dec_size -> pop_return;
+    pop_return -> pop_end;
+
+    // peek method
+    peek_start [label="peek_start"];
+    peek_check_empty [label="if (size == 0)"];
+    peek_throw_exception [label="throw new NoSuchElementException(\"Empty stack. Nothing to pop\");"];
+    peek_return [label="return head.data;"];
+    peek_end [label="peek_end"];
+
+    peek_start -> peek_check_empty;
+    peek_check_empty -> peek_throw_exception [label="true"];
+    peek_check_empty -> peek_return [label="false"];
+    peek_throw_exception -> peek_end;
+    peek_return -> peek_end;
+
+    // toString method
+    toString_start [label="toString_start"];
+    toString_init [label="Node cur = head; StringBuilder builder = new StringBuilder();"];
+    toString_loop_start [label="while (cur != null)"];
+    toString_append [label="builder.append(cur.data).append(\"->\");"];
+    toString_next [label="cur = cur.next;"];
+    toString_loop_end [label="end_loop"];
+    toString_replace [label="return builder.replace(builder.length() - 2, builder.length(), \"\").toString();"];
+    toString_end [label="toString_end"];
+
+    toString_start -> toString_init;
+    toString_init -> toString_loop_start;
+    toString_loop_start -> toString_append [label="true"];
+    toString_append -> toString_next;
+    toString_next -> toString_loop_start;
+    toString_loop_start -> toString_loop_end [label="false"];
+    toString_loop_end -> toString_replace;
+    toString_replace -> toString_end;
+
+    // isEmpty method
+    isEmpty_start [label="isEmpty_start"];
+    isEmpty_check [label="return size == 0;"];
+    isEmpty_end [label="isEmpty_end"];
+
+    isEmpty_start -> isEmpty_check;
+    isEmpty_check -> isEmpty_end;
+
+    // getSize method
+    getSize_start [label="getSize_start"];
+    getSize_return [label="return size;"];
+    getSize_end [label="getSize_end"];
+
+    getSize_start -> getSize_return;
+    getSize_return -> getSize_end;
+}

@@ -1,0 +1,70 @@
+digraph HamiltonianCycle {
+    node [shape=box];
+
+    // Entry point
+    start [label="start"];
+
+    // findHamiltonianCycle method
+    findHamiltonianCycle_start [label="findHamiltonianCycle(int[][] graph)"];
+    findHamiltonianCycle_init [label="this.vertex = graph.length;\nthis.cycle = new int[this.vertex + 1];"];
+    findHamiltonianCycle_loop_init [label="for (int i = 0; i < this.cycle.length; i++) {\n    this.cycle[i] = -1;\n}"];
+    findHamiltonianCycle_assign_graph [label="this.graph = graph;"];
+    findHamiltonianCycle_assign_cycle [label="this.cycle[0] = 0;\nthis.pathCount = 1;"];
+    findHamiltonianCycle_isPathFound [label="if (!isPathFound(0))"];
+    findHamiltonianCycle_reset_cycle [label="for (int i = 0; i < this.cycle.length; i++) {\n    this.cycle[i] = -1;\n}"];
+    findHamiltonianCycle_else [label="this.cycle[this.cycle.length - 1] = this.cycle[0];"];
+    findHamiltonianCycle_return [label="return cycle;"];
+
+    // isPathFound method
+    isPathFound_start [label="isPathFound(int vertex)"];
+    isPathFound_check_last_vertex [label="boolean isLastVertexConnectedToStart = this.graph[vertex][0] == 1 && this.pathCount == this.vertex;\nif (isLastVertexConnectedToStart) {\n    return true;\n}"];
+    isPathFound_check_all_vertices [label="if (this.pathCount == this.vertex) {\n    return false;\n}"];
+    isPathFound_loop_start [label="for (int v = 0; v < this.vertex; v++)"];
+    isPathFound_check_connection [label="if (this.graph[vertex][v] == 1)"];
+    isPathFound_add_to_path [label="this.cycle[this.pathCount++] = v;"];
+    isPathFound_remove_connection [label="this.graph[vertex][v] = 0;\nthis.graph[v][vertex] = 0;"];
+    isPathFound_recursive_call [label="if (!isPresent(v)) {\n    return isPathFound(v);\n}"];
+    isPathFound_restore_connection [label="this.graph[vertex][v] = 1;\nthis.graph[v][vertex] = 1;"];
+    isPathFound_remove_path [label="this.cycle[--this.pathCount] = -1;"];
+    isPathFound_return_false [label="return false;"];
+
+    // isPresent method
+    isPresent_start [label="isPresent(int vertex)"];
+    isPresent_loop_start [label="for (int i = 0; i < pathCount - 1; i++)"];
+    isPresent_check_vertex [label="if (cycle[i] == vertex) {\n    return true;\n}"];
+    isPresent_return_false [label="return false;"];
+
+    // Control flow for findHamiltonianCycle
+    start -> findHamiltonianCycle_start;
+    findHamiltonianCycle_start -> findHamiltonianCycle_init;
+    findHamiltonianCycle_init -> findHamiltonianCycle_loop_init;
+    findHamiltonianCycle_loop_init -> findHamiltonianCycle_assign_graph;
+    findHamiltonianCycle_assign_graph -> findHamiltonianCycle_assign_cycle;
+    findHamiltonianCycle_assign_cycle -> findHamiltonianCycle_isPathFound;
+    findHamiltonianCycle_isPathFound -> findHamiltonianCycle_reset_cycle [label="false"];
+    findHamiltonianCycle_isPathFound -> findHamiltonianCycle_else [label="true"];
+    findHamiltonianCycle_reset_cycle -> findHamiltonianCycle_return;
+    findHamiltonianCycle_else -> findHamiltonianCycle_return;
+
+    // Control flow for isPathFound
+    isPathFound_start -> isPathFound_check_last_vertex;
+    isPathFound_check_last_vertex -> isPathFound_return_false [label="false"];
+    isPathFound_check_last_vertex -> isPathFound_check_all_vertices [label="true"];
+    isPathFound_check_all_vertices -> isPathFound_loop_start;
+    isPathFound_loop_start -> isPathFound_check_connection;
+    isPathFound_check_connection -> isPathFound_add_to_path [label="true"];
+    isPathFound_add_to_path -> isPathFound_remove_connection;
+    isPathFound_remove_connection -> isPathFound_recursive_call;
+    isPathFound_recursive_call -> isPathFound_restore_connection;
+    isPathFound_restore_connection -> isPathFound_remove_path;
+    isPathFound_remove_path -> isPathFound_loop_start;
+    isPathFound_check_connection -> isPathFound_loop_start [label="false"];
+    isPathFound_loop_start -> isPathFound_return_false [label="end"];
+
+    // Control flow for isPresent
+    isPresent_start -> isPresent_loop_start;
+    isPresent_loop_start -> isPresent_check_vertex;
+    isPresent_check_vertex -> isPresent_return_false [label="false"];
+    isPresent_check_vertex -> isPresent_return_false [label="true"];
+    isPresent_loop_start -> isPresent_return_false [label="end"];
+}

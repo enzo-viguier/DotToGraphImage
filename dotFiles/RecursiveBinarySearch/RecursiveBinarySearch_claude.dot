@@ -1,0 +1,56 @@
+digraph RecursiveBinarySearch {
+    node [shape=rectangle];
+    
+    // Main method
+    start_main [label="Start main"];
+    input_n [label="Input n"];
+    create_array [label="Create Integer array a[n]"];
+    input_array [label="Input array elements"];
+    input_target [label="Input target t"];
+    create_searcher [label="Create RecursiveBinarySearch<Integer> searcher"];
+    call_find [label="Call searcher.find(a, t)"];
+    check_result [label="Check if result == -1"];
+    print_not_found [label="Print 'Element not found'"];
+    print_found [label="Print 'Element found at index'"];
+    end_main [label="End main"];
+
+    // find method
+    start_find [label="Start find"];
+    call_binsear [label="Call binsear(arr, 0, arr.length - 1, target)"];
+    end_find [label="End find"];
+
+    // binsear method
+    start_binsear [label="Start binsear"];
+    check_right_gte_left [label="Check if right >= left"];
+    calc_mid [label="Calculate mid"];
+    compare_mid [label="Compare arr[mid] with target"];
+    return_mid [label="Return mid"];
+    recurse_left [label="Recurse on left subarray"];
+    recurse_right [label="Recurse on right subarray"];
+    return_not_found [label="Return -1 (not found)"];
+    end_binsear [label="End binsear"];
+
+    // Main method flow
+    start_main -> input_n -> create_array -> input_array -> input_target -> create_searcher -> call_find;
+    call_find -> check_result;
+    check_result -> print_not_found [label="Yes"];
+    check_result -> print_found [label="No"];
+    print_not_found -> end_main;
+    print_found -> end_main;
+
+    // find method flow
+    start_find -> call_binsear -> end_find;
+
+    // binsear method flow
+    start_binsear -> check_right_gte_left;
+    check_right_gte_left -> calc_mid [label="Yes"];
+    check_right_gte_left -> return_not_found [label="No"];
+    calc_mid -> compare_mid;
+    compare_mid -> return_mid [label="Equal"];
+    compare_mid -> recurse_left [label="Greater"];
+    compare_mid -> recurse_right [label="Less"];
+    recurse_left -> start_binsear;
+    recurse_right -> start_binsear;
+    return_mid -> end_binsear;
+    return_not_found -> end_binsear;
+}

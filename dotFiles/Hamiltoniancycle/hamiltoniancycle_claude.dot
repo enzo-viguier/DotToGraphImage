@@ -1,0 +1,64 @@
+digraph HamiltonianCycleCFG {
+    node [shape=rectangle];
+    
+    // findHamiltonianCycle method
+    start_find [label="Start findHamiltonianCycle"];
+    init [label="Initialize variables"];
+    loop_init [label="Initialize cycle array"];
+    check_path [label="isPathFound(0)"];
+    reset_cycle [label="Reset cycle array"];
+    set_last [label="Set last element to first"];
+    return_cycle [label="Return cycle"];
+    
+    start_find -> init;
+    init -> loop_init;
+    loop_init -> check_path;
+    check_path -> reset_cycle [label="false"];
+    check_path -> set_last [label="true"];
+    reset_cycle -> return_cycle;
+    set_last -> return_cycle;
+    
+    // isPathFound method
+    start_is_path [label="Start isPathFound"];
+    check_last [label="Check if last vertex connected to start"];
+    return_true [label="Return true"];
+    check_all_selected [label="Check if all vertices selected"];
+    return_false [label="Return false"];
+    loop_vertices [label="Loop through vertices"];
+    check_connected [label="Check if connected"];
+    add_to_path [label="Add to path"];
+    remove_connection [label="Remove connection"];
+    check_present [label="Check if vertex already selected"];
+    recursive_call [label="Recursive call to isPathFound"];
+    restore_connection [label="Restore connection"];
+    remove_path [label="Remove from path"];
+    
+    start_is_path -> check_last;
+    check_last -> return_true [label="true"];
+    check_last -> check_all_selected [label="false"];
+    check_all_selected -> return_false [label="true"];
+    check_all_selected -> loop_vertices [label="false"];
+    loop_vertices -> check_connected;
+    check_connected -> add_to_path [label="true"];
+    add_to_path -> remove_connection;
+    remove_connection -> check_present;
+    check_present -> recursive_call [label="false"];
+    recursive_call -> restore_connection;
+    check_present -> restore_connection [label="true"];
+    restore_connection -> remove_path;
+    remove_path -> loop_vertices;
+    loop_vertices -> return_false [label="no more vertices"];
+    
+    // isPresent method
+    start_is_present [label="Start isPresent"];
+    loop_check [label="Loop through cycle"];
+    check_match [label="Check if vertex matches"];
+    return_present_true [label="Return true"];
+    return_present_false [label="Return false"];
+    
+    start_is_present -> loop_check;
+    loop_check -> check_match;
+    check_match -> return_present_true [label="true"];
+    check_match -> loop_check [label="false"];
+    loop_check -> return_present_false [label="no match found"];
+}

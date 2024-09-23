@@ -1,0 +1,64 @@
+digraph RecursiveBinarySearchCFG {
+    node [shape=box];
+
+    // Start of the main method
+    main_start [label="Start of main()"];
+    input_elements [label="Input number of elements (n)"];
+    input_array [label="Input elements into array a[]"];
+    input_target [label="Input target element (t)"];
+    create_searcher [label="Create RecursiveBinarySearch instance"];
+    call_find [label="Call searcher.find(a, t)"];
+    check_result [label="Check if result (res) == -1"];
+    print_not_found [label="Print 'Element not found in the array'"];
+    print_found [label="Print 'Element found at index res'"];
+    main_end [label="End of main()"];
+
+    // Find method
+    find_start [label="find() called"];
+    call_binsear [label="Call binsear(arr, 0, arr.length - 1, target)"];
+    find_end [label="Return result of binsear()"];
+
+    // Recursive binsear method
+    binsear_start [label="binsear() called"];
+    check_bounds [label="Check if right >= left"];
+    calculate_mid [label="Calculate mid = left + (right - left) / 2"];
+    compare_mid [label="Compare arr[mid] to target"];
+    check_equal [label="Check if comparison == 0"];
+    return_mid [label="Return mid"];
+    check_left [label="Check if comparison > 0"];
+    recurse_left [label="Recurse binsear(arr, left, mid - 1, target)"];
+    recurse_right [label="Recurse binsear(arr, mid + 1, right, target)"];
+    return_not_found [label="Return -1 (element not found)"];
+
+    // Main control flow
+    main_start -> input_elements;
+    input_elements -> input_array;
+    input_array -> input_target;
+    input_target -> create_searcher;
+    create_searcher -> call_find;
+    call_find -> check_result;
+    check_result -> print_not_found [label="res == -1"];
+    check_result -> print_found [label="res != -1"];
+    print_not_found -> main_end;
+    print_found -> main_end;
+
+    // Find method flow
+    call_find -> find_start;
+    find_start -> call_binsear;
+    call_binsear -> find_end;
+    find_end -> check_result;
+
+    // Recursive binsear flow
+    call_binsear -> binsear_start;
+    binsear_start -> check_bounds;
+    check_bounds -> calculate_mid [label="true"];
+    check_bounds -> return_not_found [label="false"];
+    calculate_mid -> compare_mid;
+    compare_mid -> check_equal;
+    check_equal -> return_mid [label="comparison == 0"];
+    check_equal -> check_left [label="comparison != 0"];
+    check_left -> recurse_left [label="comparison > 0"];
+    check_left -> recurse_right [label="comparison <= 0"];
+    recurse_left -> binsear_start;
+    recurse_right -> binsear_start;
+}

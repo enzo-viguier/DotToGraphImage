@@ -1,0 +1,46 @@
+digraph DijkstraAlgorithm {
+  // Main nodes
+  start [shape=ellipse, label="Start"];
+  constructor [shape=box, label="Constructor"];
+  run [shape=box, label="run()"];
+  getMinDistanceVertex [shape=box, label="getMinDistanceVertex()"];
+  printDistances [shape=box, label="printDistances()"];
+  end [shape=ellipse, label="End"];
+
+  // Constructor
+  start -> constructor;
+  constructor -> end;
+
+  // run method
+  start -> run;
+  run -> checkSource [label="Check source"];
+  checkSource -> throwException [label="Invalid source"];
+  checkSource -> initializeArrays [label="Valid source"];
+  initializeArrays -> outerLoop;
+  outerLoop -> getMinDistanceVertex;
+  getMinDistanceVertex -> markProcessed;
+  markProcessed -> innerLoop;
+  innerLoop -> updateDistance [label="Conditions met"];
+  updateDistance -> innerLoop;
+  innerLoop -> outerLoop [label="Next v"];
+  outerLoop -> printDistances [label="All vertices processed"];
+  printDistances -> returnDistances;
+  returnDistances -> end;
+
+  // getMinDistanceVertex method
+  getMinDistanceVertex -> initMinValues;
+  initMinValues -> iterateVertices;
+  iterateVertices -> updateMin [label="New min found"];
+  updateMin -> iterateVertices;
+  iterateVertices -> returnMinIndex [label="All vertices checked"];
+  returnMinIndex -> markProcessed;
+
+  // printDistances method
+  printDistances -> printHeader;
+  printHeader -> printLoop;
+  printLoop -> printLoop [label="Next vertex"];
+  printLoop -> returnDistances [label="All vertices printed"];
+
+  // Exception handling
+  throwException -> end [label="IllegalArgumentException"];
+}

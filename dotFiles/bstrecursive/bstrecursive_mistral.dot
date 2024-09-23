@@ -1,0 +1,75 @@
+digraph BSTRecursive {
+    rankdir=TB;
+    node [shape=box];
+
+    // Constructor
+    BSTRecursive_constructor [label="BSTRecursive()\nroot = null;"];
+
+    // getRoot method
+    getRoot [label="getRoot()\nreturn root;"];
+
+    // delete method
+    delete_start [label="delete(Node node, int data)"];
+    delete_node_null [label="if (node == null)\nSystem.out.println(\"No such data present in BST.\");"];
+    delete_node_data_gt [label="else if (node.data > data)\nnode.left = delete(node.left, data);"];
+    delete_node_data_lt [label="else if (node.data < data)\nnode.right = delete(node.right, data);"];
+    delete_node_data_eq [label="else\nif (node.right == null && node.left == null)\nnode = null;\nelse if (node.left == null)\nNode temp = node.right;\nnode.right = null;\nnode = temp;\nelse if (node.right == null)\nNode temp = node.left;\nnode.left = null;\nnode = temp;\nelse\nNode temp = node.right;\nwhile (temp.left != null)\ntemp = temp.left;\nnode.data = temp.data;\nnode.right = delete(node.right, temp.data);"];
+    delete_return [label="return node;"];
+
+    // insert method
+    insert_start [label="insert(Node node, int data)"];
+    insert_node_null [label="if (node == null)\nnode = new Node(data);"];
+    insert_node_data_gt [label="else if (node.data > data)\nnode.left = insert(node.left, data);"];
+    insert_node_data_lt [label="else if (node.data < data)\nnode.right = insert(node.right, data);"];
+    insert_return [label="return node;"];
+
+    // search method
+    search_start [label="search(Node node, int data)"];
+    search_node_null [label="if (node == null)\nreturn false;"];
+    search_node_data_eq [label="else if (node.data == data)\nreturn true;"];
+    search_node_data_gt [label="else if (node.data > data)\nreturn search(node.left, data);"];
+    search_node_data_lt [label="else\nreturn search(node.right, data);"];
+
+    // add method
+    add_start [label="add(int data)"];
+    add_insert [label="this.root = insert(this.root, data);"];
+
+    // remove method
+    remove_start [label="remove(int data)"];
+    remove_delete [label="this.root = delete(this.root, data);"];
+
+    // find method
+    find_start [label="find(int data)"];
+    find_search [label="if (search(this.root, data))\nSystem.out.println(data + \" is present in given BST.\");\nreturn true;\nelse\nSystem.out.println(data + \" not found.\");\nreturn false;"];
+
+    // Edges for constructor
+    BSTRecursive_constructor -> getRoot;
+
+    // Edges for delete method
+    delete_start -> delete_node_null;
+    delete_node_null -> delete_node_data_gt;
+    delete_node_data_gt -> delete_node_data_lt;
+    delete_node_data_lt -> delete_node_data_eq;
+    delete_node_data_eq -> delete_return;
+
+    // Edges for insert method
+    insert_start -> insert_node_null;
+    insert_node_null -> insert_node_data_gt;
+    insert_node_data_gt -> insert_node_data_lt;
+    insert_node_data_lt -> insert_return;
+
+    // Edges for search method
+    search_start -> search_node_null;
+    search_node_null -> search_node_data_eq;
+    search_node_data_eq -> search_node_data_gt;
+    search_node_data_gt -> search_node_data_lt;
+
+    // Edges for add method
+    add_start -> add_insert;
+
+    // Edges for remove method
+    remove_start -> remove_delete;
+
+    // Edges for find method
+    find_start -> find_search;
+}

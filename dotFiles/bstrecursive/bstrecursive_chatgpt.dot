@@ -1,0 +1,73 @@
+digraph CFG {
+    node [shape=box];
+
+    // Entry points
+    entry_insert [label="insert(Node node, int data)"];
+    entry_delete [label="delete(Node node, int data)"];
+    entry_search [label="search(Node node, int data)"];
+
+    // insert method control flow
+    entry_insert -> check_null_insert [label="Is node == null?"];
+    check_null_insert -> create_new_node [label="Yes"];
+    check_null_insert -> compare_data_insert [label="No"];
+    create_new_node -> return_new_node_insert [label="node = new Node(data)"];
+    compare_data_insert -> left_insert [label="node.data > data"];
+    compare_data_insert -> right_insert [label="node.data < data"];
+    compare_data_insert -> return_node_insert [label="else"];
+    left_insert -> recursive_left_insert [label="node.left = insert(node.left, data)"];
+    right_insert -> recursive_right_insert [label="node.right = insert(node.right, data)"];
+    recursive_left_insert -> return_node_insert;
+    recursive_right_insert -> return_node_insert;
+    return_new_node_insert -> return_node_insert;
+    return_node_insert [label="Return node"];
+
+    // delete method control flow
+    entry_delete -> check_null_delete [label="Is node == null?"];
+    check_null_delete -> print_no_data_delete [label="Yes"];
+    check_null_delete -> compare_data_delete [label="No"];
+    print_no_data_delete -> return_null_delete;
+    compare_data_delete -> left_delete [label="node.data > data"];
+    compare_data_delete -> right_delete [label="node.data < data"];
+    compare_data_delete -> delete_node_delete [label="else"];
+    left_delete -> recursive_left_delete [label="node.left = delete(node.left, data)"];
+    right_delete -> recursive_right_delete [label="node.right = delete(node.right, data)"];
+    recursive_left_delete -> return_node_delete;
+    recursive_right_delete -> return_node_delete;
+
+    // Delete node case
+    delete_node_delete -> check_leaf_node_delete [label="Is leaf node?"];
+    check_leaf_node_delete -> nullify_node_delete [label="Yes"];
+    check_leaf_node_delete -> check_single_child_delete [label="No"];
+    nullify_node_delete -> return_null_delete;
+    check_single_child_delete -> right_child_only_delete [label="Is left == null?"];
+    right_child_only_delete -> update_right_delete [label="Yes"];
+    check_single_child_delete -> left_child_only_delete [label="Is right == null?"];
+    left_child_only_delete -> update_left_delete [label="Yes"];
+    right_child_only_delete -> return_node_delete;
+    left_child_only_delete -> return_node_delete;
+    update_right_delete -> return_node_delete;
+    update_left_delete -> return_node_delete;
+
+    // Two children case
+    delete_node_delete -> two_children_case_delete [label="Both children present"];
+    two_children_case_delete -> find_leftmost_delete [label="Find leftmost child of right subtree"];
+    find_leftmost_delete -> update_data_delete;
+    update_data_delete -> recursive_right_delete [label="Delete right subtree"];
+    return_null_delete [label="Return null"];
+    return_node_delete [label="Return node"];
+
+    // search method control flow
+    entry_search -> check_null_search [label="Is node == null?"];
+    check_null_search -> return_false_search [label="Yes"];
+    check_null_search -> compare_data_search [label="No"];
+    return_false_search [label="Return false"];
+    compare_data_search -> return_true_search [label="node.data == data"];
+    compare_data_search -> left_search [label="node.data > data"];
+    compare_data_search -> right_search [label="node.data < data"];
+    left_search -> recursive_left_search [label="search(node.left, data)"];
+    right_search -> recursive_right_search [label="search(node.right, data)"];
+    recursive_left_search -> return_search;
+    recursive_right_search -> return_search;
+    return_true_search [label="Return true"];
+    return_search [label="Return result"];
+}

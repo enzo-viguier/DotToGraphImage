@@ -1,0 +1,67 @@
+digraph BSTRecursive {
+    node [shape=box];
+    
+    // Main methods
+    start [label="Start"];
+    constructor [label="BSTRecursive()"];
+    add [label="add(int data)"];
+    remove [label="remove(int data)"];
+    find [label="find(int data)"];
+    
+    // Private methods
+    insert [label="insert(Node node, int data)"];
+    delete [label="delete(Node node, int data)"];
+    search [label="search(Node node, int data)"];
+    
+    // Control flow
+    start -> constructor;
+    start -> add;
+    start -> remove;
+    start -> find;
+    
+    add -> insert;
+    remove -> delete;
+    find -> search;
+    
+    // insert method
+    insert -> insert_check [label="node == null"];
+    insert -> insert_left [label="node.data > data"];
+    insert -> insert_right [label="node.data < data"];
+    insert_check -> insert_create [label="true"];
+    insert_check -> insert_end [label="false"];
+    insert_left -> insert;
+    insert_right -> insert;
+    insert_create -> insert_end;
+    
+    // delete method
+    delete -> delete_check [label="node == null"];
+    delete -> delete_left [label="node.data > data"];
+    delete -> delete_right [label="node.data < data"];
+    delete -> delete_case [label="node.data == data"];
+    delete_check -> delete_not_found [label="true"];
+    delete_check -> delete_end [label="false"];
+    delete_left -> delete;
+    delete_right -> delete;
+    delete_case -> delete_leaf [label="leaf node"];
+    delete_case -> delete_one_child [label="one child"];
+    delete_case -> delete_two_children [label="two children"];
+    delete_leaf -> delete_end;
+    delete_one_child -> delete_end;
+    delete_two_children -> delete;
+    delete_not_found -> delete_end;
+    
+    // search method
+    search -> search_check [label="node == null"];
+    search -> search_found [label="node.data == data"];
+    search -> search_left [label="node.data > data"];
+    search -> search_right [label="node.data < data"];
+    search_check -> search_end [label="true"];
+    search_found -> search_end [label="true"];
+    search_left -> search;
+    search_right -> search;
+    
+    // End nodes
+    insert_end [label="Return node"];
+    delete_end [label="Return node"];
+    search_end [label="Return boolean"];
+}

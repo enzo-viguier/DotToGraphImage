@@ -1,0 +1,130 @@
+digraph SegmentTree {
+    node [shape=box];
+
+    // Constructor
+    subgraph cluster_constructor {
+        label = "Constructor";
+        style = filled;
+        color = lightgrey;
+
+        start_constructor -> init_n [label="this.n = n"];
+        init_n -> calc_x [label="x = (int) (Math.ceil(Math.log(n) / Math.log(2)))"];
+        calc_x -> calc_segSize [label="segSize = 2 * (int) Math.pow(2, x) - 1"];
+        calc_segSize -> init_segTree [label="this.segTree = new int[segSize]"];
+        init_segTree -> init_arr [label="this.arr = arr"];
+        init_arr -> init_n2 [label="this.n = n"];
+        init_n2 -> constructTree_call [label="constructTree(arr, 0, n - 1, 0)"];
+        constructTree_call -> end_constructor;
+    }
+
+    // constructTree method
+    subgraph cluster_constructTree {
+        label = "constructTree";
+        style = filled;
+        color = lightgrey;
+
+        start_constructTree -> check_start_end [label="if (start == end)"];
+        check_start_end -> true_branch [label="true"];
+        true_branch -> set_segTree [label="this.segTree[index] = arr[start]"];
+        set_segTree -> return_arr_start [label="return arr[start]"];
+        return_arr_start -> end_constructTree;
+
+        check_start_end -> false_branch [label="false"];
+        false_branch -> calc_mid [label="mid = start + (end - start) / 2"];
+        calc_mid -> recursive_call1 [label="constructTree(arr, start, mid, index * 2 + 1)"];
+        recursive_call1 -> recursive_call2 [label="constructTree(arr, mid + 1, end, index * 2 + 2)"];
+        recursive_call2 -> set_segTree_sum [label="this.segTree[index] = ..."];
+        set_segTree_sum -> return_segTree_index [label="return this.segTree[index]"];
+        return_segTree_index -> end_constructTree;
+    }
+
+    // updateTree method
+    subgraph cluster_updateTree {
+        label = "updateTree";
+        style = filled;
+        color = lightgrey;
+
+        start_updateTree -> check_index_range [label="if (index < start || index > end)"];
+        check_index_range -> true_branch [label="true"];
+        true_branch -> end_updateTree;
+
+        check_index_range -> false_branch [label="false"];
+        false_branch -> update_segTree [label="this.segTree[segIndex] += diff"];
+        update_segTree -> check_start_end2 [label="if (start != end)"];
+        check_start_end2 -> true_branch2 [label="true"];
+        true_branch2 -> calc_mid2 [label="mid = start + (end - start) / 2"];
+        calc_mid2 -> recursive_call3 [label="updateTree(start, mid, index, diff, segIndex * 2 + 1)"];
+        recursive_call3 -> recursive_call4 [label="updateTree(mid + 1, end, index, diff, segIndex * 2 + 2)"];
+        recursive_call4 -> end_updateTree;
+
+        check_start_end2 -> false_branch2 [label="false"];
+        false_branch2 -> end_updateTree;
+    }
+
+    // update method
+    subgraph cluster_update {
+        label = "update";
+        style = filled;
+        color = lightgrey;
+
+        start_update -> check_index_range3 [label="if (index < 0 || index > n)"];
+        check_index_range3 -> true_branch3 [label="true"];
+        true_branch3 -> end_update;
+
+        check_index_range3 -> false_branch3 [label="false"];
+        false_branch3 -> calc_diff [label="diff = value - arr[index]"];
+        calc_diff -> update_arr [label="arr[index] = value"];
+        update_arr -> updateTree_call [label="updateTree(0, n - 1, index, diff, 0)"];
+        updateTree_call -> end_update;
+    }
+
+    // getSumTree method
+    subgraph cluster_getSumTree {
+        label = "getSumTree";
+        style = filled;
+        color = lightgrey;
+
+        start_getSumTree -> check_qStart_qEnd [label="if (qStart <= start && qEnd >= end)"];
+        check_qStart_qEnd -> true_branch4 [label="true"];
+        true_branch4 -> return_segTree_segIndex [label="return this.segTree[segIndex]"];
+        return_segTree_segIndex -> end_getSumTree;
+
+        check_qStart_qEnd -> false_branch4 [label="false"];
+        false_branch4 -> check_qStart_end [label="if (qStart > end || qEnd < start)"];
+        check_qStart_end -> true_branch5 [label="true"];
+        true_branch5 -> return_zero [label="return 0"];
+        return_zero -> end_getSumTree;
+
+        check_qStart_end -> false_branch5 [label="false"];
+        false_branch5 -> calc_mid3 [label="mid = start + (end - start) / 2"];
+        calc_mid3 -> recursive_call5 [label="getSumTree(start, mid, qStart, qEnd, segIndex * 2 + 1)"];
+        recursive_call5 -> recursive_call6 [label="getSumTree(mid + 1, end, qStart, qEnd, segIndex * 2 + 2)"];
+        recursive_call6 -> return_sum [label="return ..."];
+        return_sum -> end_getSumTree;
+    }
+
+    // getSum method
+    subgraph cluster_getSum {
+        label = "getSum";
+        style = filled;
+        color = lightgrey;
+
+        start_getSum -> check_start_end3 [label="if (start < 0 || end > n || start > end)"];
+        check_start_end3 -> true_branch6 [label="true"];
+        true_branch6 -> return_zero2 [label="return 0"];
+        return_zero2 -> end_getSum;
+
+        check_start_end3 -> false_branch6 [label="false"];
+        false_branch6 -> getSumTree_call [label="getSumTree(0, n - 1, start, end, 0)"];
+        getSumTree_call -> end_getSum;
+    }
+
+    // Connecting methods
+    start -> start_constructor;
+    end_constructor -> start_constructTree;
+    end_constructTree -> start_updateTree;
+    end_updateTree -> start_update;
+    end_update -> start_getSumTree;
+    end_getSumTree -> start_getSum;
+    end_getSum -> end;
+}
