@@ -1,0 +1,34 @@
+digraph OptimalJobScheduling {
+    node [shape=box];
+
+    // Class Node
+    OptimalJobScheduling [label="OptimalJobScheduling\n(Class)"];
+
+    // Constructor
+    OptimalJobScheduling_constructor [label="OptimalJobScheduling\n(Constructor)"];
+
+    // Methods
+    execute [label="execute()"];
+    calculateCost [label="calculateCost()"];
+    runningCost [label="runningCost(int, int)"];
+    findMin [label="findMin(int[])"];
+    showResults [label="showResults()"];
+    getCost [label="getCost(int, int)"];
+
+    // Edges
+    OptimalJobScheduling -> OptimalJobScheduling_constructor;
+    OptimalJobScheduling_constructor -> OptimalJobScheduling;
+    OptimalJobScheduling -> execute;
+    execute -> calculateCost;
+    execute -> showResults;
+    calculateCost -> runningCost;
+    runningCost -> findMin;
+    runningCost -> runningCost [style=dashed]; // Recursive call (if any)
+    runningCost -> transfer [style=dashed]; // Implicit call to transfer array
+    runningCost -> run [style=dashed]; // Implicit call to run array
+    runningCost -> cost [style=dashed]; // Implicit call to cost array
+    findMin -> costArr [style=dashed]; // Implicit call to costArr array
+    showResults -> cost [style=dashed]; // Implicit call to cost array
+    getCost -> cost [style=dashed]; // Implicit call to cost array
+}
+

@@ -1,0 +1,17 @@
+digraph G {
+    node [shape=box];
+
+    // Methods in TarjansAlgorithm class
+    "TarjansAlgorithm.stronglyConnectedComponents" -> "TarjansAlgorithm.stronglyConnCompsUtil";
+    "TarjansAlgorithm.stronglyConnCompsUtil" -> "TarjansAlgorithm.stronglyConnCompsUtil";
+
+    // External methods called
+    "TarjansAlgorithm.stronglyConnectedComponents" -> "ArrayList.add";
+    "TarjansAlgorithm.stronglyConnectedComponents" -> "Stack.push";
+    "TarjansAlgorithm.stronglyConnectedComponents" -> "Stack.pop";
+    "TarjansAlgorithm.stronglyConnCompsUtil" -> "ArrayList.add";
+    "TarjansAlgorithm.stronglyConnCompsUtil" -> "Stack.push";
+    "TarjansAlgorithm.stronglyConnCompsUtil" -> "Stack.pop";
+    "TarjansAlgorithm.stronglyConnCompsUtil" -> "Math.min";
+}
+

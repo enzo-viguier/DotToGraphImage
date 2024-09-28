@@ -1,0 +1,35 @@
+digraph G {
+    node [shape=box];
+
+    // AdjacencyList class
+    AdjacencyList_constructor [label="AdjacencyList()"];
+    AdjacencyList_addEdge [label="AdjacencyList.addEdge(E, E)"];
+    AdjacencyList_getAdjacents [label="AdjacencyList.getAdjacents(E)"];
+    AdjacencyList_getVertices [label="AdjacencyList.getVertices()"];
+
+    // TopologicalSort class
+    TopologicalSort_constructor [label="TopologicalSort(AdjacencyList<E>)"];
+    TopologicalSort_calculateInDegree [label="TopologicalSort.calculateInDegree()"];
+    TopologicalSort_topSortOrder [label="TopologicalSort.topSortOrder()"];
+
+    // KahnsAlgorithm class
+    KahnsAlgorithm_main [label="KahnsAlgorithm.main(String[])"];
+
+    // Calls within AdjacencyList
+    AdjacencyList_addEdge -> AdjacencyList_addEdge [style=dashed]; // Self-recursive call
+    AdjacencyList_addEdge -> AdjacencyList_getAdjacents;
+    AdjacencyList_addEdge -> AdjacencyList_getVertices;
+
+    // Calls within TopologicalSort
+    TopologicalSort_topSortOrder -> TopologicalSort_calculateInDegree;
+    TopologicalSort_calculateInDegree -> AdjacencyList_getVertices;
+    TopologicalSort_calculateInDegree -> AdjacencyList_getAdjacents;
+    TopologicalSort_topSortOrder -> AdjacencyList_getAdjacents;
+
+    // Calls within KahnsAlgorithm
+    KahnsAlgorithm_main -> AdjacencyList_constructor;
+    KahnsAlgorithm_main -> AdjacencyList_addEdge;
+    KahnsAlgorithm_main -> TopologicalSort_constructor;
+    KahnsAlgorithm_main -> TopologicalSort_topSortOrder;
+}
+

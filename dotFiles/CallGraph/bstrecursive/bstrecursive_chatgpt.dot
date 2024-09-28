@@ -1,0 +1,33 @@
+digraph BSTRecursive_CallGraph {
+    rankdir=LR;
+    
+    // Nodes for all methods
+    "BSTRecursive()" [label="BSTRecursive Constructor"];
+    "add(int data)" [label="add(int data)"];
+    "remove(int data)" [label="remove(int data)"];
+    "find(int data)" [label="find(int data)"];
+    "getRoot()" [label="getRoot()"];
+    "insert(Node node, int data)" [label="insert(Node node, int data)"];
+    "delete(Node node, int data)" [label="delete(Node node, int data)"];
+    "search(Node node, int data)" [label="search(Node node, int data)"];
+    
+    // Call edges
+    "BSTRecursive()" -> "getRoot()";
+    "add(int data)" -> "insert(Node node, int data)";
+    "remove(int data)" -> "delete(Node node, int data)";
+    "find(int data)" -> "search(Node node, int data)";
+    
+    "delete(Node node, int data)" -> "delete(Node node, int data)" [label="recursive"];
+    "delete(Node node, int data)" -> "search(Node node, int data)" [label="left child"];
+    "delete(Node node, int data)" -> "search(Node node, int data)" [label="right child"];
+    
+    "insert(Node node, int data)" -> "insert(Node node, int data)" [label="recursive"];
+    
+    "search(Node node, int data)" -> "search(Node node, int data)" [label="recursive"];
+    
+    // Loops for recursive calls
+    "delete(Node node, int data)" -> "delete(Node node, int data)";
+    "insert(Node node, int data)" -> "insert(Node node, int data)";
+    "search(Node node, int data)" -> "search(Node node, int data)";
+}
+

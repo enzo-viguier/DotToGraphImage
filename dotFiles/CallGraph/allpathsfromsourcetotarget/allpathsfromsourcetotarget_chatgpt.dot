@@ -1,0 +1,10 @@
+digraph CallGraph {
+    "AllPathsFromSourceToTarget" -> "initAdjList";
+    "AllPathsFromSourceToTarget" -> "addEdge";
+    "storeAllPaths" -> "storeAllPathsUtil";
+    "storeAllPathsUtil" -> "storeAllPathsUtil"; // recursive call
+    "allPathsFromSourceToTarget" -> "AllPathsFromSourceToTarget";
+    "allPathsFromSourceToTarget" -> "addEdge";
+    "allPathsFromSourceToTarget" -> "storeAllPaths";
+}
+

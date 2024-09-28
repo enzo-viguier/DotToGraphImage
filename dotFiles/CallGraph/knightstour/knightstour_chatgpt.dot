@@ -1,0 +1,21 @@
+digraph KnightsTourCallGraph {
+    // Main method calls
+    main -> solve
+    main -> printResult
+
+    // solve method calls
+    solve -> neighbors
+    solve -> orphanDetected
+    solve -> solve
+    solve -> printResult
+
+    // neighbors method calls
+    neighbors -> countNeighbors
+
+    // orphanDetected method calls
+    orphanDetected -> neighbors
+    orphanDetected -> countNeighbors
+
+    // printResult method (no further calls)
+}
+

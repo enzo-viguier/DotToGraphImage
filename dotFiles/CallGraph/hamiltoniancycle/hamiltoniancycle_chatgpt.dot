@@ -1,0 +1,16 @@
+digraph HamiltonianCycleCallGraph {
+    // Nodes represent methods in the class
+    "findHamiltonianCycle" [label="findHamiltonianCycle(int[][] graph)"];
+    "isPathFound" [label="isPathFound(int vertex)"];
+    "isPresent" [label="isPresent(int vertex)"];
+
+    // Edges represent method calls
+    "findHamiltonianCycle" -> "isPathFound";
+    "isPathFound" -> "isPathFound";  // Recursive call
+    "isPathFound" -> "isPresent";
+
+    // Styling for clarity
+    node [shape=box, style=filled, color=lightblue];
+    edge [color=black, arrowsize=0.7];
+}
+

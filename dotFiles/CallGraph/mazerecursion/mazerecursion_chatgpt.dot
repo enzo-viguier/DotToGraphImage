@@ -1,0 +1,23 @@
+digraph MazeRecursion {
+    node [shape=box];
+
+    // Main method
+    MazeRecursion -> mazeRecursion;
+
+    // Inside mazeRecursion method
+    mazeRecursion -> "System.out.println" [label="calls"];
+    mazeRecursion -> "System.arraycopy" [label="calls"];
+    mazeRecursion -> setWay [label="calls"];
+    mazeRecursion -> setWay2 [label="calls"];
+
+    // setWay method
+    setWay -> setWay [label="recursive"];
+    setWay -> "return true" [label="base case"];
+    setWay -> "return false" [label="base case"];
+
+    // setWay2 method
+    setWay2 -> setWay2 [label="recursive"];
+    setWay2 -> "return true" [label="base case"];
+    setWay2 -> "return false" [label="base case"];
+}
+

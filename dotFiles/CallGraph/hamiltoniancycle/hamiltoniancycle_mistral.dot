@@ -1,0 +1,15 @@
+digraph HamiltonianCycleCallGraph {
+    rankdir=LR;
+    node [shape=box, style=filled, color=lightblue];
+
+    // Methods
+    findHamiltonianCycle [label="findHamiltonianCycle\n(int[][] graph)"];
+    isPathFound [label="isPathFound\n(int vertex)"];
+    isPresent [label="isPresent\n(int vertex)"];
+
+    // Call relationships
+    findHamiltonianCycle -> isPathFound;
+    isPathFound -> isPresent;
+    isPathFound -> isPathFound [style=dashed]; // Recursive call
+}
+

@@ -1,0 +1,8 @@
+digraph NQueensCallGraph {
+    node [shape=box];
+    
+    "NQueens.getNQueensArrangements" -> "NQueens.getSolution";
+    "NQueens.placeQueens" -> "NQueens.getSolution";
+    "NQueens.getSolution" -> "NQueens.getSolution" [label="recursive"];
+    "NQueens.getSolution" -> "NQueens.isPlacedCorrectly";
+}

@@ -1,0 +1,19 @@
+digraph RRScheduling {
+    node [shape=box];
+    
+    "RRScheduling Constructor" -> "scheduleProcesses";
+    "scheduleProcesses" -> "evaluateTurnAroundTime";
+    "scheduleProcesses" -> "evaluateWaitingTime";
+    
+    "evaluateTurnAroundTime" -> "Queue.add";
+    "evaluateTurnAroundTime" -> "Queue.poll";
+    "evaluateTurnAroundTime" -> "Math.max";
+    "evaluateTurnAroundTime" -> "ProcessDetails.getArrivalTime";
+    "evaluateTurnAroundTime" -> "ProcessDetails.getBurstTime";
+    "evaluateTurnAroundTime" -> "ProcessDetails.setTurnAroundTimeTime";
+    "evaluateTurnAroundTime" -> "Queue.isEmpty";
+    
+    "evaluateWaitingTime" -> "ProcessDetails.setWaitingTime";
+    "evaluateWaitingTime" -> "ProcessDetails.getTurnAroundTimeTime";
+    "evaluateWaitingTime" -> "ProcessDetails.getBurstTime";
+}

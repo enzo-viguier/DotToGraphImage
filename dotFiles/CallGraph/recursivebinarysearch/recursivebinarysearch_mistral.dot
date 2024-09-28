@@ -1,0 +1,31 @@
+digraph CallGraph {
+    rankdir=TB;
+    node [shape=box, style=filled, color=lightgrey];
+
+    // Nodes for methods
+    main [label="main(String[] args)"];
+    find [label="find(T[] arr, T target)"];
+    binsear [label="binsear(T[] arr, int left, int right, T target)"];
+
+    // Edges representing method calls
+    main -> find;
+    find -> binsear;
+    binsear -> binsear [style=dashed];
+
+    // Labels for clarity
+    subgraph cluster_RecursiveBinarySearch {
+        label="RecursiveBinarySearch";
+        style=filled;
+        color=lightblue;
+        find;
+        binsear;
+    }
+
+    subgraph cluster_main {
+        label="Main Method";
+        style=filled;
+        color=lightgreen;
+        main;
+    }
+}
+

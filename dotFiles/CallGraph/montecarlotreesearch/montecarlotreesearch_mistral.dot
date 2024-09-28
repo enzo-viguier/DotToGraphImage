@@ -1,0 +1,23 @@
+digraph MonteCarloTreeSearch {
+    rankdir=LR;
+
+    node [shape=box];
+
+    MonteCarloTreeSearch -> MonteCarloTreeSearch_main [label="main"];
+    MonteCarloTreeSearch_main -> MonteCarloTreeSearch_monteCarloTreeSearch [label="monteCarloTreeSearch"];
+    MonteCarloTreeSearch_monteCarloTreeSearch -> MonteCarloTreeSearch_addChildNodes [label="addChildNodes"];
+    MonteCarloTreeSearch_monteCarloTreeSearch -> MonteCarloTreeSearch_getPromisingNode [label="getPromisingNode"];
+    MonteCarloTreeSearch_monteCarloTreeSearch -> MonteCarloTreeSearch_addChildNodes [label="addChildNodes"];
+    MonteCarloTreeSearch_monteCarloTreeSearch -> MonteCarloTreeSearch_simulateRandomPlay [label="simulateRandomPlay"];
+    MonteCarloTreeSearch_monteCarloTreeSearch -> MonteCarloTreeSearch_getWinnerNode [label="getWinnerNode"];
+    MonteCarloTreeSearch_monteCarloTreeSearch -> MonteCarloTreeSearch_printScores [label="printScores"];
+
+    MonteCarloTreeSearch_getPromisingNode -> MonteCarloTreeSearch_getPromisingNode [label="getPromisingNode"];
+
+    MonteCarloTreeSearch_simulateRandomPlay -> MonteCarloTreeSearch_simulateRandomPlay [label="simulateRandomPlay"];
+
+    MonteCarloTreeSearch_getWinnerNode -> MonteCarloTreeSearch_getWinnerNode [label="getWinnerNode"];
+
+    MonteCarloTreeSearch_printScores -> MonteCarloTreeSearch_printScores [label="printScores"];
+}
+

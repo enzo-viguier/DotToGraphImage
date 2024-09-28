@@ -1,0 +1,52 @@
+digraph CallGraph {
+    node [shape=box];
+
+    // MatrixGraphs class methods
+    MatrixGraphs_main -> AdjacencyMatrixGraph_AdjacencyMatrixGraph;
+    MatrixGraphs_main -> AdjacencyMatrixGraph_addEdge [label="12 times"];
+    MatrixGraphs_main -> AdjacencyMatrixGraph_toString;
+    MatrixGraphs_main -> AdjacencyMatrixGraph_depthFirstOrder;
+    MatrixGraphs_main -> AdjacencyMatrixGraph_breadthFirstOrder;
+
+    // AdjacencyMatrixGraph class methods
+    AdjacencyMatrixGraph_AdjacencyMatrixGraph -> AdjacencyMatrixGraph_setNumberOfVertices;
+    AdjacencyMatrixGraph_AdjacencyMatrixGraph -> AdjacencyMatrixGraph_setNumberOfEdges;
+    AdjacencyMatrixGraph_AdjacencyMatrixGraph -> AdjacencyMatrixGraph_setAdjacency;
+
+    AdjacencyMatrixGraph_setNumberOfVertices;
+    AdjacencyMatrixGraph_numberOfVertices;
+
+    AdjacencyMatrixGraph_setNumberOfEdges;
+    AdjacencyMatrixGraph_numberOfEdges;
+
+    AdjacencyMatrixGraph_setAdjacency;
+    AdjacencyMatrixGraph_adjacency;
+
+    AdjacencyMatrixGraph_adjacencyOfEdgeDoesExist -> AdjacencyMatrixGraph_adjacency;
+
+    AdjacencyMatrixGraph_vertexDoesExist -> AdjacencyMatrixGraph_numberOfVertices;
+
+    AdjacencyMatrixGraph_edgeDoesExist -> AdjacencyMatrixGraph_vertexDoesExist [label="2 times"];
+    AdjacencyMatrixGraph_edgeDoesExist -> AdjacencyMatrixGraph_adjacencyOfEdgeDoesExist;
+
+    AdjacencyMatrixGraph_addEdge -> AdjacencyMatrixGraph_vertexDoesExist [label="2 times"];
+    AdjacencyMatrixGraph_addEdge -> AdjacencyMatrixGraph_adjacencyOfEdgeDoesExist;
+    AdjacencyMatrixGraph_addEdge -> AdjacencyMatrixGraph_adjacency;
+    AdjacencyMatrixGraph_addEdge -> AdjacencyMatrixGraph_setNumberOfEdges;
+    AdjacencyMatrixGraph_addEdge -> AdjacencyMatrixGraph_numberOfEdges;
+
+    AdjacencyMatrixGraph_removeEdge -> AdjacencyMatrixGraph_vertexDoesExist [label="2 times"];
+    AdjacencyMatrixGraph_removeEdge -> AdjacencyMatrixGraph_adjacencyOfEdgeDoesExist;
+    AdjacencyMatrixGraph_removeEdge -> AdjacencyMatrixGraph_adjacency;
+    AdjacencyMatrixGraph_removeEdge -> AdjacencyMatrixGraph_setNumberOfEdges;
+    AdjacencyMatrixGraph_removeEdge -> AdjacencyMatrixGraph_numberOfEdges;
+
+    AdjacencyMatrixGraph_depthFirstOrder -> AdjacencyMatrixGraph_depthFirstOrder [style=dashed, label="recursive"];
+    AdjacencyMatrixGraph_depthFirstOrder -> AdjacencyMatrixGraph_adjacency;
+
+    AdjacencyMatrixGraph_breadthFirstOrder -> AdjacencyMatrixGraph_adjacency;
+
+    AdjacencyMatrixGraph_toString -> AdjacencyMatrixGraph_numberOfVertices;
+    AdjacencyMatrixGraph_toString -> AdjacencyMatrixGraph_adjacency;
+}
+

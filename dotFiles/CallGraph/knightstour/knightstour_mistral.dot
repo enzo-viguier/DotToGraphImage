@@ -1,0 +1,22 @@
+digraph KnightsTourCallGraph {
+    rankdir=LR;
+
+    // Nodes
+    main [label="main"];
+    solve [label="solve"];
+    neighbors [label="neighbors"];
+    countNeighbors [label="countNeighbors"];
+    orphanDetected [label="orphanDetected"];
+    printResult [label="printResult"];
+
+    // Edges
+    main -> solve;
+    main -> printResult;
+    solve -> neighbors;
+    solve -> orphanDetected;
+    solve -> solve; // Recursive call
+    neighbors -> countNeighbors;
+    orphanDetected -> neighbors;
+    orphanDetected -> countNeighbors;
+}
+

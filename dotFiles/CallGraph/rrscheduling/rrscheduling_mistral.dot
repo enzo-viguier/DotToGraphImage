@@ -1,0 +1,17 @@
+digraph G {
+    node [shape=box];
+
+    // Nodes
+    RRScheduling [label="RRScheduling"];
+    RRScheduling_constructor [label="RRScheduling(List<ProcessDetails>, int)"];
+    scheduleProcesses [label="scheduleProcesses()"];
+    evaluateTurnAroundTime [label="evaluateTurnAroundTime()"];
+    evaluateWaitingTime [label="evaluateWaitingTime()"];
+
+    // Edges
+    RRScheduling -> RRScheduling_constructor;
+    RRScheduling_constructor -> scheduleProcesses;
+    scheduleProcesses -> evaluateTurnAroundTime;
+    scheduleProcesses -> evaluateWaitingTime;
+}
+

@@ -1,0 +1,19 @@
+digraph KnightsTourCallGraph {
+  node [shape=box];
+  
+  main -> solve;
+  main -> printResult;
+  
+  solve -> neighbors;
+  solve -> orphanDetected;
+  solve -> solve;  // recursive call
+  
+  neighbors -> countNeighbors;
+  
+  orphanDetected -> neighbors;
+  orphanDetected -> countNeighbors;
+  
+  countNeighbors;  // no outgoing edges
+  
+  printResult;  // no outgoing edges
+}

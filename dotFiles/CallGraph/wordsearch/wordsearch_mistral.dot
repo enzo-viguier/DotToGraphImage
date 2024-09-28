@@ -1,0 +1,14 @@
+digraph G {
+    node [shape=box];
+
+    // Nodes
+    "WordSearch.exist" [label="exist(char[][] board, String word)"];
+    "WordSearch.doDFS" [label="doDFS(int x, int y, int nextIdx)"];
+    "WordSearch.isValid" [label="isValid(int x, int y)"];
+
+    // Edges
+    "WordSearch.exist" -> "WordSearch.doDFS";
+    "WordSearch.doDFS" -> "WordSearch.isValid";
+    "WordSearch.doDFS" -> "WordSearch.doDFS" [style=dashed];
+}
+

@@ -1,0 +1,25 @@
+digraph CallGraph {
+    rankdir=LR;
+    node [shape=box];
+
+    // Constructor
+    "AllPathsFromSourceToTarget(int vertices)" -> "initAdjList()";
+
+    // Utility method
+    "initAdjList()";
+
+    // Method to add edge
+    "addEdge(int u, int v)";
+
+    // Method to store all paths
+    "storeAllPaths(int s, int d)" -> "storeAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList)";
+
+    // Recursive utility method
+    "storeAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList)" -> "storeAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList)";
+
+    // Driver program
+    "allPathsFromSourceToTarget(int vertices, int[][] a, int source, int destination)" -> "AllPathsFromSourceToTarget(int vertices)";
+    "allPathsFromSourceToTarget(int vertices, int[][] a, int source, int destination)" -> "addEdge(int u, int v)";
+    "allPathsFromSourceToTarget(int vertices, int[][] a, int source, int destination)" -> "storeAllPaths(int s, int d)";
+}
+

@@ -1,0 +1,34 @@
+digraph G {
+    rankdir=LR;
+
+    // Nodes
+    node [shape=box];
+    StackOfLinkedList_main [label="StackOfLinkedList.main"];
+    LinkedListStack_LinkedListStack [label="LinkedListStack.LinkedListStack"];
+    LinkedListStack_push [label="LinkedListStack.push"];
+    LinkedListStack_pop [label="LinkedListStack.pop"];
+    LinkedListStack_peek [label="LinkedListStack.peek"];
+    LinkedListStack_toString [label="LinkedListStack.toString"];
+    LinkedListStack_isEmpty [label="LinkedListStack.isEmpty"];
+    LinkedListStack_getSize [label="LinkedListStack.getSize"];
+    Node_Node [label="Node.Node"];
+
+    // Edges
+    StackOfLinkedList_main -> LinkedListStack_LinkedListStack;
+    StackOfLinkedList_main -> LinkedListStack_push;
+    StackOfLinkedList_main -> LinkedListStack_push;
+    StackOfLinkedList_main -> LinkedListStack_push;
+    StackOfLinkedList_main -> LinkedListStack_push;
+    StackOfLinkedList_main -> LinkedListStack_push;
+    StackOfLinkedList_main -> LinkedListStack_toString;
+    StackOfLinkedList_main -> LinkedListStack_getSize;
+    StackOfLinkedList_main -> LinkedListStack_pop;
+    StackOfLinkedList_main -> LinkedListStack_pop;
+    StackOfLinkedList_main -> LinkedListStack_peek;
+
+    LinkedListStack_push -> Node_Node;
+    LinkedListStack_pop -> LinkedListStack_isEmpty;
+    LinkedListStack_peek -> LinkedListStack_isEmpty;
+    LinkedListStack_toString -> LinkedListStack_isEmpty;
+}
+

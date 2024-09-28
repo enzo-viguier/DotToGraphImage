@@ -1,0 +1,31 @@
+digraph BSTRecursiveCallGraph {
+    rankdir=LR;
+    node [shape=box];
+
+    // Methods
+    BSTRecursive [label="BSTRecursive()"];
+    getRoot [label="getRoot()"];
+    delete [label="delete(Node, int)"];
+    insert [label="insert(Node, int)"];
+    search [label="search(Node, int)"];
+    add [label="add(int)"];
+    remove [label="remove(int)"];
+    find [label="find(int)"];
+
+    // Calls
+    BSTRecursive -> delete [style=dashed];
+    BSTRecursive -> insert [style=dashed];
+    BSTRecursive -> search [style=dashed];
+    BSTRecursive -> add [style=dashed];
+    BSTRecursive -> remove [style=dashed];
+    BSTRecursive -> find [style=dashed];
+
+    add -> insert;
+    remove -> delete;
+    find -> search;
+
+    delete -> delete [style=dashed];
+    insert -> insert [style=dashed];
+    search -> search [style=dashed];
+}
+

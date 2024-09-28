@@ -1,0 +1,12 @@
+digraph G {
+    node [shape=box];
+
+    // Nodes
+    main;
+    calculateNeed;
+    checkSafeSystem;
+
+    // Edges
+    main -> checkSafeSystem;
+    checkSafeSystem -> calculateNeed;
+}

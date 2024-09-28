@@ -1,0 +1,38 @@
+digraph G {
+    node [shape=box];
+
+    // Classes
+    BoruvkaAlgorithm;
+    BoruvkaAlgorithm_Edge;
+    BoruvkaAlgorithm_Graph;
+    BoruvkaAlgorithm_Component;
+    BoruvkaAlgorithm_BoruvkaState;
+
+    // Methods
+    BoruvkaAlgorithm_boruvkaMST [label="boruvkaMST\n(Graph)"];
+    BoruvkaAlgorithm_find [label="find\n(Component[], int)"];
+    BoruvkaAlgorithm_union [label="union\n(Component[], int, int)"];
+    BoruvkaAlgorithm_checkEdgeVertices [label="checkEdgeVertices\n(int, int)"];
+    BoruvkaAlgorithm_Graph_constructor [label="Graph\n(int, List<Edge>)"];
+    BoruvkaAlgorithm_BoruvkaState_constructor [label="BoruvkaState\n(Graph)"];
+    BoruvkaAlgorithm_BoruvkaState_merge [label="merge\n(Edge[])"];
+    BoruvkaAlgorithm_BoruvkaState_hasMoreEdgesToAdd [label="hasMoreEdgesToAdd\n()"];
+    BoruvkaAlgorithm_BoruvkaState_computeCheapestEdges [label="computeCheapestEdges\n()"];
+    BoruvkaAlgorithm_BoruvkaState_initializeComponents [label="initializeComponents\n(Graph)"];
+
+    // Call relationships
+    BoruvkaAlgorithm_boruvkaMST -> BoruvkaAlgorithm_BoruvkaState_constructor;
+    BoruvkaAlgorithm_boruvkaMST -> BoruvkaAlgorithm_BoruvkaState_hasMoreEdgesToAdd;
+    BoruvkaAlgorithm_boruvkaMST -> BoruvkaAlgorithm_BoruvkaState_computeCheapestEdges;
+    BoruvkaAlgorithm_boruvkaMST -> BoruvkaAlgorithm_BoruvkaState_merge;
+
+    BoruvkaAlgorithm_BoruvkaState_merge -> BoruvkaAlgorithm_find;
+    BoruvkaAlgorithm_BoruvkaState_merge -> BoruvkaAlgorithm_union;
+
+    BoruvkaAlgorithm_BoruvkaState_computeCheapestEdges -> BoruvkaAlgorithm_find;
+
+    BoruvkaAlgorithm_BoruvkaState_constructor -> BoruvkaAlgorithm_BoruvkaState_initializeComponents;
+
+    BoruvkaAlgorithm_Graph_constructor -> BoruvkaAlgorithm_checkEdgeVertices;
+}
+

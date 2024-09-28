@@ -39,21 +39,69 @@ def convertir_dot_en_image(chemin_dot, chemin_sortie):
     except Exception as e:
         print(f"Erreur lors de la conversion de {chemin_dot} : {str(e)}")
 
-def traiter_dossiers(dossier_racine):
-    for dossier, sous_dossiers, fichiers in os.walk(dossier_racine):
+def traiter_dossiers_cfg(dossier_racine):
+    dossier_cfg = os.path.join(dossier_racine, 'ControlFlowGraph')
+    for dossier, sous_dossiers, fichiers in os.walk(dossier_cfg):
         for fichier in fichiers:
             if fichier.endswith('.dot'):
                 chemin_dot = os.path.join(dossier, fichier)
-                dossier_relatif = os.path.relpath(dossier, dossier_racine)
-                dossier_sortie = os.path.join('graphFiles', dossier_relatif)
+                dossier_relatif = os.path.relpath(dossier, dossier_cfg)
+                dossier_sortie = os.path.join('graphFiles', 'ControlFlowGraph', dossier_relatif)
+                os.makedirs(dossier_sortie, exist_ok=True)
+                nom_fichier_sans_extension = os.path.splitext(fichier)[0]
+                chemin_sortie = os.path.join(dossier_sortie, nom_fichier_sans_extension)
+                convertir_dot_en_image(chemin_dot, chemin_sortie)
+                
+                
+def traiter_dossiers_cg(dossier_racine):
+    dossier_cg = os.path.join(dossier_racine, 'CallGraph')
+    for dossier, sous_dossiers, fichiers in os.walk(dossier_cg):
+        for fichier in fichiers:
+            if fichier.endswith('.dot'):
+                chemin_dot = os.path.join(dossier, fichier)
+                dossier_relatif = os.path.relpath(dossier, dossier_cg)
+                dossier_sortie = os.path.join('graphFiles', 'CallGraph', dossier_relatif)
                 os.makedirs(dossier_sortie, exist_ok=True)
                 nom_fichier_sans_extension = os.path.splitext(fichier)[0]
                 chemin_sortie = os.path.join(dossier_sortie, nom_fichier_sans_extension)
                 convertir_dot_en_image(chemin_dot, chemin_sortie)
 
-# verifier les installations des packages
-verifier_installations()
 
-# Utilisation de la fonction
-dossier_racine = 'dotFiles'
-traiter_dossiers(dossier_racine)
+def main():
+    # verifier les installations des packages
+    verifier_installations()
+
+    # Utilisation de la fonction
+    dossier_racine = 'dotFiles'
+    
+    print("Que souhaitez-vous générer ?")
+    print("1. Uniquement les images Control Flow Graph")
+    print("2. Uniquement les images Call Graph")
+    print("3. Les deux types d'images")
+    
+    choix = input("Entrez votre choix (1, 2 ou 3) : ")
+    
+    if choix == '1':
+        print("============================================")
+        print("Control Flow Graph")
+        print("============================================")
+        traiter_dossiers_cfg(dossier_racine)
+    elif choix == '2':
+        print("============================================")
+        print("Call Graph")
+        print("============================================")
+        traiter_dossiers_cg(dossier_racine)
+    elif choix == '3':
+        print("============================================")
+        print("Control Flow Graph")
+        print("============================================")
+        traiter_dossiers_cfg(dossier_racine)
+        print("============================================")
+        print("Call Graph")
+        print("============================================")
+        traiter_dossiers_cg(dossier_racine)
+    else:
+        print("Choix invalide. Veuillez entrer 1, 2 ou 3.")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,12 @@
+digraph CallGraph {
+    "SegmentTree(int, int[])" -> "constructTree(int[], int, int, int)"
+    "constructTree(int[], int, int, int)" -> "constructTree(int[], int, int, int)"
+    "constructTree(int[], int, int, int)" -> "constructTree(int[], int, int, int)"
+    "update(int, int)" -> "updateTree(int, int, int, int, int)"
+    "updateTree(int, int, int, int, int)" -> "updateTree(int, int, int, int, int)"
+    "updateTree(int, int, int, int, int)" -> "updateTree(int, int, int, int, int)"
+    "getSum(int, int)" -> "getSumTree(int, int, int, int, int)"
+    "getSumTree(int, int, int, int, int)" -> "getSumTree(int, int, int, int, int)"
+    "getSumTree(int, int, int, int, int)" -> "getSumTree(int, int, int, int, int)"
+}
+

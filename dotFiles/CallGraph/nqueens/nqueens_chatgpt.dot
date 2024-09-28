@@ -1,0 +1,8 @@
+digraph CallGraph {
+    "NQueens" -> "getNQueensArrangements" [label="calls"];
+    "NQueens" -> "placeQueens" [label="calls"];
+    "getNQueensArrangements" -> "getSolution" [label="calls"];
+    "placeQueens" -> "getSolution" [label="calls"];
+    "getSolution" -> "isPlacedCorrectly" [label="calls"];
+    "getSolution" -> "getSolution" [label="recursively calls"];
+}

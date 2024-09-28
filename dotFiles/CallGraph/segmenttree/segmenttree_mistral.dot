@@ -1,0 +1,20 @@
+digraph G {
+    node [shape=box];
+
+    // Nodes
+    SegmentTree [label="SegmentTree\n(constructor)"];
+    constructTree [label="constructTree"];
+    updateTree [label="updateTree"];
+    update [label="update"];
+    getSumTree [label="getSumTree"];
+    getSum [label="getSum"];
+
+    // Edges
+    SegmentTree -> constructTree;
+    constructTree -> constructTree [style=dashed];
+    update -> updateTree;
+    updateTree -> updateTree [style=dashed];
+    getSum -> getSumTree;
+    getSumTree -> getSumTree [style=dashed];
+}
+

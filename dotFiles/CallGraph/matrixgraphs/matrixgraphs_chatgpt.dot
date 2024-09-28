@@ -1,0 +1,54 @@
+digraph CallGraph {
+    // Nodes
+    "MatrixGraphs.main" [label="MatrixGraphs.main"];
+    "AdjacencyMatrixGraph.AdjacencyMatrixGraph" [label="AdjacencyMatrixGraph.AdjacencyMatrixGraph"];
+    "AdjacencyMatrixGraph.addEdge" [label="AdjacencyMatrixGraph.addEdge"];
+    "AdjacencyMatrixGraph.depthFirstOrder" [label="AdjacencyMatrixGraph.depthFirstOrder"];
+    "AdjacencyMatrixGraph.breadthFirstOrder" [label="AdjacencyMatrixGraph.breadthFirstOrder"];
+    "AdjacencyMatrixGraph.toString" [label="AdjacencyMatrixGraph.toString"];
+    "AdjacencyMatrixGraph.removeEdge" [label="AdjacencyMatrixGraph.removeEdge"];
+    "AdjacencyMatrixGraph.numberOfVertices" [label="AdjacencyMatrixGraph.numberOfVertices"];
+    "AdjacencyMatrixGraph.numberOfEdges" [label="AdjacencyMatrixGraph.numberOfEdges"];
+    "AdjacencyMatrixGraph.vertexDoesExist" [label="AdjacencyMatrixGraph.vertexDoesExist"];
+    "AdjacencyMatrixGraph.edgeDoesExist" [label="AdjacencyMatrixGraph.edgeDoesExist"];
+    "AdjacencyMatrixGraph.setAdjacency" [label="AdjacencyMatrixGraph.setAdjacency"];
+    "AdjacencyMatrixGraph.adjacencyOfEdgeDoesExist" [label="AdjacencyMatrixGraph.adjacencyOfEdgeDoesExist"];
+    "AdjacencyMatrixGraph.adjacency" [label="AdjacencyMatrixGraph.adjacency"];
+    "AdjacencyMatrixGraph.setNumberOfEdges" [label="AdjacencyMatrixGraph.setNumberOfEdges"];
+    "AdjacencyMatrixGraph.setNumberOfVertices" [label="AdjacencyMatrixGraph.setNumberOfVertices"];
+    "AdjacencyMatrixGraph.depthFirstOrder_private" [label="AdjacencyMatrixGraph.depthFirstOrder (private)"];
+
+    // Edges
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.AdjacencyMatrixGraph";
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.addEdge";
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.depthFirstOrder";
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.breadthFirstOrder";
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.toString";
+
+    "AdjacencyMatrixGraph.AdjacencyMatrixGraph" -> "AdjacencyMatrixGraph.setNumberOfVertices";
+    "AdjacencyMatrixGraph.AdjacencyMatrixGraph" -> "AdjacencyMatrixGraph.setAdjacency";
+    "AdjacencyMatrixGraph.addEdge" -> "AdjacencyMatrixGraph.vertexDoesExist";
+    "AdjacencyMatrixGraph.addEdge" -> "AdjacencyMatrixGraph.adjacencyOfEdgeDoesExist";
+    "AdjacencyMatrixGraph.addEdge" -> "AdjacencyMatrixGraph.adjacency";
+    "AdjacencyMatrixGraph.addEdge" -> "AdjacencyMatrixGraph.setNumberOfEdges";
+
+    "AdjacencyMatrixGraph.depthFirstOrder" -> "AdjacencyMatrixGraph.vertexDoesExist";
+    "AdjacencyMatrixGraph.depthFirstOrder" -> "AdjacencyMatrixGraph.depthFirstOrder_private";
+
+    "AdjacencyMatrixGraph.depthFirstOrder_private" -> "AdjacencyMatrixGraph.adjacency";
+
+    "AdjacencyMatrixGraph.breadthFirstOrder" -> "AdjacencyMatrixGraph.vertexDoesExist";
+    "AdjacencyMatrixGraph.breadthFirstOrder" -> "AdjacencyMatrixGraph.adjacency";
+
+    "AdjacencyMatrixGraph.removeEdge" -> "AdjacencyMatrixGraph.vertexDoesExist";
+    "AdjacencyMatrixGraph.removeEdge" -> "AdjacencyMatrixGraph.adjacencyOfEdgeDoesExist";
+    "AdjacencyMatrixGraph.removeEdge" -> "AdjacencyMatrixGraph.adjacency";
+    "AdjacencyMatrixGraph.removeEdge" -> "AdjacencyMatrixGraph.setNumberOfEdges";
+
+    "AdjacencyMatrixGraph.edgeDoesExist" -> "AdjacencyMatrixGraph.vertexDoesExist";
+    "AdjacencyMatrixGraph.edgeDoesExist" -> "AdjacencyMatrixGraph.adjacencyOfEdgeDoesExist";
+
+    "AdjacencyMatrixGraph.toString" -> "AdjacencyMatrixGraph.numberOfVertices";
+    "AdjacencyMatrixGraph.toString" -> "AdjacencyMatrixGraph.adjacency";
+}
+

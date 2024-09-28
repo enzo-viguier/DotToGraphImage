@@ -1,0 +1,18 @@
+digraph DijkstraAlgorithmCallGraph {
+    rankdir=TB;
+    node [shape=box];
+
+    // Nodes
+    DijkstraAlgorithm [label="DijkstraAlgorithm"];
+    DijkstraAlgorithm_constructor [label="DijkstraAlgorithm(int vertexCount)"];
+    run [label="run(int[][] graph, int source)"];
+    getMinDistanceVertex [label="getMinDistanceVertex(int[] distances, boolean[] processed)"];
+    printDistances [label="printDistances(int[] distances)"];
+
+    // Edges
+    DijkstraAlgorithm -> DijkstraAlgorithm_constructor;
+    DijkstraAlgorithm_constructor -> DijkstraAlgorithm;
+    run -> getMinDistanceVertex;
+    run -> printDistances;
+}
+

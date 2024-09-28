@@ -1,0 +1,15 @@
+digraph CallGraph {
+    // Main class
+    WordSearch -> exist
+
+    // exist method
+    exist -> doDFS
+    exist -> charAt [label="String.charAt"]
+    exist -> new [label="new boolean[][]"]
+
+    // doDFS method
+    doDFS -> isValid
+    doDFS -> charAt [label="String.charAt"]
+    doDFS -> doDFS [label="recursive call"]
+}
+

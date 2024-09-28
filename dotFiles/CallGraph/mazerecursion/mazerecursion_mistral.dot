@@ -1,0 +1,20 @@
+digraph G {
+    node [shape=box];
+
+    // Main entry point
+    "mazeRecursion" -> "setWay";
+    "mazeRecursion" -> "setWay2";
+
+    // Recursive calls within setWay
+    "setWay" -> "setWay" [label="down"];
+    "setWay" -> "setWay" [label="right"];
+    "setWay" -> "setWay" [label="up"];
+    "setWay" -> "setWay" [label="left"];
+
+    // Recursive calls within setWay2
+    "setWay2" -> "setWay2" [label="up"];
+    "setWay2" -> "setWay2" [label="right"];
+    "setWay2" -> "setWay2" [label="down"];
+    "setWay2" -> "setWay2" [label="left"];
+}
+

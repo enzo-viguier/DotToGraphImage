@@ -1,0 +1,19 @@
+digraph G {
+    node [shape=box, style=filled, color=lightgrey];
+
+    // Define the nodes
+    NQueens [label="NQueens"];
+    getNQueensArrangements [label="getNQueensArrangements"];
+    placeQueens [label="placeQueens"];
+    getSolution [label="getSolution"];
+    isPlacedCorrectly [label="isPlacedCorrectly"];
+
+    // Define the edges
+    NQueens -> getNQueensArrangements;
+    NQueens -> placeQueens;
+    getNQueensArrangements -> getSolution;
+    placeQueens -> getSolution;
+    getSolution -> getSolution [style=dashed];
+    getSolution -> isPlacedCorrectly;
+}
+

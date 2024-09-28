@@ -1,0 +1,18 @@
+digraph MazeRecursionCallGraph {
+  node [shape=box];
+  
+  // Main method
+  mazeRecursion [label="mazeRecursion()"];
+  
+  // Helper methods
+  setWay [label="setWay(int[][], int, int)"];
+  setWay2 [label="setWay2(int[][], int, int)"];
+  
+  // Call relationships
+  mazeRecursion -> setWay;
+  mazeRecursion -> setWay2;
+  
+  // Recursive calls
+  setWay -> setWay [label="recursive"];
+  setWay2 -> setWay2 [label="recursive"];
+}

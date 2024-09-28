@@ -1,0 +1,17 @@
+digraph CallGraph {
+    node [shape=box];
+
+    // Method nodes
+    regexRecursion_1 [label="regexRecursion(String, String)"];
+    regexRecursion_2 [label="regexRecursion(String, String, int, int)"];
+    regexRecursion_3 [label="regexRecursion(String, String, int, int, int[][])"];
+    regexBU [label="regexBU(String, String)"];
+
+    // Call edges
+    regexRecursion_1 -> regexRecursion_1 [label="recursive"];
+    regexRecursion_2 -> regexRecursion_2 [label="recursive"];
+    regexRecursion_3 -> regexRecursion_3 [label="recursive"];
+
+    // No direct calls between different methods
+}
+

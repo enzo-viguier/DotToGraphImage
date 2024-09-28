@@ -1,0 +1,23 @@
+digraph CallGraph {
+    node [shape=box];
+
+    // Methods
+    "RRScheduling()" [label="RRScheduling()"];
+    "scheduleProcesses()" [label="scheduleProcesses()"];
+    "evaluateTurnAroundTime()" [label="evaluateTurnAroundTime()"];
+    "evaluateWaitingTime()" [label="evaluateWaitingTime()"];
+    "getBurstTime()" [label="getBurstTime()"];
+    "getArrivalTime()" [label="getArrivalTime()"];
+    "setTurnAroundTimeTime()" [label="setTurnAroundTimeTime()"];
+    "setWaitingTime()" [label="setWaitingTime()"];
+
+    // Relationships between methods
+    "scheduleProcesses()" -> "evaluateTurnAroundTime()";
+    "scheduleProcesses()" -> "evaluateWaitingTime()";
+    "evaluateTurnAroundTime()" -> "getBurstTime()";
+    "evaluateTurnAroundTime()" -> "getArrivalTime()";
+    "evaluateTurnAroundTime()" -> "setTurnAroundTimeTime()";
+    "evaluateWaitingTime()" -> "setWaitingTime()";
+    "evaluateWaitingTime()" -> "getBurstTime()";
+}
+
