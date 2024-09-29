@@ -1,0 +1,31 @@
+digraph BSTRecursive {
+  node [shape=box];
+  
+  // Constructor
+  BSTRecursive [label="BSTRecursive()"];
+
+  // Public methods
+  getRoot [label="getRoot()"];
+  add [label="add(int data)"];
+  remove [label="remove(int data)"];
+  find [label="find(int data)"];
+
+  // Private methods
+  insert [label="insert(Node node, int data)"];
+  delete [label="delete(Node node, int data)"];
+  search [label="search(Node node, int data)"];
+
+  // Relationships
+  BSTRecursive -> getRoot [style=dashed];
+  add -> insert;
+  remove -> delete;
+  find -> search;
+
+  // Recursive calls
+  insert -> insert [label="recursive"];
+  delete -> delete [label="recursive"];
+  search -> search [label="recursive"];
+
+  // Internal calls
+  delete -> search [style=dotted];
+}

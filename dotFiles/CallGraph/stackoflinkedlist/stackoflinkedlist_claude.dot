@@ -1,0 +1,47 @@
+digraph CallGraph {
+    rankdir=TD;
+    node [shape=box];
+    
+    // StackOfLinkedList class
+    "StackOfLinkedList.main" -> "LinkedListStack.constructor";
+    "StackOfLinkedList.main" -> "LinkedListStack.push";
+    "StackOfLinkedList.main" -> "LinkedListStack.toString";
+    "StackOfLinkedList.main" -> "LinkedListStack.getSize";
+    "StackOfLinkedList.main" -> "LinkedListStack.pop";
+    "StackOfLinkedList.main" -> "LinkedListStack.peek";
+    
+    // LinkedListStack class
+    "LinkedListStack.push" -> "Node.constructor";
+    "LinkedListStack.toString" -> "StringBuilder.append";
+    "LinkedListStack.toString" -> "StringBuilder.replace";
+    "LinkedListStack.pop" -> "NoSuchElementException.constructor";
+    "LinkedListStack.peek" -> "NoSuchElementException.constructor";
+    
+    // Subgraphs for logical grouping
+    subgraph cluster_0 {
+        label = "StackOfLinkedList";
+        "StackOfLinkedList.main";
+    }
+    
+    subgraph cluster_1 {
+        label = "LinkedListStack";
+        "LinkedListStack.constructor";
+        "LinkedListStack.push";
+        "LinkedListStack.toString";
+        "LinkedListStack.getSize";
+        "LinkedListStack.pop";
+        "LinkedListStack.peek";
+    }
+    
+    subgraph cluster_2 {
+        label = "Node";
+        "Node.constructor";
+    }
+    
+    subgraph cluster_3 {
+        label = "Java Standard Library";
+        "StringBuilder.append";
+        "StringBuilder.replace";
+        "NoSuchElementException.constructor";
+    }
+}

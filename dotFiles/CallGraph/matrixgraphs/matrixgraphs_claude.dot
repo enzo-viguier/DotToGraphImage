@@ -1,0 +1,42 @@
+digraph MatrixGraphsCallGraph {
+    node [shape=box];
+
+    // MatrixGraphs class
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.constructor";
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.addEdge";
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.toString";
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.depthFirstOrder";
+    "MatrixGraphs.main" -> "AdjacencyMatrixGraph.breadthFirstOrder";
+
+    // AdjacencyMatrixGraph class
+    "AdjacencyMatrixGraph.constructor" -> "AdjacencyMatrixGraph.setNumberOfVertices";
+    "AdjacencyMatrixGraph.constructor" -> "AdjacencyMatrixGraph.setNumberOfEdges";
+    "AdjacencyMatrixGraph.constructor" -> "AdjacencyMatrixGraph.setAdjacency";
+
+    "AdjacencyMatrixGraph.addEdge" -> "AdjacencyMatrixGraph.vertexDoesExist";
+    "AdjacencyMatrixGraph.addEdge" -> "AdjacencyMatrixGraph.adjacencyOfEdgeDoesExist";
+    "AdjacencyMatrixGraph.addEdge" -> "AdjacencyMatrixGraph.adjacency";
+    "AdjacencyMatrixGraph.addEdge" -> "AdjacencyMatrixGraph.setNumberOfEdges";
+    "AdjacencyMatrixGraph.addEdge" -> "AdjacencyMatrixGraph.numberOfEdges";
+
+    "AdjacencyMatrixGraph.removeEdge" -> "AdjacencyMatrixGraph.vertexDoesExist";
+    "AdjacencyMatrixGraph.removeEdge" -> "AdjacencyMatrixGraph.adjacencyOfEdgeDoesExist";
+    "AdjacencyMatrixGraph.removeEdge" -> "AdjacencyMatrixGraph.adjacency";
+    "AdjacencyMatrixGraph.removeEdge" -> "AdjacencyMatrixGraph.setNumberOfEdges";
+    "AdjacencyMatrixGraph.removeEdge" -> "AdjacencyMatrixGraph.numberOfEdges";
+
+    "AdjacencyMatrixGraph.depthFirstOrder" -> "AdjacencyMatrixGraph.depthFirstOrder (recursive)";
+
+    "AdjacencyMatrixGraph.depthFirstOrder (recursive)" -> "AdjacencyMatrixGraph.depthFirstOrder (recursive)";
+
+    "AdjacencyMatrixGraph.breadthFirstOrder" -> "AdjacencyMatrixGraph.adjacency";
+
+    "AdjacencyMatrixGraph.toString" -> "AdjacencyMatrixGraph.numberOfVertices";
+
+    "AdjacencyMatrixGraph.edgeDoesExist" -> "AdjacencyMatrixGraph.vertexDoesExist";
+    "AdjacencyMatrixGraph.edgeDoesExist" -> "AdjacencyMatrixGraph.adjacencyOfEdgeDoesExist";
+
+    "AdjacencyMatrixGraph.adjacencyOfEdgeDoesExist" -> "AdjacencyMatrixGraph.adjacency";
+
+    "AdjacencyMatrixGraph.vertexDoesExist" -> "AdjacencyMatrixGraph.numberOfVertices";
+}

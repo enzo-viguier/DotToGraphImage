@@ -1,0 +1,10 @@
+digraph DijkstraAlgorithm {
+    "DijkstraAlgorithm.DijkstraAlgorithm" -> "DijkstraAlgorithm.run";
+    "DijkstraAlgorithm.run" -> "DijkstraAlgorithm.getMinDistanceVertex";
+    "DijkstraAlgorithm.run" -> "DijkstraAlgorithm.printDistances";
+    "DijkstraAlgorithm.run" -> "Arrays.fill";
+    "DijkstraAlgorithm.run" -> "IllegalArgumentException.<init>";
+    "DijkstraAlgorithm.getMinDistanceVertex" -> "vertexCount";
+    "DijkstraAlgorithm.printDistances" -> "System.out.println";
+}
+

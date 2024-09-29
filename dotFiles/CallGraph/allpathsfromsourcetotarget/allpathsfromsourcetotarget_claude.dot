@@ -1,0 +1,19 @@
+digraph AllPathsFromSourceToTarget {
+  node [shape=box];
+  
+  // Constructor and initialization methods
+  AllPathsFromSourceToTarget -> initAdjList;
+  
+  // Public methods
+  AllPathsFromSourceToTarget -> addEdge;
+  AllPathsFromSourceToTarget -> storeAllPaths;
+  storeAllPaths -> storeAllPathsUtil;
+  
+  // Static method
+  allPathsFromSourceToTarget -> AllPathsFromSourceToTarget;
+  allPathsFromSourceToTarget -> addEdge;
+  allPathsFromSourceToTarget -> storeAllPaths;
+  
+  // Recursive method
+  storeAllPathsUtil -> storeAllPathsUtil [label="recursive"];
+}

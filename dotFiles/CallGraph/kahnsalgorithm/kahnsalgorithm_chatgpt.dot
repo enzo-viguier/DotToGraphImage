@@ -1,0 +1,24 @@
+digraph CallGraph {
+    node [shape=box];
+
+    // Nodes
+    "KahnsAlgorithm.main(String[])" -> "AdjacencyList.AdjacencyList()";
+    "KahnsAlgorithm.main(String[])" -> "AdjacencyList.addEdge(String, String)";
+    "KahnsAlgorithm.main(String[])" -> "TopologicalSort.TopologicalSort(AdjacencyList<String>)";
+    "KahnsAlgorithm.main(String[])" -> "TopologicalSort.topSortOrder()";
+    "TopologicalSort.topSortOrder()" -> "TopologicalSort.calculateInDegree()";
+    "TopologicalSort.calculateInDegree()" -> "AdjacencyList.getVertices()";
+    "TopologicalSort.calculateInDegree()" -> "AdjacencyList.getAdjacents(String)";
+    "TopologicalSort.topSortOrder()" -> "AdjacencyList.getAdjacents(String)";
+    "AdjacencyList.addEdge(String, String)" -> "ArrayList.add(String)";
+    "AdjacencyList.addEdge(String, String)" -> "LinkedHashMap.put(String, ArrayList<String>)";
+    "AdjacencyList.addEdge(String, String)" -> "LinkedHashMap.get(String)";
+    "AdjacencyList.getVertices()" -> "LinkedHashMap.keySet()";
+    "AdjacencyList.getAdjacents(String)" -> "LinkedHashMap.get(String)";
+    "TopologicalSort.topSortOrder()" -> "Queue.add(String)";
+    "TopologicalSort.topSortOrder()" -> "Queue.poll()";
+    "TopologicalSort.topSortOrder()" -> "ArrayList.add(String)";
+    "TopologicalSort.topSortOrder()" -> "HashMap.put(String, Integer)";
+    "TopologicalSort.calculateInDegree()" -> "HashMap.put(String, Integer)";
+}
+

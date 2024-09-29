@@ -1,0 +1,49 @@
+digraph RecursiveBinarySearchCallGraph {
+    // Node definitions
+    main [label="main"];
+    constructor [label="RecursiveBinarySearch\nconstructor"];
+    find [label="find"];
+    binsear [label="binsear"];
+    compareTo [label="compareTo"];
+    println [label="System.out.println"];
+    scanner [label="Scanner methods"];
+    
+    // Abstract class
+    SearchAlgorithm [label="SearchAlgorithm\n(abstract)", style=filled, fillcolor=lightgrey];
+    
+    // Subgraphs
+    subgraph cluster_SearchAlgorithm {
+        label = "SearchAlgorithm";
+        SearchAlgorithm_find [label="find\n(abstract)"];
+    }
+    
+    subgraph cluster_RecursiveBinarySearch {
+        label = "RecursiveBinarySearch";
+        constructor;
+        find;
+        binsear;
+    }
+    
+    subgraph cluster_Comparable {
+        label = "Comparable";
+        compareTo;
+    }
+    
+    subgraph cluster_JavaStandardLibrary {
+        label = "Java Standard Library";
+        println;
+        scanner;
+    }
+    
+    // Edge definitions
+    main -> constructor;
+    main -> find;
+    main -> println;
+    main -> scanner;
+    find -> binsear;
+    binsear -> compareTo;
+    binsear -> binsear [label="recursive call"];
+    
+    // Inheritance
+    SearchAlgorithm -> find [style=dashed, label="implements"];
+}

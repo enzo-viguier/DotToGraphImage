@@ -1,0 +1,37 @@
+digraph CallGraph {
+    rankdir=TD;
+    node [shape=box];
+
+    // Main nodes
+    main [label="KahnsAlgorithm.main"];
+    addEdge [label="AdjacencyList.addEdge"];
+    TopologicalSort_constructor [label="TopologicalSort.constructor"];
+    topSortOrder [label="TopologicalSort.topSortOrder"];
+    calculateInDegree [label="TopologicalSort.calculateInDegree"];
+    getVertices [label="AdjacencyList.getVertices"];
+    getAdjacents [label="AdjacencyList.getAdjacents"];
+
+    // Edges
+    main -> addEdge;
+    main -> TopologicalSort_constructor;
+    main -> topSortOrder;
+    topSortOrder -> calculateInDegree;
+    topSortOrder -> getAdjacents;
+    calculateInDegree -> getVertices;
+    calculateInDegree -> getAdjacents;
+
+    // Subgraphs
+    subgraph cluster_AdjacencyList {
+        label="AdjacencyList";
+        addEdge;
+        getVertices;
+        getAdjacents;
+    }
+
+    subgraph cluster_TopologicalSort {
+        label="TopologicalSort";
+        TopologicalSort_constructor;
+        topSortOrder;
+        calculateInDegree;
+    }
+}

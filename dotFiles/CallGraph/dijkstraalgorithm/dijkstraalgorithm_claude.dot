@@ -1,0 +1,13 @@
+digraph DijkstraAlgorithmCallGraph {
+  // Node definitions
+  node [shape=box, style=filled, color=lightblue];
+  constructor [label="DijkstraAlgorithm(int)"];
+  run [label="run(int[][], int)"];
+  getMinDistanceVertex [label="getMinDistanceVertex(int[], boolean[])"];
+  printDistances [label="printDistances(int[])"];
+
+  // Edge definitions
+  constructor -> run [style=dashed, label="creates"];
+  run -> getMinDistanceVertex [label="calls"];
+  run -> printDistances [label="calls"];
+}

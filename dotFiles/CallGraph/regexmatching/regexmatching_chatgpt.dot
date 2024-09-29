@@ -1,0 +1,21 @@
+digraph G {
+    node [shape=box];
+
+    // Main Methods in RegexMatching class
+    RegexMatching -> "regexRecursion(String, String)" [label="calls"];
+    RegexMatching -> "regexRecursion(String, String, int, int)" [label="calls"];
+    RegexMatching -> "regexRecursion(String, String, int, int, int[][])" [label="calls"];
+    RegexMatching -> "regexBU(String, String)" [label="calls"];
+
+    // Internal Method Call Connections
+    "regexRecursion(String, String)" -> "regexRecursion(String, String)" [label="recursive"];
+    "regexRecursion(String, String)" -> "regexRecursion(String, String, int, int)" [label="recursive"];
+
+    "regexRecursion(String, String, int, int)" -> "regexRecursion(String, String, int, int)" [label="recursive"];
+    "regexRecursion(String, String, int, int)" -> "regexRecursion(String, String, int, int, int[][])" [label="calls"];
+    
+    "regexRecursion(String, String, int, int, int[][])" -> "regexRecursion(String, String, int, int, int[][])" [label="recursive"];
+    
+    "regexBU(String, String)" -> "regexBU(String, String)" [label="iterative"];
+}
+

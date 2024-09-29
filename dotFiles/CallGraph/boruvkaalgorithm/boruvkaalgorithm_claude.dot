@@ -1,0 +1,43 @@
+digraph BoruvkaAlgorithmCallGraph {
+  // Main method
+  boruvkaMST [label="boruvkaMST"];
+
+  // BoruvkaState methods
+  BoruvkaState_constructor [label="BoruvkaState constructor"];
+  merge [label="merge"];
+  hasMoreEdgesToAdd [label="hasMoreEdgesToAdd"];
+  computeCheapestEdges [label="computeCheapestEdges"];
+  initializeComponents [label="initializeComponents"];
+
+  // Utility methods
+  find [label="find"];
+  union [label="union"];
+  checkEdgeVertices [label="checkEdgeVertices"];
+
+  // Call relationships
+  boruvkaMST -> BoruvkaState_constructor;
+  boruvkaMST -> hasMoreEdgesToAdd;
+  boruvkaMST -> computeCheapestEdges;
+  boruvkaMST -> merge;
+
+  BoruvkaState_constructor -> initializeComponents;
+  BoruvkaState_constructor -> checkEdgeVertices;
+
+  merge -> find;
+  merge -> union;
+
+  computeCheapestEdges -> find;
+
+  initializeComponents -> checkEdgeVertices;
+
+  find -> find;  // Recursive call
+  union -> find;
+
+  // Constructors
+  Edge_constructor [label="Edge constructor"];
+  Graph_constructor [label="Graph constructor"];
+  Component_constructor [label="Component constructor"];
+
+  Graph_constructor -> checkEdgeVertices;
+  initializeComponents -> Component_constructor;
+}

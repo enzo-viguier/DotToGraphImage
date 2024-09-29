@@ -1,0 +1,33 @@
+digraph RegexMatching {
+  node [shape=box];
+  
+  // Main methods
+  regexRecursion1 [label="regexRecursion(String, String)"];
+  regexRecursion2 [label="regexRecursion(String, String, int, int)"];
+  regexRecursion3 [label="regexRecursion(String, String, int, int, int[][])"];
+  regexBU [label="regexBU(String, String)"];
+  
+  // Method calls
+  regexRecursion1 -> regexRecursion1 [label="recursive call"];
+  regexRecursion2 -> regexRecursion2 [label="recursive call"];
+  regexRecursion3 -> regexRecursion3 [label="recursive call"];
+  
+  // Utility methods
+  charAt [label="String.charAt()"];
+  substring [label="String.substring()"];
+  length [label="String.length()"];
+  
+  // Method dependencies
+  regexRecursion1 -> charAt;
+  regexRecursion1 -> substring;
+  regexRecursion1 -> length;
+  
+  regexRecursion2 -> charAt;
+  regexRecursion2 -> length;
+  
+  regexRecursion3 -> charAt;
+  regexRecursion3 -> length;
+  
+  regexBU -> charAt;
+  regexBU -> length;
+}

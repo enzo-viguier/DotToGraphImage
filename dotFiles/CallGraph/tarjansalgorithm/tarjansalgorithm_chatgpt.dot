@@ -1,0 +1,21 @@
+digraph TarjansAlgorithmCallGraph {
+    node [shape=box];
+
+    // Classes and methods
+    "TarjansAlgorithm" [label="TarjansAlgorithm"];
+    "stronglyConnectedComponents" [label="stronglyConnectedComponents"];
+    "stronglyConnCompsUtil" [label="stronglyConnCompsUtil"];
+
+    // Method calls
+    "TarjansAlgorithm" -> "stronglyConnectedComponents";
+    "stronglyConnectedComponents" -> "stronglyConnCompsUtil" [label="for-loop"];
+    "stronglyConnCompsUtil" -> "stronglyConnCompsUtil" [label="recursive"];
+    "stronglyConnCompsUtil" -> "Stack.push" [label="push"];
+    "stronglyConnCompsUtil" -> "Stack.pop" [label="pop"];
+    "stronglyConnCompsUtil" -> "List.add" [label="scc.add"];
+    "stronglyConnCompsUtil" -> "List.get" [label="graph.get"];
+    "stronglyConnCompsUtil" -> "Math.min" [label="min"];
+    "stronglyConnectedComponents" -> "Stack" [label="Stack<Integer>"];
+    "stronglyConnectedComponents" -> "List" [label="List<Integer>"];
+}
+

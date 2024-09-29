@@ -1,0 +1,16 @@
+digraph CallGraph {
+    "OptimalJobScheduling" -> "OptimalJobScheduling.OptimalJobScheduling(int, int, int[][], int[][])";
+    "OptimalJobScheduling" -> "OptimalJobScheduling.execute()";
+    "OptimalJobScheduling" -> "OptimalJobScheduling.getCost(int, int)";
+    
+    "OptimalJobScheduling.execute()" -> "OptimalJobScheduling.calculateCost()";
+    "OptimalJobScheduling.execute()" -> "OptimalJobScheduling.showResults()";
+
+    "OptimalJobScheduling.calculateCost()" -> "OptimalJobScheduling.runningCost(int, int)";
+    
+    "OptimalJobScheduling.runningCost(int, int)" -> "OptimalJobScheduling.findMin(int[])";
+
+    "OptimalJobScheduling.showResults()" -> "System.out.print()";
+    "OptimalJobScheduling.showResults()" -> "System.out.println()";
+}
+

@@ -1,0 +1,30 @@
+digraph SegmentTree {
+    // Node definitions
+    node [shape=box];
+    Constructor [label="SegmentTree Constructor", style=filled, fillcolor="#ff99ff"];
+    constructTree [label="constructTree"];
+    update [label="update", style=filled, fillcolor="#bbbbff"];
+    updateTree [label="updateTree"];
+    getSum [label="getSum", style=filled, fillcolor="#bbffbb"];
+    getSumTree [label="getSumTree"];
+
+    // Edge definitions
+    Constructor -> constructTree;
+    constructTree -> constructTree [label="recursive"];
+    update -> updateTree;
+    updateTree -> updateTree [label="recursive"];
+    getSum -> getSumTree;
+    getSumTree -> getSumTree [label="recursive"];
+
+    // Subgraph for grouping
+    subgraph cluster_0 {
+        label = "SegmentTree Class";
+        style = dashed;
+        Constructor;
+        constructTree;
+        update;
+        updateTree;
+        getSum;
+        getSumTree;
+    }
+}

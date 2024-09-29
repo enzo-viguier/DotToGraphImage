@@ -1,0 +1,14 @@
+digraph CallGraph {
+    // Nodes
+    "main(String[])" [label="main(String[] args)"];
+    "find(T[], T)" [label="find(T[] arr, T target)"];
+    "binsear(T[], int, int, T)" [label="binsear(T[] arr, int left, int right, T target)"];
+    "compareTo(T)" [label="compareTo(T target)"];
+
+    // Edges
+    "main(String[])" -> "find(T[], T)";
+    "find(T[], T)" -> "binsear(T[], int, int, T)";
+    "binsear(T[], int, int, T)" -> "compareTo(T)";
+    "binsear(T[], int, int, T)" -> "binsear(T[], int, int, T)";
+}
+

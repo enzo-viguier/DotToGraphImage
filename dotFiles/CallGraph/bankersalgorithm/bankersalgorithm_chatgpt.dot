@@ -1,0 +1,15 @@
+digraph BankersAlgorithm {
+    // Main method
+    "BankersAlgorithm.main" -> "BankersAlgorithm.checkSafeSystem";
+
+    // checkSafeSystem method
+    "BankersAlgorithm.checkSafeSystem" -> "BankersAlgorithm.calculateNeed";
+    "BankersAlgorithm.checkSafeSystem" -> "System.arraycopy";
+    "BankersAlgorithm.checkSafeSystem" -> "System.out.print";
+
+    // calculateNeed method
+    "BankersAlgorithm.calculateNeed";
+
+    // System.arraycopy and System.out.print are external calls to Java libraries
+}
+

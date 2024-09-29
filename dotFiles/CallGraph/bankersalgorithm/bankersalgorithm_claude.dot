@@ -1,0 +1,25 @@
+digraph BankersAlgorithmCallGraph {
+    node [shape=box];
+    
+    main [label="main()"];
+    checkSafeSystem [label="checkSafeSystem()"];
+    calculateNeed [label="calculateNeed()"];
+    System_arraycopy [label="System.arraycopy()"];
+    System_out_print [label="System.out.print()"];
+    System_out_println [label="System.out.println()"];
+    Scanner_nextInt [label="Scanner.nextInt()"];
+    Scanner_close [label="Scanner.close()"];
+
+    main -> System_out_println;
+    main -> Scanner_nextInt;
+    main -> checkSafeSystem;
+    main -> Scanner_close;
+
+    checkSafeSystem -> calculateNeed;
+    checkSafeSystem -> System_arraycopy;
+    checkSafeSystem -> System_out_print;
+
+    {rank=same; main}
+    {rank=same; checkSafeSystem; calculateNeed}
+    {rank=same; System_arraycopy; System_out_print; System_out_println; Scanner_nextInt; Scanner_close}
+}

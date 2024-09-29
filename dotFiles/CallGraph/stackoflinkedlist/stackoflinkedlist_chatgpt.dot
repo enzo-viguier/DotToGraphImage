@@ -1,0 +1,17 @@
+digraph CallGraph {
+    "StackOfLinkedList.main" -> "LinkedListStack.LinkedListStack";
+    "StackOfLinkedList.main" -> "LinkedListStack.push";
+    "StackOfLinkedList.main" -> "System.out.println";
+    "StackOfLinkedList.main" -> "LinkedListStack.getSize";
+    "StackOfLinkedList.main" -> "LinkedListStack.pop";
+    "StackOfLinkedList.main" -> "LinkedListStack.peek";
+    "LinkedListStack.LinkedListStack" -> "Node.Node";
+    "LinkedListStack.push" -> "Node.Node";
+    "LinkedListStack.pop" -> "NoSuchElementException.<init>";
+    "LinkedListStack.pop" -> "LinkedListStack.isEmpty";
+    "LinkedListStack.toString" -> "StringBuilder.StringBuilder";
+    "LinkedListStack.toString" -> "Node.Node";
+    "LinkedListStack.getSize" -> "LinkedListStack.isEmpty";
+    "LinkedListStack.peek" -> "NoSuchElementException.<init>";
+}
+

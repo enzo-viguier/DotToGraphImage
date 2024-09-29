@@ -1,0 +1,27 @@
+digraph CallGraph {
+    "BoruvkaAlgorithm" -> "Graph";
+    "BoruvkaAlgorithm" -> "Edge";
+    "BoruvkaAlgorithm" -> "Component";
+    "BoruvkaAlgorithm" -> "BoruvkaState";
+    "BoruvkaAlgorithm.boruvkaMST" -> "BoruvkaState";
+    "BoruvkaAlgorithm.boruvkaMST" -> "BoruvkaState.hasMoreEdgesToAdd";
+    "BoruvkaAlgorithm.boruvkaMST" -> "BoruvkaState.computeCheapestEdges";
+    "BoruvkaAlgorithm.boruvkaMST" -> "BoruvkaState.merge";
+    "BoruvkaAlgorithm.checkEdgeVertices" -> "IllegalArgumentException";
+    "BoruvkaAlgorithm.find" -> "Component";
+    "BoruvkaAlgorithm.find" -> "BoruvkaAlgorithm.find";
+    "BoruvkaAlgorithm.union" -> "BoruvkaAlgorithm.find";
+    "BoruvkaAlgorithm.union" -> "Component";
+
+    "BoruvkaState" -> "Graph";
+    "BoruvkaState" -> "Edge";
+    "BoruvkaState.merge" -> "BoruvkaAlgorithm.find";
+    "BoruvkaState.merge" -> "BoruvkaAlgorithm.union";
+    "BoruvkaState.computeCheapestEdges" -> "BoruvkaAlgorithm.find";
+
+    "Graph" -> "BoruvkaAlgorithm.checkEdgeVertices";
+    "Graph" -> "Edge";
+
+    "Component" -> "Component";
+}
+

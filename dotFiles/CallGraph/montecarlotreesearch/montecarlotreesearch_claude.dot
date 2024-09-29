@@ -1,0 +1,31 @@
+digraph MonteCarloTreeSearch {
+  node [shape=box];
+  
+  main -> monteCarloTreeSearch;
+  
+  monteCarloTreeSearch -> addChildNodes;
+  monteCarloTreeSearch -> getPromisingNode;
+  monteCarloTreeSearch -> simulateRandomPlay;
+  monteCarloTreeSearch -> getWinnerNode;
+  monteCarloTreeSearch -> printScores;
+  
+  getPromisingNode -> addChildNodes;
+  
+  simulateRandomPlay -> addChildNodes;
+  
+  addChildNodes -> "Node constructor";
+  
+  getWinnerNode -> "Collections.max";
+  
+  subgraph cluster_0 {
+    label = "Legend";
+    node [shape=plaintext];
+    legend [label=<
+      <table border="0" cellborder="1" cellspacing="0">
+        <tr><td port="m">Method</td></tr>
+        <tr><td port="c">Constructor</td></tr>
+        <tr><td port="e">External Method</td></tr>
+      </table>
+    >];
+  }
+}

@@ -1,0 +1,29 @@
+digraph OptimalJobScheduling {
+  node [shape=box];
+  
+  // Constructor
+  Constructor [label="OptimalJobScheduling()"];
+  
+  // Main methods
+  execute [label="execute()"];
+  calculateCost [label="calculateCost()"];
+  showResults [label="showResults()"];
+  
+  // Helper methods
+  runningCost [label="runningCost(int, int)"];
+  findMin [label="findMin(int[])"];
+  
+  // Getter method
+  getCost [label="getCost(int, int)"];
+  
+  // Relationships
+  execute -> calculateCost;
+  execute -> showResults;
+  
+  calculateCost -> runningCost;
+  
+  runningCost -> findMin;
+  
+  // Note: The constructor and getCost method are not called within the class,
+  // but they are part of the public interface
+}

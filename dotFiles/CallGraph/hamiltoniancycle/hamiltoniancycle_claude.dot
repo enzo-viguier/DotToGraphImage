@@ -1,0 +1,83 @@
+digraph HamiltonianCycle {
+    node [shape=box];
+    
+    HamiltonianCycle [label="HamiltonianCycle"];
+    findHamiltonianCycle [label="findHamiltonianCycle"];
+    isPathFound [label="isPathFound"];
+    isPresent [label="isPresent"];
+    
+    HamiltonianCycle -> findHamiltonianCycle;
+    findHamiltonianCycle -> isPathFound;
+    isPathFound -> isPathFound [label="recursive"];
+    isPathFound -> isPresent;
+    
+    subgraph cluster_0 {
+        label = "Constructor";
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        init_vertex [label="Initialize vertex"];
+        init_pathCount [label="Initialize pathCount"];
+        init_cycle [label="Initialize cycle"];
+        init_graph [label="Initialize graph"];
+    }
+    
+    HamiltonianCycle -> init_vertex;
+    HamiltonianCycle -> init_pathCount;
+    HamiltonianCycle -> init_cycle;
+    HamiltonianCycle -> init_graph;
+    
+    subgraph cluster_1 {
+        label = "findHamiltonianCycle";
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        init_cycle_array [label="Initialize cycle array"];
+        set_first_element [label="Set first element to 0"];
+        call_isPathFound [label="Call isPathFound"];
+        reset_cycle [label="Reset cycle if path not found"];
+        set_last_element [label="Set last element to first if path found"];
+    }
+    
+    findHamiltonianCycle -> init_cycle_array;
+    findHamiltonianCycle -> set_first_element;
+    findHamiltonianCycle -> call_isPathFound;
+    findHamiltonianCycle -> reset_cycle;
+    findHamiltonianCycle -> set_last_element;
+    
+    subgraph cluster_2 {
+        label = "isPathFound";
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        check_last_vertex [label="Check if last vertex connected to start"];
+        check_all_vertices [label="Check if all vertices selected"];
+        iterate_vertices [label="Iterate through vertices"];
+        add_vertex [label="Add vertex to path"];
+        remove_connection [label="Remove connection"];
+        recursive_call [label="Recursive call"];
+        restore_connection [label="Restore connection"];
+        remove_path [label="Remove path"];
+    }
+    
+    isPathFound -> check_last_vertex;
+    isPathFound -> check_all_vertices;
+    isPathFound -> iterate_vertices;
+    isPathFound -> add_vertex;
+    isPathFound -> remove_connection;
+    isPathFound -> recursive_call;
+    isPathFound -> restore_connection;
+    isPathFound -> remove_path;
+    
+    subgraph cluster_3 {
+        label = "isPresent";
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        iterate_cycle [label="Iterate through cycle"];
+        check_vertex [label="Check if vertex is in cycle"];
+    }
+    
+    isPresent -> iterate_cycle;
+    isPresent -> check_vertex;
+}
